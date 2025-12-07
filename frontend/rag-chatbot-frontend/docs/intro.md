@@ -2,46 +2,40 @@
 sidebar_position: 1
 ---
 
-# Tutorial Intro
+# Physical AI & Humanoid Robotics
 
-Let's discover **Docusaurus in less than 5 minutes**.
+Welcome to the **Physical AI & Humanoid Robotics** knowledge base. This resource provides comprehensive information about robotics concepts, from fundamental principles to advanced implementations.
 
-## Getting Started
+## About This Resource
 
-Get started by **creating a new site**.
+This documentation and chatbot system contains information about:
+- Physical AI fundamentals
+- Humanoid robotics design and control
+- Sensor integration and perception systems
+- AI applications in robotics
+- Real-world applications and future directions
 
-Or **try Docusaurus immediately** with **[docusaurus.new](https://docusaurus.new)**.
+## Quick Start
 
-### What you'll need
+Use the **[Chatbot Assistant](/)** to ask specific questions about robotics concepts from the textbook.
 
-- [Node.js](https://nodejs.org/en/download/) version 20.0 or above:
-  - When installing Node.js, you are recommended to check all checkboxes related to dependencies.
+Or browse through the modules to learn about different aspects of Physical AI and Humanoid Robotics.
 
-## Generate a new site
+## Table of Contents
 
-Generate a new Docusaurus site using the **classic template**.
+- [Introduction to Physical AI](#)
+- [Humanoid Robotics Fundamentals](#)
+- [Sensor Integration & Perception](#)
+- [AI in Humanoid Robotics](#)
+- [Applications & Future Directions](#)
 
-The classic template will automatically be added to your project after you run the command:
+## Key Topics
 
-```bash
-npm init docusaurus@latest my-website classic
-```
+### Physical AI
+Physical AI combines artificial intelligence with physical systems to create intelligent agents that can interact with the real world through perception, reasoning, and action.
 
-You can type this command into Command Prompt, Powershell, Terminal, or any other integrated terminal of your code editor.
+### Humanoid Robotics
+Humanoid robots are designed to mimic human form and behavior, featuring a head, torso, two arms, and two legs to operate in human-designed environments.
 
-The command also installs all necessary dependencies you need to run Docusaurus.
-
-## Start your site
-
-Run the development server:
-
-```bash
-cd my-website
-npm run start
-```
-
-The `cd` command changes the directory you're working with. In order to work with your newly created Docusaurus site, you'll need to navigate the terminal there.
-
-The `npm run start` command builds your website locally and serves it through a development server, ready for you to view at http://localhost:3000/.
-
-Open `docs/intro.md` (this page) and edit some lines: the site **reloads automatically** and displays your changes.
+### RAG System
+This system uses Retrieval-Augmented Generation to provide accurate answers based on the robotics textbook content.

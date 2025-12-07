@@ -1,18 +1,7 @@
 {
   "permissions": {
     "allow": [
-      "Bash(python debug_db.py)",
-      "Bash(python test_endpoint_direct.py)",
-      "Bash(python test_ingestion_with_query.py)",
-      "Bash(tasklist)",
-      "Bash(findstr python)",
-      "Bash(curl -X POST http://localhost:8000/health)",
-      "Bash(curl http://localhost:8000/health)",
-      "Bash(python -m uvicorn app.main:app --host 0.0.0.0 --port 8001)",
-      "Bash(dir /s /b)",
-      "Bash(findstr -i \"test\\|debug\\|temp\\|__pycache__\")",
-      "Bash(dir /s)",
-      "Bash(find . -name \"*.md\" -type f -exec grep -l \"robot\\|module\\|Physical AI\\|humanoid\" {} ;)"
+      "Bash(npm run build)"
     ],
     "deny": [],
     "ask": []
