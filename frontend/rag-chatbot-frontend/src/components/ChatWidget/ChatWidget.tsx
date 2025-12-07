@@ -49,7 +49,7 @@ const ChatWidget: React.FC = () => {
 
     try {
       // Call backend API
-      const response = await fetch('http://localhost:8000/chat', {
+      const response = await fetch('https://munazha-rag-chatbot-backend.hf.space/chat', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
