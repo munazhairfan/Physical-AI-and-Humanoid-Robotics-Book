@@ -95,7 +95,9 @@ class VectorStoreService:
         points = []
         for i, embedding in enumerate(embeddings):
             # Each chunk gets its own point in the vector store
-            point_id = f"{doc_id}_chunk_{i}"
+            # Create a proper UUID for the point ID
+            import uuid as uuid_lib
+            point_id = str(uuid_lib.uuid4())
             payload = {
                 "text": text[i*512:(i+1)*512],  # Store the actual text chunk
                 "original_doc_id": doc_id,

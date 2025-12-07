@@ -1,13 +1,17 @@
 {
   "permissions": {
     "allow": [
-      "Bash(python debug_test.py)",
-      "Bash(python -m uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload --reload-dir app)",
-      "Bash(npm run build)",
-      "Bash(dir \"D:\\AI\\Hackathon-I\\Physical-AI-and-Humanoid-Robotics\\frontend\\rag-chatbot-frontend\\src\" /s)",
-      "Bash(dir \"D:\\AI\\Hackathon-I\\Physical-AI-and-Humanoid-Robotics\\frontend\\rag-chatbot-frontend\\src\\components\" /s)",
-      "Bash(node deploy-gh-pages.js)",
-      "Bash(del \"D:\\AI\\Hackathon-I\\Physical-AI-and-Humanoid-Robotics\\deploy-gh-pages.js\")"
+      "Bash(python debug_db.py)",
+      "Bash(python test_endpoint_direct.py)",
+      "Bash(python test_ingestion_with_query.py)",
+      "Bash(tasklist)",
+      "Bash(findstr python)",
+      "Bash(curl -X POST http://localhost:8000/health)",
+      "Bash(curl http://localhost:8000/health)",
+      "Bash(python -m uvicorn app.main:app --host 0.0.0.0 --port 8001)",
+      "Bash(dir /s /b)",
+      "Bash(findstr -i \"test\\|debug\\|temp\\|__pycache__\")",
+      "Bash(dir /s)"
     ],
     "deny": [],
     "ask": []

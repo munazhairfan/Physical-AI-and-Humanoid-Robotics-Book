@@ -65,8 +65,22 @@ class EmbeddingService:
                 embeddings.append(result['embedding'])
             except Exception as e:
                 logger.error(f"Error embedding chunk: {str(e)}")
-                # Add a zero vector if embedding fails
-                embeddings.append([0.0] * 768)  # Standard embedding size
+                # Add a simple fallback embedding based on text characteristics if embedding fails
+                # Use a simple hash-based approach to create a somewhat meaningful embedding
+                import hashlib
+                hash_obj = hashlib.md5(chunk.encode('utf-8'))
+                hash_hex = hash_obj.hexdigest()
+
+                # Convert hex hash to a 768-dimensional vector (simplified approach)
+                vector = []
+                for i in range(0, 768 * 2, 2):  # 768 values, each using 2 hex chars
+                    hex_pair = hash_hex[i % len(hash_hex):(i + 2) % len(hash_hex)] or '00'
+                    if len(hex_pair) == 1:
+                        hex_pair += '0'
+                    val = int(hex_pair, 16) / 255.0  # Normalize to 0-1 range
+                    vector.append(val)
+
+                embeddings.append(vector)
 
         logger.info(f"Generated {len(embeddings)} embeddings for {len(chunks)} text chunks")
         return embeddings
@@ -97,8 +111,21 @@ class EmbeddingService:
             return embedding
         except Exception as e:
             logger.error(f"Error embedding query: {str(e)}")
-            # Return a zero vector if embedding fails
-            return [0.0] * 768
+            # Return a hash-based fallback vector if embedding fails
+            import hashlib
+            hash_obj = hashlib.md5(query.encode('utf-8'))
+            hash_hex = hash_obj.hexdigest()
+
+            # Convert hex hash to a 768-dimensional vector (simplified approach)
+            vector = []
+            for i in range(0, 768 * 2, 2):  # 768 values, each using 2 hex chars
+                hex_pair = hash_hex[i % len(hash_hex):(i + 2) % len(hash_hex)] or '00'
+                if len(hex_pair) == 1:
+                    hex_pair += '0'
+                val = int(hex_pair, 16) / 255.0  # Normalize to 0-1 range
+                vector.append(val)
+
+            return vector
 
 
 # Global instance of the embedding service

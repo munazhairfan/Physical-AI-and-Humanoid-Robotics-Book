@@ -1,6 +1,6 @@
 """
 Database Service for RAG Chatbot
-Handles operations with the Neon Postgres database for document and chat history storage.
+Handles operations with in-memory storage for document and chat history storage.
 """
 from typing import List, Dict, Optional
 import logging
@@ -45,22 +45,12 @@ class DatabaseService:
         """
         logger.info("Retrieving all documents")
 
-        rows = await self.pool.fetch(
-            """
-            SELECT id, content, metadata, created_at, updated_at
-            FROM documents
-            ORDER BY created_at DESC
-            """
-        )
-
         documents = []
-        for row in rows:
+        for doc_id, doc_data in self._documents.items():
             documents.append({
-                "id": str(row['id']),
-                "content": row['content'],
-                "metadata": row['metadata'],
-                "created_at": row['created_at'],
-                "updated_at": row['updated_at']
+                "id": doc_data["document_id"],
+                "content": doc_data["content"],
+                "metadata": doc_data["metadata"]
             })
 
         logger.info(f"Retrieved {len(documents)} documents")
@@ -88,18 +78,13 @@ class DatabaseService:
         new_metadata = metadata if metadata is not None else current_doc['metadata']
 
         # Update the document
-        await self.pool.execute(
-            """
-            UPDATE documents
-            SET content = $1, metadata = $2, updated_at = NOW()
-            WHERE id = $3
-            """,
-            new_content,
-            json.dumps(new_metadata) if new_metadata else None,
-            doc_id
-        )
-
-        logger.info(f"Successfully updated document: {doc_id}")
+        if doc_id in self._documents:
+            self._documents[doc_id] = {
+                "document_id": doc_id,
+                "content": new_content,
+                "metadata": new_metadata
+            }
+            logger.info(f"Successfully updated document: {doc_id}")
 
     async def delete_document(self, doc_id: str):
         """
@@ -110,15 +95,9 @@ class DatabaseService:
         """
         logger.info(f"Deleting document: {doc_id}")
 
-        await self.pool.execute(
-            """
-            DELETE FROM documents
-            WHERE id = $1
-            """,
-            doc_id
-        )
-
-        logger.info(f"Successfully deleted document: {doc_id}")
+        if doc_id in self._documents:
+            del self._documents[doc_id]
+            logger.info(f"Successfully deleted document: {doc_id}")
 
     async def store_chat_history(self, session_id: str, user_message: str, bot_response: str, context_metadata: Optional[Dict] = None):
         if session_id not in self._chat_history:
@@ -154,5 +133,7 @@ database_service = None
 async def get_database_service() -> DatabaseService:
     global database_service
     if database_service is None:
+        print("DEBUG: Creating new DatabaseService instance")  # Debug line
         database_service = DatabaseService()
+        print(f"DEBUG: Created DatabaseService: {database_service}")  # Debug line
     return database_service

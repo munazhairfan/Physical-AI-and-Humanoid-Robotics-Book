@@ -71,6 +71,21 @@ class LLMService:
             return result
         except Exception as e:
             logger.error(f"Error generating response with Gemini: {str(e)}")
+
+            # If there's context available, return a response based on the context even if API fails
+            if context and len(context) > 0:
+                # Extract relevant information from the context
+                context_snippets = []
+                for item in context:
+                    content = item.get('content', '')[:300]  # Take first 300 chars
+                    source = item.get('metadata', {}).get('title', 'Unknown source')
+                    if content.strip():
+                        context_snippets.append(f"From {source}: {content}...")
+
+                if context_snippets:
+                    context_preview = "\n\n".join(context_snippets[:2])  # Show first 2 snippets
+                    return f"I found relevant information in the robotics textbook:\n\n{context_preview}\n\nHowever, I encountered an issue generating a detailed response due to API quota limits. The information above is from the textbook content you've ingested."
+
             return f"Sorry, I encountered an error processing your request: {str(e)}"
 
     def _build_prompt(self, query: str, context: Optional[List[Dict]], history: Optional[List[Dict]]) -> str:

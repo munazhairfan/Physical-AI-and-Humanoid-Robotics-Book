@@ -3,11 +3,6 @@ from pydantic import BaseModel
 from typing import List, Optional
 import logging
 
-import importlib
-import sys
-# Force reload of vectorstore_service to ensure latest changes are loaded
-if 'app.vectorstore_service' in sys.modules:
-    importlib.reload(sys.modules['app.vectorstore_service'])
 
 # Import the embedding and LLM services
 from .embedding_service import get_embedding_service
