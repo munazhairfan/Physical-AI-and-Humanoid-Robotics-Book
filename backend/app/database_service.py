@@ -34,37 +34,7 @@ class DatabaseService:
 
 
     async def get_document(self, doc_id: str) -> Optional[Dict]:
-        """
-        Retrieve a document by its ID.
-
-        Args:
-            doc_id: The ID of the document to retrieve
-
-        Returns:
-            Document content and metadata, or None if not found
-        """
-        logger.info(f"Retrieving document: {doc_id}")
-
-        row = await self.pool.fetchrow(
-            """
-            SELECT id, content, metadata, created_at, updated_at
-            FROM documents
-            WHERE id = $1
-            """,
-            doc_id
-        )
-
-        if row:
-            return {
-                "id": str(row['id']),
-                "content": row['content'],
-                "metadata": row['metadata'],
-                "created_at": row['created_at'],
-                "updated_at": row['updated_at']
-            }
-
-        logger.info(f"Document {doc_id} not found")
-        return None
+        return self._documents.get(doc_id)
 
     async def get_all_documents(self) -> List[Dict]:
         """
@@ -151,116 +121,38 @@ class DatabaseService:
         logger.info(f"Successfully deleted document: {doc_id}")
 
     async def store_chat_history(self, session_id: str, user_message: str, bot_response: str, context_metadata: Optional[Dict] = None):
-        """
-        Store a chat interaction in the database.
-
-        Args:
-            session_id: The session ID for the conversation
-            user_message: The user's message
-            bot_response: The bot's response
-            context_metadata: Optional metadata about the context used
-        """
-        logger.info(f"Storing chat history for session: {session_id}")
-
-        await self.pool.execute(
-            """
-            INSERT INTO chat_history (session_id, user_message, bot_response, context_metadata)
-            VALUES ($1, $2, $3, $4)
-            """,
-            session_id,
-            user_message,
-            bot_response,
-            json.dumps(context_metadata) if context_metadata else None
-        )
-
-        logger.info(f"Successfully stored chat history for session: {session_id}")
+        if session_id not in self._chat_history:
+            self._chat_history[session_id] = []
+        self._chat_history[session_id].append({
+            "user_message": user_message,
+            "bot_response": bot_response,
+            "timestamp": datetime.now().isoformat(),
+            "context_metadata": context_metadata
+        })
+        logger.info(f"Stored in-memory chat history for session: {session_id}")
 
     async def get_chat_history(self, session_id: str) -> List[Dict]:
-        """
-        Retrieve chat history for a specific session.
-
-        Args:
-            session_id: The session ID to retrieve history for
-
-        Returns:
-            List of chat interactions in the session
-        """
-        logger.info(f"Retrieving chat history for session: {session_id}")
-
-        rows = await self.pool.fetch(
-            """
-            SELECT user_message, bot_response, timestamp
-            FROM chat_history
-            WHERE session_id = $1
-            ORDER BY timestamp ASC
-            """,
-            session_id
-        )
-
-        history = []
-        for row in rows:
-            history.append({
-                "user_message": row['user_message'],
-                "bot_response": row['bot_response'],
-                "timestamp": row['timestamp']
-            })
-
-        logger.info(f"Retrieved {len(history)} chat interactions for session: {session_id}")
-        return history
+        return self._chat_history.get(session_id, [])
 
     async def get_recent_chat_sessions(self, limit: int = 10) -> List[Dict]:
-        """
-        Retrieve recent chat sessions.
-
-        Args:
-            limit: Number of recent sessions to retrieve
-
-        Returns:
-            List of recent session IDs and their metadata
-        """
-        logger.info(f"Retrieving {limit} most recent chat sessions")
-
-        rows = await self.pool.fetch(
-            """
-            SELECT DISTINCT session_id, timestamp
-            FROM chat_history
-            ORDER BY timestamp DESC
-            LIMIT $1
-            """,
-            limit
-        )
-
+        # For in-memory, just return a dummy session or the existing ones
+        # This implementation is simplified for rapid deployment
         sessions = []
-        for row in rows:
-            sessions.append({
-                "session_id": str(row['session_id']),
-                "timestamp": row['timestamp']
-            })
-
-        logger.info(f"Retrieved {len(sessions)} recent chat sessions")
-        return sessions
+        for session_id, history in self._chat_history.items():
+            if history:
+                sessions.append({"session_id": session_id, "last_activity": history[-1]["timestamp"]})
+        sessions.sort(key=lambda x: x["last_activity"], reverse=True)
+        return sessions[:limit]
 
     async def close(self):
-        """
-        Close the database connection pool.
-        """
-        if self.pool:
-            await self.pool.close()
-            logger.info("Database connection pool closed")
+        # No resources to close for in-memory storage
+        logger.info("In-memory database closed (no-op)")
 
 # Global instance of the database service
-# In a real application, this might be managed by a dependency injection framework
 database_service = None
 
-async def get_database_service():
-    """
-    Get the global database service instance.
-    Initializes the service if it doesn't exist.
-    """
+async def get_database_service() -> DatabaseService:
     global database_service
     if database_service is None:
-        # In a real implementation, this would come from environment/config
-        db_url = None  # Use default from environment
-        database_service = DatabaseService(db_url)
-        await database_service.initialize()
+        database_service = DatabaseService()
     return database_service

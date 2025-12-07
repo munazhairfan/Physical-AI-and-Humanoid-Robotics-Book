@@ -1,10 +1,10 @@
 import type {ReactNode} from 'react';
 import clsx from 'clsx';
-import Link from '@docusaurus/Link';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import Layout from '@theme/Layout';
 import HomepageFeatures from '@site/src/components/HomepageFeatures';
 import Heading from '@theme/Heading';
+import ChatWidget from '@site/src/components/ChatWidget';
 
 import styles from './index.module.css';
 
@@ -17,13 +17,6 @@ function HomepageHeader() {
           {siteConfig.title}
         </Heading>
         <p className="hero__subtitle">{siteConfig.tagline}</p>
-        <div className={styles.buttons}>
-          <Link
-            className="button button--secondary button--lg"
-            to="/docs/intro">
-            Docusaurus Tutorial - 5min ⏱️
-          </Link>
-        </div>
       </div>
     </header>
   );
@@ -33,10 +26,27 @@ export default function Home(): ReactNode {
   const {siteConfig} = useDocusaurusContext();
   return (
     <Layout
-      title={`Hello from ${siteConfig.title}`}
-      description="Description will go into a meta tag in <head />">
+      title={`Physical AI & Humanoid Robotics Assistant`}
+      description="RAG Chatbot for robotics concepts and textbook questions">
       <HomepageHeader />
       <main>
+        <section className={styles.features}>
+          <div className="container">
+            <div className="row">
+              <div className="col col--12">
+                <h2 style={{textAlign: 'center', marginTop: '2rem'}}>Physical AI & Humanoid Robotics Assistant</h2>
+                <p style={{textAlign: 'center', marginBottom: '2rem'}}>
+                  Ask questions about robotics concepts from the textbook. The AI will retrieve relevant information and provide detailed answers.
+                </p>
+              </div>
+            </div>
+            <div className="row">
+              <div className="col col--12">
+                <ChatWidget />
+              </div>
+            </div>
+          </div>
+        </section>
         <HomepageFeatures />
       </main>
     </Layout>

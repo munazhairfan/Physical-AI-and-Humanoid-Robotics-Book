@@ -2,7 +2,10 @@
   "permissions": {
     "allow": [
       "Bash(python debug_test.py)",
-      "Bash(python -m uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload --reload-dir app)"
+      "Bash(python -m uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload --reload-dir app)",
+      "Bash(npm run build)",
+      "Bash(dir \"D:\\AI\\Hackathon-I\\Physical-AI-and-Humanoid-Robotics\\frontend\\rag-chatbot-frontend\\src\" /s)",
+      "Bash(dir \"D:\\AI\\Hackathon-I\\Physical-AI-and-Humanoid-Robotics\\frontend\\rag-chatbot-frontend\\src\\components\" /s)"
     ],
     "deny": [],
     "ask": []
