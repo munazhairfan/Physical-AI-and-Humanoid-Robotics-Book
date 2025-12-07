@@ -1,0 +1,20 @@
+{
+  "id": "module-4/motion-planning-algorithms",
+  "title": "Motion Planning Algorithms",
+  "description": "Graph-based and sampling-based motion planning algorithms including BFS, Dijkstra, A*, RRT, RRT*, and PRM",
+  "source": "@site/docs/module-4/motion-planning-algorithms.md",
+  "sourceDirName": "module-4",
+  "slug": "/module-4/motion-planning-algorithms",
+  "permalink": "/docs/module-4/motion-planning-algorithms",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/docs/module-4/motion-planning-algorithms.md",
+  "tags": [],
+  "version": "current",
+  "sidebarPosition": 3,
+  "frontMatter": {
+    "title": "Motion Planning Algorithms",
+    "description": "Graph-based and sampling-based motion planning algorithms including BFS, Dijkstra, A*, RRT, RRT*, and PRM",
+    "sidebar_position": 3
+  }
+}

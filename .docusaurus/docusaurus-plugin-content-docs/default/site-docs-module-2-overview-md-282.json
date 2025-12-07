@@ -1,0 +1,29 @@
+{
+  "id": "module-2/overview",
+  "title": "Overview of Perception & Computer Vision",
+  "description": "Introduction to robotic perception and computer vision fundamentals",
+  "source": "@site/docs/module-2/overview.md",
+  "sourceDirName": "module-2",
+  "slug": "/module-2/overview",
+  "permalink": "/docs/module-2/overview",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/docs/module-2/overview.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {
+    "title": "Overview of Perception & Computer Vision",
+    "sidebar_label": "Overview",
+    "description": "Introduction to robotic perception and computer vision fundamentals",
+    "slug": "/module-2/overview"
+  },
+  "sidebar": "docs",
+  "previous": {
+    "title": "Summary",
+    "permalink": "/docs/module-1/summary"
+  },
+  "next": {
+    "title": "Module 2: Robotic Nervous System (ROS2) - Core Concepts",
+    "permalink": "/docs/module-2/core-concepts"
+  }
+}

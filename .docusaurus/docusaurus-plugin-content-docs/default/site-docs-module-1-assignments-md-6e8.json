@@ -1,0 +1,27 @@
+{
+  "id": "module-1/assignments",
+  "title": "ROS2 Assignments",
+  "description": "This section contains assignments organized by difficulty level: beginner, intermediate, and advanced. Each assignment includes expected output or validation checkpoints.",
+  "source": "@site/docs/module-1/assignments.md",
+  "sourceDirName": "module-1",
+  "slug": "/module-1/assignments",
+  "permalink": "/docs/module-1/assignments",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/docs/module-1/assignments.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {
+    "title": "ROS2 Assignments",
+    "sidebar_label": "Assignments"
+  },
+  "sidebar": "docs",
+  "previous": {
+    "title": "Module 1: Perception & Computer Vision - Algorithms",
+    "permalink": "/docs/module-1/algorithms"
+  },
+  "next": {
+    "title": "Summary",
+    "permalink": "/docs/module-1/summary"
+  }
+}

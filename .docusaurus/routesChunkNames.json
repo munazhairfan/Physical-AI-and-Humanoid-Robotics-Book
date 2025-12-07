@@ -1,0 +1,357 @@
+{
+  "/__docusaurus/debug-5ff": {
+    "__comp": "__comp---theme-debug-config-23-a-2ff",
+    "__context": {
+      "plugin": "plugin---docusaurus-debugb-38-ad3"
+    }
+  },
+  "/__docusaurus/debug/config-5ba": {
+    "__comp": "__comp---theme-debug-config-23-a-2ff",
+    "__context": {
+      "plugin": "plugin---docusaurus-debugb-38-ad3"
+    }
+  },
+  "/__docusaurus/debug/content-a2b": {
+    "__comp": "__comp---theme-debug-contentba-8-ce7",
+    "__context": {
+      "plugin": "plugin---docusaurus-debugb-38-ad3"
+    },
+    "__props": "__props---docusaurus-debug-content-3-c-0-be2"
+  },
+  "/__docusaurus/debug/globalData-c3c": {
+    "__comp": "__comp---theme-debug-global-dataede-0fa",
+    "__context": {
+      "plugin": "plugin---docusaurus-debugb-38-ad3"
+    }
+  },
+  "/__docusaurus/debug/metadata-156": {
+    "__comp": "__comp---theme-debug-site-metadata-68-e-3d4",
+    "__context": {
+      "plugin": "plugin---docusaurus-debugb-38-ad3"
+    }
+  },
+  "/__docusaurus/debug/registry-88c": {
+    "__comp": "__comp---theme-debug-registry-679-501",
+    "__context": {
+      "plugin": "plugin---docusaurus-debugb-38-ad3"
+    }
+  },
+  "/__docusaurus/debug/routes-000": {
+    "__comp": "__comp---theme-debug-routes-946-699",
+    "__context": {
+      "plugin": "plugin---docusaurus-debugb-38-ad3"
+    }
+  },
+  "/docs-905": {
+    "__comp": "__comp---theme-docs-root-5-e-9-0b6",
+    "__context": {
+      "plugin": "plugin---docsaba-d7c"
+    }
+  },
+  "/docs-8e0": {
+    "__comp": "__comp---theme-doc-version-roota-7-b-5de",
+    "__props": "__props---docs-005-788"
+  },
+  "/docs-575": {
+    "__comp": "__comp---theme-doc-roota-94-67a"
+  },
+  "/docs/appendix/glossary-96f": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-appendix-glossary-888-494"
+  },
+  "/docs/appendix/references-589": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-appendix-references-2-e-8-0cd"
+  },
+  "/docs/intro/how-to-use-605": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-intro-how-to-use-78-e-852"
+  },
+  "/docs/intro/preface-4ab": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-intro-preface-47-f-f30"
+  },
+  "/docs/module-1/algorithms-315": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-module-1-algorithms-86-a-220"
+  },
+  "/docs/module-1/architecture-851": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-module-1-architectureb-6-c-6ca"
+  },
+  "/docs/module-1/assignments-d00": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-module-1-assignments-6-e-8-176"
+  },
+  "/docs/module-1/core-concepts-d54": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-module-1-core-concepts-284-c05"
+  },
+  "/docs/module-1/diagrams/action-workflow-623": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-module-1-diagrams-action-workflow-0-a-4-491"
+  },
+  "/docs/module-1/diagrams/multi-robot-comm-c74": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-module-1-diagrams-multi-robot-comm-11-f-2b5"
+  },
+  "/docs/module-1/diagrams/service-handshake-53f": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-module-1-diagrams-service-handshakef-7-a-2ed"
+  },
+  "/docs/module-1/diagrams/topic-flow-0cf": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-module-1-diagrams-topic-flow-0-d-5-230"
+  },
+  "/docs/module-1/examples/launch-files-1c6": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-module-1-examples-launch-files-6-bf-6c9"
+  },
+  "/docs/module-1/examples/publisher-subscriber-d2a": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-module-1-examples-publisher-subscriber-513-f89"
+  },
+  "/docs/module-1/examples/services-actions-6b2": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-module-1-examples-services-actions-2-ba-32c"
+  },
+  "/docs/module-1/overview-9ef": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-module-1-overview-666-d9a"
+  },
+  "/docs/module-1/summary-fd4": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-module-1-summaryd-8-e-57a"
+  },
+  "/docs/module-2/architecture-4ea": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-module-2-architecture-372-840"
+  },
+  "/docs/module-2/assignments-f8e": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-module-2-assignments-306-e25"
+  },
+  "/docs/module-2/core-concepts-843": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-module-2-core-conceptse-56-775"
+  },
+  "/docs/module-2/deep-vision-ec9": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-module-2-deep-vision-2-fa-626"
+  },
+  "/docs/module-2/examples/camera-stream-3b7": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-module-2-examples-camera-streamee-9-c5a"
+  },
+  "/docs/module-2/examples/image-filtering-4eb": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-module-2-examples-image-filteringb-61-d48"
+  },
+  "/docs/module-2/examples/object-detection-e76": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-module-2-examples-object-detection-45-a-c7f"
+  },
+  "/docs/module-2/fundamentals-0bc": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-module-2-fundamentals-87-b-a07"
+  },
+  "/docs/module-2/image-processing-164": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-module-2-image-processing-29-d-362"
+  },
+  "/docs/module-2/mermaid-setup-a57": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-module-2-mermaid-setup-1-cd-168"
+  },
+  "/docs/module-2/nodes-topics-services-ea0": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-module-2-nodes-topics-servicesbc-1-77d"
+  },
+  "/docs/module-2/overview-9e1": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-module-2-overview-282-50d"
+  },
+  "/docs/module-2/qos-dds-e63": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-module-2-qos-dds-4-f-9-3aa"
+  },
+  "/docs/module-2/sensors-9d3": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-module-2-sensors-9-fa-fed"
+  },
+  "/docs/module-2/setup-ros2-60f": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-module-2-setup-ros-260-b-848"
+  },
+  "/docs/module-2/summary-b0c": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-module-2-summaryf-96-b7e"
+  },
+  "/docs/module-2/validation-tools-0fa": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-module-2-validation-tools-6-d-2-e15"
+  },
+  "/docs/module-3/assignments-9fc": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-module-3-assignments-294-d07"
+  },
+  "/docs/module-3/core-concepts-0bc": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-module-3-core-conceptsf-8-b-289"
+  },
+  "/docs/module-3/examples/camera-lidar-fusion-e8f": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-module-3-examples-camera-lidar-fusion-318-98d"
+  },
+  "/docs/module-3/examples/object-detection-075": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-module-3-examples-object-detectionbf-7-52c"
+  },
+  "/docs/module-3/examples/sensor-calibration-d2f": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-module-3-examples-sensor-calibration-10-a-8d6"
+  },
+  "/docs/module-3/fusion-techniques-bc7": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-module-3-fusion-techniquesb-7-e-297"
+  },
+  "/docs/module-3/overview-f1d": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-module-3-overview-0-ae-ec0"
+  },
+  "/docs/module-3/perception-algorithms-728": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-module-3-perception-algorithms-323-689"
+  },
+  "/docs/module-3/sensors-40e": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-module-3-sensors-2-af-cb3"
+  },
+  "/docs/module-3/summary-825": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-module-3-summary-932-fce"
+  },
+  "/docs/module-4/advanced-techniques-c36": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-module-4-advanced-techniques-021-e70"
+  },
+  "/docs/module-4/assignments-b0f": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-module-4-assignments-273-e31"
+  },
+  "/docs/module-4/control-integration-519": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-module-4-control-integration-6-bc-c13"
+  },
+  "/docs/module-4/control-systems-1d9": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-module-4-control-systemsce-0-f42"
+  },
+  "/docs/module-4/kinematics-da8": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-module-4-kinematics-3-f-1-523"
+  },
+  "/docs/module-4/motion-planning-algorithms-e5a": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-module-4-motion-planning-algorithms-949-2e8"
+  },
+  "/docs/module-4/overview-859": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-module-4-overview-52-d-510"
+  },
+  "/docs/module-4/rl-basics-003": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-module-4-rl-basics-0-a-8-570"
+  },
+  "/docs/module-4/summary-edb": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-module-4-summary-236-bab"
+  },
+  "/docs/module-4/trajectory-generation-6a2": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-module-4-trajectory-generationd-1-a-9e5"
+  },
+  "/docs/rag-chatbot/api-56c": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-rag-chatbot-api-915-830"
+  },
+  "/docs/rag-chatbot/architecture-9e4": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-rag-chatbot-architecture-1-a-5-266"
+  },
+  "/docs/rag-chatbot/database-neon-d31": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-rag-chatbot-database-neondc-0-d48"
+  },
+  "/docs/rag-chatbot/deployment-e26": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-rag-chatbot-deployment-5-bf-ecf"
+  },
+  "/docs/rag-chatbot/diagrams/backend-endpoints-ad0": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-rag-chatbot-diagrams-backend-endpointsc-2-a-69e"
+  },
+  "/docs/rag-chatbot/diagrams/data-flow-83f": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-rag-chatbot-diagrams-data-flow-301-f66"
+  },
+  "/docs/rag-chatbot/diagrams/frontend-component-interaction-46d": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-rag-chatbot-diagrams-frontend-component-interaction-04-e-e7e"
+  },
+  "/docs/rag-chatbot/diagrams/overall-architecture-12a": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-rag-chatbot-diagrams-overall-architecture-5-ee-b61"
+  },
+  "/docs/rag-chatbot/embedding-c1a": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-rag-chatbot-embeddinge-8-f-d20"
+  },
+  "/docs/rag-chatbot/examples/backend-setup-ffb": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-rag-chatbot-examples-backend-setup-3-bd-cac"
+  },
+  "/docs/rag-chatbot/examples/chat-interface-6f0": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-rag-chatbot-examples-chat-interface-2-cb-c87"
+  },
+  "/docs/rag-chatbot/examples/embed-document-b88": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-rag-chatbot-examples-embed-documentdd-4-942"
+  },
+  "/docs/rag-chatbot/examples/query-vectorstore-b0e": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-rag-chatbot-examples-query-vectorstore-70-f-4f1"
+  },
+  "/docs/rag-chatbot/examples/selected-text-capture-144": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-rag-chatbot-examples-selected-text-captureea-7-c48"
+  },
+  "/docs/rag-chatbot/mcp-integration-d57": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-rag-chatbot-mcp-integrationd-27-eb8"
+  },
+  "/docs/rag-chatbot/overview-7f0": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-rag-chatbot-overviewc-1-f-63d"
+  },
+  "/docs/rag-chatbot/summary-00f": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-rag-chatbot-summaryb-40-cac"
+  },
+  "/docs/rag-chatbot/ui-integration-83b": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-rag-chatbot-ui-integration-2-a-3-278"
+  },
+  "/docs/rag-chatbot/vectorstore-qdrant-a0f": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-rag-chatbot-vectorstore-qdrantb-9-d-c5b"
+  },
+  "/-2e1": {
+    "__comp": "__comp---site-src-pages-index-jsc-4-f-f99",
+    "__context": {
+      "plugin": "plugin---a-74-9d6"
+    },
+    "config": "config---5-e-9-4f3"
+  }
+}

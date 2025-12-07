@@ -1,0 +1,18 @@
+{
+  "id": "rag-chatbot/diagrams/backend-endpoints",
+  "title": "Backend API Endpoints Diagram",
+  "description": "API Endpoints Description",
+  "source": "@site/docs/rag-chatbot/diagrams/backend-endpoints.md",
+  "sourceDirName": "rag-chatbot/diagrams",
+  "slug": "/rag-chatbot/diagrams/backend-endpoints",
+  "permalink": "/docs/rag-chatbot/diagrams/backend-endpoints",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/docs/rag-chatbot/diagrams/backend-endpoints.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {
+    "title": "Backend API Endpoints Diagram",
+    "sidebar_label": "Backend Endpoints"
+  }
+}

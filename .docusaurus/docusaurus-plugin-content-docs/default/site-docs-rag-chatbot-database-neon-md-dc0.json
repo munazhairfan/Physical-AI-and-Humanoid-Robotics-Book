@@ -1,0 +1,18 @@
+{
+  "id": "rag-chatbot/database-neon",
+  "title": "Setting up Neon Postgres Database",
+  "description": "Overview",
+  "source": "@site/docs/rag-chatbot/database-neon.md",
+  "sourceDirName": "rag-chatbot",
+  "slug": "/rag-chatbot/database-neon",
+  "permalink": "/docs/rag-chatbot/database-neon",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/docs/rag-chatbot/database-neon.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {
+    "title": "Setting up Neon Postgres Database",
+    "sidebar_label": "Neon Setup"
+  }
+}

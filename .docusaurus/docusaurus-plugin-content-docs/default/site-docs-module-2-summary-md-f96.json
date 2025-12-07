@@ -1,0 +1,29 @@
+{
+  "id": "module-2/summary",
+  "title": "Summary and Next Steps",
+  "description": "Summary of the Perception & Computer Vision module and connections to broader robotics curriculum",
+  "source": "@site/docs/module-2/summary.md",
+  "sourceDirName": "module-2",
+  "slug": "/module-2/summary",
+  "permalink": "/docs/module-2/summary",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/docs/module-2/summary.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {
+    "title": "Summary and Next Steps",
+    "sidebar_label": "Summary",
+    "description": "Summary of the Perception & Computer Vision module and connections to broader robotics curriculum",
+    "slug": "/module-2/summary"
+  },
+  "sidebar": "docs",
+  "previous": {
+    "title": "Assignments",
+    "permalink": "/docs/module-2/assignments"
+  },
+  "next": {
+    "title": "Overview",
+    "permalink": "/docs/module-3/overview"
+  }
+}

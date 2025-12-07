@@ -1,0 +1,37 @@
+{
+  "id": "module-1/core-concepts",
+  "title": "Module 1: Perception & Computer Vision - Core Concepts",
+  "description": "Core concepts in perception and computer vision for robotics",
+  "source": "@site/docs/module-1/core-concepts.md",
+  "sourceDirName": "module-1",
+  "slug": "/module-1/core-concepts",
+  "permalink": "/docs/module-1/core-concepts",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/docs/module-1/core-concepts.md",
+  "tags": [],
+  "version": "current",
+  "sidebarPosition": 2,
+  "frontMatter": {
+    "title": "Module 1: Perception & Computer Vision - Core Concepts",
+    "description": "Core concepts in perception and computer vision for robotics",
+    "sidebar_position": 2,
+    "slug": "/module-1/core-concepts",
+    "keywords": [
+      "robotics",
+      "perception",
+      "computer vision",
+      "core concepts",
+      "image processing"
+    ]
+  },
+  "sidebar": "docs",
+  "previous": {
+    "title": "Module 1: Perception & Computer Vision - Overview",
+    "permalink": "/docs/module-1/overview"
+  },
+  "next": {
+    "title": "Module 1: Perception & Computer Vision - Architecture",
+    "permalink": "/docs/module-1/architecture"
+  }
+}

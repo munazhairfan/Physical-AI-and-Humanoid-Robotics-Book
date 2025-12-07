@@ -1,0 +1,28 @@
+{
+  "id": "module-3/core-concepts",
+  "title": "Core Concepts in AI Perception",
+  "description": "Fundamental principles of AI-based perception in robotics",
+  "source": "@site/docs/module-3/core-concepts.md",
+  "sourceDirName": "module-3",
+  "slug": "/module-3/core-concepts",
+  "permalink": "/docs/module-3/core-concepts",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/docs/module-3/core-concepts.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {
+    "title": "Core Concepts in AI Perception",
+    "description": "Fundamental principles of AI-based perception in robotics",
+    "sidebar_label": "Core Concepts"
+  },
+  "sidebar": "docs",
+  "previous": {
+    "title": "Overview",
+    "permalink": "/docs/module-3/overview"
+  },
+  "next": {
+    "title": "Sensors",
+    "permalink": "/docs/module-3/sensors"
+  }
+}

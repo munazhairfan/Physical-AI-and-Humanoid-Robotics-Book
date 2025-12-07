@@ -1,0 +1,39 @@
+{
+  "id": "rag-chatbot/ui-integration",
+  "title": "RAG Chatbot: UI Integration",
+  "description": "User interface integration for RAG-based chatbot in robotics education",
+  "source": "@site/docs/rag-chatbot/ui-integration.md",
+  "sourceDirName": "rag-chatbot",
+  "slug": "/rag-chatbot/ui-integration",
+  "permalink": "/docs/rag-chatbot/ui-integration",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/docs/rag-chatbot/ui-integration.md",
+  "tags": [],
+  "version": "current",
+  "sidebarPosition": 3,
+  "frontMatter": {
+    "title": "RAG Chatbot: UI Integration",
+    "description": "User interface integration for RAG-based chatbot in robotics education",
+    "sidebar_position": 3,
+    "slug": "/rag-chatbot/ui-integration",
+    "keywords": [
+      "RAG",
+      "chatbot",
+      "UI",
+      "React",
+      "Docusaurus",
+      "robotics",
+      "education"
+    ]
+  },
+  "sidebar": "docs",
+  "previous": {
+    "title": "RAG Chatbot: API",
+    "permalink": "/docs/rag-chatbot/api"
+  },
+  "next": {
+    "title": "RAG Chatbot: Deployment",
+    "permalink": "/docs/rag-chatbot/deployment"
+  }
+}

@@ -1,0 +1,37 @@
+{
+  "id": "appendix/glossary",
+  "title": "Glossary",
+  "description": "Comprehensive glossary of terms used in Physical AI & Humanoid Robotics",
+  "source": "@site/docs/appendix/glossary.md",
+  "sourceDirName": "appendix",
+  "slug": "/appendix/glossary",
+  "permalink": "/docs/appendix/glossary",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/docs/appendix/glossary.md",
+  "tags": [],
+  "version": "current",
+  "sidebarPosition": 1,
+  "frontMatter": {
+    "title": "Glossary",
+    "description": "Comprehensive glossary of terms used in Physical AI & Humanoid Robotics",
+    "sidebar_position": 1,
+    "slug": "/appendix/glossary",
+    "keywords": [
+      "glossary",
+      "robotics",
+      "AI",
+      "terminology",
+      "definitions"
+    ]
+  },
+  "sidebar": "docs",
+  "previous": {
+    "title": "RAG Chatbot: Deployment",
+    "permalink": "/docs/rag-chatbot/deployment"
+  },
+  "next": {
+    "title": "References",
+    "permalink": "/docs/appendix/references"
+  }
+}

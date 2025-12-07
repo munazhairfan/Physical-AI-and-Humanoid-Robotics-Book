@@ -1,0 +1,20 @@
+{
+  "id": "module-2/fundamentals",
+  "title": "Fundamentals of Robotic Perception",
+  "description": "Mathematical foundations and theory of robotic perception",
+  "source": "@site/docs/module-2/fundamentals.md",
+  "sourceDirName": "module-2",
+  "slug": "/module-2/fundamentals",
+  "permalink": "/docs/module-2/fundamentals",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/docs/module-2/fundamentals.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {
+    "title": "Fundamentals of Robotic Perception",
+    "sidebar_label": "Fundamentals",
+    "description": "Mathematical foundations and theory of robotic perception",
+    "slug": "/module-2/fundamentals"
+  }
+}

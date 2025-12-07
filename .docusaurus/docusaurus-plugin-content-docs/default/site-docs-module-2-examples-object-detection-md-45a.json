@@ -1,0 +1,20 @@
+{
+  "id": "module-2/examples/object-detection",
+  "title": "Object Detection Workflows",
+  "description": "Using pre-trained models for object detection in robotic applications",
+  "source": "@site/docs/module-2/examples/object-detection.md",
+  "sourceDirName": "module-2/examples",
+  "slug": "/module-2/examples/object-detection",
+  "permalink": "/docs/module-2/examples/object-detection",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/docs/module-2/examples/object-detection.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {
+    "title": "Object Detection Workflows",
+    "sidebar_label": "Object Detection",
+    "description": "Using pre-trained models for object detection in robotic applications",
+    "slug": "/module-2/examples/object-detection"
+  }
+}

@@ -1,0 +1,354 @@
+{
+  "docusaurus-plugin-content-docs": {
+    "default": {
+      "path": "/docs",
+      "versions": [
+        {
+          "name": "current",
+          "label": "Next",
+          "isLast": true,
+          "path": "/docs",
+          "mainDocId": "intro/preface",
+          "docs": [
+            {
+              "id": "appendix/glossary",
+              "path": "/docs/appendix/glossary",
+              "sidebar": "docs"
+            },
+            {
+              "id": "appendix/references",
+              "path": "/docs/appendix/references",
+              "sidebar": "docs"
+            },
+            {
+              "id": "intro/how-to-use",
+              "path": "/docs/intro/how-to-use",
+              "sidebar": "docs"
+            },
+            {
+              "id": "intro/preface",
+              "path": "/docs/intro/preface",
+              "sidebar": "docs"
+            },
+            {
+              "id": "module-1/algorithms",
+              "path": "/docs/module-1/algorithms",
+              "sidebar": "docs"
+            },
+            {
+              "id": "module-1/architecture",
+              "path": "/docs/module-1/architecture",
+              "sidebar": "docs"
+            },
+            {
+              "id": "module-1/assignments",
+              "path": "/docs/module-1/assignments",
+              "sidebar": "docs"
+            },
+            {
+              "id": "module-1/core-concepts",
+              "path": "/docs/module-1/core-concepts",
+              "sidebar": "docs"
+            },
+            {
+              "id": "module-1/diagrams/action-workflow",
+              "path": "/docs/module-1/diagrams/action-workflow"
+            },
+            {
+              "id": "module-1/diagrams/multi-robot-comm",
+              "path": "/docs/module-1/diagrams/multi-robot-comm"
+            },
+            {
+              "id": "module-1/diagrams/service-handshake",
+              "path": "/docs/module-1/diagrams/service-handshake"
+            },
+            {
+              "id": "module-1/diagrams/topic-flow",
+              "path": "/docs/module-1/diagrams/topic-flow"
+            },
+            {
+              "id": "module-1/examples/launch-files",
+              "path": "/docs/module-1/examples/launch-files"
+            },
+            {
+              "id": "module-1/examples/publisher-subscriber",
+              "path": "/docs/module-1/examples/publisher-subscriber"
+            },
+            {
+              "id": "module-1/examples/services-actions",
+              "path": "/docs/module-1/examples/services-actions"
+            },
+            {
+              "id": "module-1/overview",
+              "path": "/docs/module-1/overview",
+              "sidebar": "docs"
+            },
+            {
+              "id": "module-1/summary",
+              "path": "/docs/module-1/summary",
+              "sidebar": "docs"
+            },
+            {
+              "id": "module-2/architecture",
+              "path": "/docs/module-2/architecture",
+              "sidebar": "docs"
+            },
+            {
+              "id": "module-2/assignments",
+              "path": "/docs/module-2/assignments",
+              "sidebar": "docs"
+            },
+            {
+              "id": "module-2/core-concepts",
+              "path": "/docs/module-2/core-concepts",
+              "sidebar": "docs"
+            },
+            {
+              "id": "module-2/deep-vision",
+              "path": "/docs/module-2/deep-vision"
+            },
+            {
+              "id": "module-2/examples/camera-stream",
+              "path": "/docs/module-2/examples/camera-stream"
+            },
+            {
+              "id": "module-2/examples/image-filtering",
+              "path": "/docs/module-2/examples/image-filtering"
+            },
+            {
+              "id": "module-2/examples/object-detection",
+              "path": "/docs/module-2/examples/object-detection"
+            },
+            {
+              "id": "module-2/fundamentals",
+              "path": "/docs/module-2/fundamentals"
+            },
+            {
+              "id": "module-2/image-processing",
+              "path": "/docs/module-2/image-processing"
+            },
+            {
+              "id": "module-2/mermaid-setup",
+              "path": "/docs/module-2/mermaid-setup"
+            },
+            {
+              "id": "module-2/nodes-topics-services",
+              "path": "/docs/module-2/nodes-topics-services",
+              "sidebar": "docs"
+            },
+            {
+              "id": "module-2/overview",
+              "path": "/docs/module-2/overview",
+              "sidebar": "docs"
+            },
+            {
+              "id": "module-2/qos-dds",
+              "path": "/docs/module-2/qos-dds",
+              "sidebar": "docs"
+            },
+            {
+              "id": "module-2/sensors",
+              "path": "/docs/module-2/sensors"
+            },
+            {
+              "id": "module-2/setup-ros2",
+              "path": "/docs/module-2/setup-ros2"
+            },
+            {
+              "id": "module-2/summary",
+              "path": "/docs/module-2/summary",
+              "sidebar": "docs"
+            },
+            {
+              "id": "module-2/validation-tools",
+              "path": "/docs/module-2/validation-tools"
+            },
+            {
+              "id": "module-3/assignments",
+              "path": "/docs/module-3/assignments",
+              "sidebar": "docs"
+            },
+            {
+              "id": "module-3/core-concepts",
+              "path": "/docs/module-3/core-concepts",
+              "sidebar": "docs"
+            },
+            {
+              "id": "module-3/examples/camera-lidar-fusion",
+              "path": "/docs/module-3/examples/camera-lidar-fusion"
+            },
+            {
+              "id": "module-3/examples/object-detection",
+              "path": "/docs/module-3/examples/object-detection"
+            },
+            {
+              "id": "module-3/examples/sensor-calibration",
+              "path": "/docs/module-3/examples/sensor-calibration"
+            },
+            {
+              "id": "module-3/fusion-techniques",
+              "path": "/docs/module-3/fusion-techniques",
+              "sidebar": "docs"
+            },
+            {
+              "id": "module-3/overview",
+              "path": "/docs/module-3/overview",
+              "sidebar": "docs"
+            },
+            {
+              "id": "module-3/perception-algorithms",
+              "path": "/docs/module-3/perception-algorithms",
+              "sidebar": "docs"
+            },
+            {
+              "id": "module-3/sensors",
+              "path": "/docs/module-3/sensors",
+              "sidebar": "docs"
+            },
+            {
+              "id": "module-3/summary",
+              "path": "/docs/module-3/summary",
+              "sidebar": "docs"
+            },
+            {
+              "id": "module-4/advanced-techniques",
+              "path": "/docs/module-4/advanced-techniques",
+              "sidebar": "docs"
+            },
+            {
+              "id": "module-4/assignments",
+              "path": "/docs/module-4/assignments",
+              "sidebar": "docs"
+            },
+            {
+              "id": "module-4/control-integration",
+              "path": "/docs/module-4/control-integration",
+              "sidebar": "docs"
+            },
+            {
+              "id": "module-4/control-systems",
+              "path": "/docs/module-4/control-systems"
+            },
+            {
+              "id": "module-4/kinematics",
+              "path": "/docs/module-4/kinematics"
+            },
+            {
+              "id": "module-4/motion-planning-algorithms",
+              "path": "/docs/module-4/motion-planning-algorithms"
+            },
+            {
+              "id": "module-4/overview",
+              "path": "/docs/module-4/overview",
+              "sidebar": "docs"
+            },
+            {
+              "id": "module-4/rl-basics",
+              "path": "/docs/module-4/rl-basics",
+              "sidebar": "docs"
+            },
+            {
+              "id": "module-4/summary",
+              "path": "/docs/module-4/summary",
+              "sidebar": "docs"
+            },
+            {
+              "id": "module-4/trajectory-generation",
+              "path": "/docs/module-4/trajectory-generation"
+            },
+            {
+              "id": "rag-chatbot/api",
+              "path": "/docs/rag-chatbot/api",
+              "sidebar": "docs"
+            },
+            {
+              "id": "rag-chatbot/architecture",
+              "path": "/docs/rag-chatbot/architecture"
+            },
+            {
+              "id": "rag-chatbot/database-neon",
+              "path": "/docs/rag-chatbot/database-neon"
+            },
+            {
+              "id": "rag-chatbot/deployment",
+              "path": "/docs/rag-chatbot/deployment",
+              "sidebar": "docs"
+            },
+            {
+              "id": "rag-chatbot/diagrams/backend-endpoints",
+              "path": "/docs/rag-chatbot/diagrams/backend-endpoints"
+            },
+            {
+              "id": "rag-chatbot/diagrams/data-flow",
+              "path": "/docs/rag-chatbot/diagrams/data-flow"
+            },
+            {
+              "id": "rag-chatbot/diagrams/frontend-component-interaction",
+              "path": "/docs/rag-chatbot/diagrams/frontend-component-interaction"
+            },
+            {
+              "id": "rag-chatbot/diagrams/overall-architecture",
+              "path": "/docs/rag-chatbot/diagrams/overall-architecture"
+            },
+            {
+              "id": "rag-chatbot/embedding",
+              "path": "/docs/rag-chatbot/embedding",
+              "sidebar": "docs"
+            },
+            {
+              "id": "rag-chatbot/examples/backend-setup",
+              "path": "/docs/rag-chatbot/examples/backend-setup"
+            },
+            {
+              "id": "rag-chatbot/examples/chat-interface",
+              "path": "/docs/rag-chatbot/examples/chat-interface"
+            },
+            {
+              "id": "rag-chatbot/examples/embed-document",
+              "path": "/docs/rag-chatbot/examples/embed-document"
+            },
+            {
+              "id": "rag-chatbot/examples/query-vectorstore",
+              "path": "/docs/rag-chatbot/examples/query-vectorstore"
+            },
+            {
+              "id": "rag-chatbot/examples/selected-text-capture",
+              "path": "/docs/rag-chatbot/examples/selected-text-capture"
+            },
+            {
+              "id": "rag-chatbot/mcp-integration",
+              "path": "/docs/rag-chatbot/mcp-integration"
+            },
+            {
+              "id": "rag-chatbot/overview",
+              "path": "/docs/rag-chatbot/overview"
+            },
+            {
+              "id": "rag-chatbot/summary",
+              "path": "/docs/rag-chatbot/summary"
+            },
+            {
+              "id": "rag-chatbot/ui-integration",
+              "path": "/docs/rag-chatbot/ui-integration",
+              "sidebar": "docs"
+            },
+            {
+              "id": "rag-chatbot/vectorstore-qdrant",
+              "path": "/docs/rag-chatbot/vectorstore-qdrant"
+            }
+          ],
+          "draftIds": [],
+          "sidebars": {
+            "docs": {
+              "link": {
+                "path": "/docs/intro/preface",
+                "label": "intro/preface"
+              }
+            }
+          }
+        }
+      ],
+      "breadcrumbs": true
+    }
+  }
+}

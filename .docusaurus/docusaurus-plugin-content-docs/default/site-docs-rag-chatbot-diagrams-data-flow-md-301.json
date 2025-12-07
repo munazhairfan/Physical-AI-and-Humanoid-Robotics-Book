@@ -1,0 +1,18 @@
+{
+  "id": "rag-chatbot/diagrams/data-flow",
+  "title": "Detailed Data Flow Diagram",
+  "description": "Standard Query Flow",
+  "source": "@site/docs/rag-chatbot/diagrams/data-flow.md",
+  "sourceDirName": "rag-chatbot/diagrams",
+  "slug": "/rag-chatbot/diagrams/data-flow",
+  "permalink": "/docs/rag-chatbot/diagrams/data-flow",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/docs/rag-chatbot/diagrams/data-flow.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {
+    "title": "Detailed Data Flow Diagram",
+    "sidebar_label": "Data Flow"
+  }
+}

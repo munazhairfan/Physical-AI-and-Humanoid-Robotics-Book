@@ -1,0 +1,18 @@
+{
+  "id": "rag-chatbot/examples/chat-interface",
+  "title": "Chat Interface Example",
+  "description": "This example demonstrates how to implement and use the chat interface with the RAG Chatbot, including conversation history, context retrieval, and response generation.",
+  "source": "@site/docs/rag-chatbot/examples/chat-interface.md",
+  "sourceDirName": "rag-chatbot/examples",
+  "slug": "/rag-chatbot/examples/chat-interface",
+  "permalink": "/docs/rag-chatbot/examples/chat-interface",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/docs/rag-chatbot/examples/chat-interface.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {
+    "title": "Chat Interface Example",
+    "sidebar_label": "Chat Interface"
+  }
+}

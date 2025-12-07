@@ -1,0 +1,18 @@
+{
+  "id": "rag-chatbot/examples/selected-text-capture",
+  "title": "Selected Text Capture Example",
+  "description": "This example demonstrates how to capture user-selected text and send it to the RAG Chatbot backend for processing, allowing the chatbot to respond based only on the selected text.",
+  "source": "@site/docs/rag-chatbot/examples/selected-text-capture.md",
+  "sourceDirName": "rag-chatbot/examples",
+  "slug": "/rag-chatbot/examples/selected-text-capture",
+  "permalink": "/docs/rag-chatbot/examples/selected-text-capture",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/docs/rag-chatbot/examples/selected-text-capture.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {
+    "title": "Selected Text Capture Example",
+    "sidebar_label": "Selected Text Capture"
+  }
+}

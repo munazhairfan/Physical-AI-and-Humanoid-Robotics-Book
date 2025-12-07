@@ -1,0 +1,27 @@
+{
+  "id": "module-1/summary",
+  "title": "ROS2 Module Summary",
+  "description": "Overview",
+  "source": "@site/docs/module-1/summary.md",
+  "sourceDirName": "module-1",
+  "slug": "/module-1/summary",
+  "permalink": "/docs/module-1/summary",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/docs/module-1/summary.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {
+    "title": "ROS2 Module Summary",
+    "sidebar_label": "Summary"
+  },
+  "sidebar": "docs",
+  "previous": {
+    "title": "Assignments",
+    "permalink": "/docs/module-1/assignments"
+  },
+  "next": {
+    "title": "Overview",
+    "permalink": "/docs/module-2/overview"
+  }
+}

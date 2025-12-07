@@ -1,0 +1,28 @@
+{
+  "id": "module-3/assignments",
+  "title": "Module 3 Assignments",
+  "description": "Practical exercises for AI Perception & Sensor Fusion",
+  "source": "@site/docs/module-3/assignments.md",
+  "sourceDirName": "module-3",
+  "slug": "/module-3/assignments",
+  "permalink": "/docs/module-3/assignments",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/docs/module-3/assignments.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {
+    "title": "Module 3 Assignments",
+    "description": "Practical exercises for AI Perception & Sensor Fusion",
+    "sidebar_label": "Assignments"
+  },
+  "sidebar": "docs",
+  "previous": {
+    "title": "Fusion Techniques",
+    "permalink": "/docs/module-3/fusion-techniques"
+  },
+  "next": {
+    "title": "Summary",
+    "permalink": "/docs/module-3/summary"
+  }
+}

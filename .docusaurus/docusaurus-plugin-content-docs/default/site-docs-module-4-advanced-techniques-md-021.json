@@ -1,0 +1,37 @@
+{
+  "id": "module-4/advanced-techniques",
+  "title": "Module 4: Advanced RL Techniques",
+  "description": "Deep Reinforcement Learning, policy gradients, and actor-critic methods for robotics",
+  "source": "@site/docs/module-4/advanced-techniques.md",
+  "sourceDirName": "module-4",
+  "slug": "/module-4/advanced-techniques",
+  "permalink": "/docs/module-4/advanced-techniques",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/docs/module-4/advanced-techniques.md",
+  "tags": [],
+  "version": "current",
+  "sidebarPosition": 3,
+  "frontMatter": {
+    "title": "Module 4: Advanced RL Techniques",
+    "description": "Deep Reinforcement Learning, policy gradients, and actor-critic methods for robotics",
+    "sidebar_position": 3,
+    "slug": "/module-4/advanced-techniques",
+    "keywords": [
+      "deep RL",
+      "policy gradients",
+      "actor-critic",
+      "robotics",
+      "neural networks"
+    ]
+  },
+  "sidebar": "docs",
+  "previous": {
+    "title": "Module 4: RL Basics",
+    "permalink": "/docs/module-4/rl-basics"
+  },
+  "next": {
+    "title": "Module 4: Control Integration",
+    "permalink": "/docs/module-4/control-integration"
+  }
+}

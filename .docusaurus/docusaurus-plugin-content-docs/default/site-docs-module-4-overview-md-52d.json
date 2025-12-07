@@ -1,0 +1,37 @@
+{
+  "id": "module-4/overview",
+  "title": "Module 4: Reinforcement Learning & Control",
+  "description": "Reinforcement Learning algorithms and control systems for robotics applications",
+  "source": "@site/docs/module-4/overview.md",
+  "sourceDirName": "module-4",
+  "slug": "/module-4/overview",
+  "permalink": "/docs/module-4/overview",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/docs/module-4/overview.md",
+  "tags": [],
+  "version": "current",
+  "sidebarPosition": 1,
+  "frontMatter": {
+    "title": "Module 4: Reinforcement Learning & Control",
+    "description": "Reinforcement Learning algorithms and control systems for robotics applications",
+    "sidebar_position": 1,
+    "slug": "/module-4/overview",
+    "keywords": [
+      "robotics",
+      "reinforcement learning",
+      "control systems",
+      "AI",
+      "machine learning"
+    ]
+  },
+  "sidebar": "docs",
+  "previous": {
+    "title": "Summary",
+    "permalink": "/docs/module-3/summary"
+  },
+  "next": {
+    "title": "Module 4: RL Basics",
+    "permalink": "/docs/module-4/rl-basics"
+  }
+}

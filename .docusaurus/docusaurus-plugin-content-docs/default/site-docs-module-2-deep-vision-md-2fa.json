@@ -1,0 +1,20 @@
+{
+  "id": "module-2/deep-vision",
+  "title": "Deep Vision and Neural Networks",
+  "description": "Deep learning approaches to computer vision for robotic applications",
+  "source": "@site/docs/module-2/deep-vision.md",
+  "sourceDirName": "module-2",
+  "slug": "/module-2/deep-vision",
+  "permalink": "/docs/module-2/deep-vision",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/docs/module-2/deep-vision.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {
+    "title": "Deep Vision and Neural Networks",
+    "sidebar_label": "Deep Vision",
+    "description": "Deep learning approaches to computer vision for robotic applications",
+    "slug": "/module-2/deep-vision"
+  }
+}

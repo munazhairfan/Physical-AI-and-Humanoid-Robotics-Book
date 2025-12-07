@@ -1,0 +1,18 @@
+{
+  "id": "module-1/diagrams/action-workflow",
+  "title": "Action Workflow Diagram",
+  "description": "This diagram illustrates the workflow of ROS2 actions, which are used for long-running tasks that may provide feedback and can be canceled.",
+  "source": "@site/docs/module-1/diagrams/action-workflow.md",
+  "sourceDirName": "module-1/diagrams",
+  "slug": "/module-1/diagrams/action-workflow",
+  "permalink": "/docs/module-1/diagrams/action-workflow",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/docs/module-1/diagrams/action-workflow.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {
+    "title": "Action Workflow Diagram",
+    "sidebar_label": "Action Workflow"
+  }
+}

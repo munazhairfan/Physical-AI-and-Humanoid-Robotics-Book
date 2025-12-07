@@ -1,0 +1,28 @@
+{
+  "id": "module-3/overview",
+  "title": "Module 3: AI Perception & Sensor Fusion",
+  "description": "Introduction to AI-based perception and sensor fusion techniques for robotics",
+  "source": "@site/docs/module-3/overview.md",
+  "sourceDirName": "module-3",
+  "slug": "/module-3/overview",
+  "permalink": "/docs/module-3/overview",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/docs/module-3/overview.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {
+    "title": "Module 3: AI Perception & Sensor Fusion",
+    "description": "Introduction to AI-based perception and sensor fusion techniques for robotics",
+    "sidebar_label": "Overview"
+  },
+  "sidebar": "docs",
+  "previous": {
+    "title": "Summary",
+    "permalink": "/docs/module-2/summary"
+  },
+  "next": {
+    "title": "Core Concepts",
+    "permalink": "/docs/module-3/core-concepts"
+  }
+}

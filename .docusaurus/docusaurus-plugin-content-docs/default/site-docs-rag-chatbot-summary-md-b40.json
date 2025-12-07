@@ -1,0 +1,18 @@
+{
+  "id": "rag-chatbot/summary",
+  "title": "RAG Chatbot Module Summary",
+  "description": "Overview",
+  "source": "@site/docs/rag-chatbot/summary.md",
+  "sourceDirName": "rag-chatbot",
+  "slug": "/rag-chatbot/summary",
+  "permalink": "/docs/rag-chatbot/summary",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/docs/rag-chatbot/summary.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {
+    "title": "RAG Chatbot Module Summary",
+    "sidebar_label": "Summary"
+  }
+}

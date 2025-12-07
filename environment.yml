@@ -1,0 +1,21 @@
+name: perception-vision
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.9
+  - pip
+  - nodejs
+  - npm
+  - git
+  - pip:
+    - opencv-python
+    - torch
+    - torchvision
+    - numpy
+    - matplotlib
+    - pillow
+    - scikit-image
+    - docusaurus
+    - jupyter
+    - pandas

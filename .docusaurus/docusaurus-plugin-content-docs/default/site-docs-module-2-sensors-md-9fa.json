@@ -1,0 +1,20 @@
+{
+  "id": "module-2/sensors",
+  "title": "Sensor Technologies in Robotics",
+  "description": "Overview of different sensor types used in robotic perception",
+  "source": "@site/docs/module-2/sensors.md",
+  "sourceDirName": "module-2",
+  "slug": "/module-2/sensors",
+  "permalink": "/docs/module-2/sensors",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/docs/module-2/sensors.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {
+    "title": "Sensor Technologies in Robotics",
+    "sidebar_label": "Sensors",
+    "description": "Overview of different sensor types used in robotic perception",
+    "slug": "/module-2/sensors"
+  }
+}

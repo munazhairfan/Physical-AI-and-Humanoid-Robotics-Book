@@ -1,0 +1,33 @@
+{
+  "id": "intro/preface",
+  "title": "Preface",
+  "description": "Preface to the Physical AI & Humanoid Robotics textbook",
+  "source": "@site/docs/intro/preface.md",
+  "sourceDirName": "intro",
+  "slug": "/intro/preface",
+  "permalink": "/docs/intro/preface",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/docs/intro/preface.md",
+  "tags": [],
+  "version": "current",
+  "sidebarPosition": 1,
+  "frontMatter": {
+    "title": "Preface",
+    "description": "Preface to the Physical AI & Humanoid Robotics textbook",
+    "sidebar_position": 1,
+    "slug": "/intro/preface",
+    "keywords": [
+      "robotics",
+      "physical-ai",
+      "humanoids",
+      "textbook",
+      "preface"
+    ]
+  },
+  "sidebar": "docs",
+  "next": {
+    "title": "How to Use This Book",
+    "permalink": "/docs/intro/how-to-use"
+  }
+}
