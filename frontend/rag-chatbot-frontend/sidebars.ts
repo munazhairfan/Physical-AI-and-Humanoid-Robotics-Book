@@ -19,17 +19,47 @@ const sidebars: SidebarsConfig = {
     {
       type: 'category',
       label: 'Physical AI Concepts',
-      items: ['physical-ai-intro'],
+      items: [
+        'physical-ai-intro',
+        'chapter1-introduction-physical-ai'
+      ],
     },
     {
       type: 'category',
-      label: 'Humanoid Robotics',
-      items: ['humanoid-robotics'],
+      label: 'Humanoid Robotics Fundamentals',
+      items: [
+        'humanoid-robotics',
+        'chapter2-humanoid-robotics-fundamentals'
+      ],
     },
     {
       type: 'category',
       label: 'Sensors & Perception',
-      items: ['sensor-integration'],
+      items: [
+        'sensor-integration',
+        'chapter3-sensor-integration-perception'
+      ],
+    },
+    {
+      type: 'category',
+      label: 'AI in Robotics',
+      items: [
+        'chapter4-ai-in-humanoid-robotics'
+      ],
+    },
+    {
+      type: 'category',
+      label: 'Applications',
+      items: [
+        'chapter5-applications-humanoid-robots'
+      ],
+    },
+    {
+      type: 'category',
+      label: 'Challenges & Future',
+      items: [
+        'chapter6-challenges-future-directions'
+      ],
     },
   ],
 };
