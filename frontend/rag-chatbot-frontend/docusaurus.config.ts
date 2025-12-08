@@ -14,11 +14,11 @@ const config: Config = {
     v4: true, // Improve compatibility with the upcoming Docusaurus v4
   },
 
-  // Set the production url of your site here (update with your Vercel domain after deployment)
-  url: 'https://physical-ai-and-humanoid-robotics-b-rosy.vercel.app/',
+  // Set the production url of your site here (will be assigned by Vercel after first deployment)
+  url: 'https://your-vercel-project-name.vercel.app',
   // Set the /<baseUrl>/ pathname under which your site is served
-  // For first deployment, you can try '/' for root, or use Vercel's suggested path
-  baseUrl: '/Physical-AI-and-Humanoid-Robotics-Book/',
+  // For Vercel deployment, using root path ('/') is typically best for first deployment
+  baseUrl: '/',
 
   // GitHub pages deployment config - not used for Vercel deployment
   organizationName: 'munazhairfan', // GitHub username/organization
