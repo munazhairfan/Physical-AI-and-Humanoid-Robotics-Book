@@ -1,3 +1,5 @@
+# Backend requirements - main source is in backend/requirements.txt
+# This file kept for compatibility with root-level installation
 fastapi==0.115.0
 uvicorn==0.32.0
 pydantic==2.9.2

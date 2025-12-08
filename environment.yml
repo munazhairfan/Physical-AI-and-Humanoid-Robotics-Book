@@ -3,7 +3,7 @@ channels:
   - conda-forge
   - defaults
 dependencies:
-  - python=3.9
+  - python=3.11  # Updated to match backend requirements
   - pip
   - nodejs
   - npm
@@ -19,3 +19,11 @@ dependencies:
     - docusaurus
     - jupyter
     - pandas
+    # Backend dependencies
+    - fastapi
+    - uvicorn
+    - pydantic
+    - qdrant-client
+    - python-dotenv
+    - python-multipart
+    - google-generativeai
