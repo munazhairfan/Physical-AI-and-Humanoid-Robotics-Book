@@ -4,15 +4,16 @@
 import os
 import sys
 
-# Add the current directory to the Python path
-sys.path.insert(0, '.')
-
-# Import the main FastAPI app
-from app.main import app
-
 def main():
     """Main entry point for Railway deployment"""
+    # Add current directory to Python path
+    sys.path.insert(0, '/app')
+
+    # Import the main FastAPI app after setting the path
     import uvicorn
+
+    # Import the app module - using absolute import
+    from app.main import app
 
     # Get the port from environment variable (required by Railway)
     port = int(os.environ.get("PORT", 8000))
