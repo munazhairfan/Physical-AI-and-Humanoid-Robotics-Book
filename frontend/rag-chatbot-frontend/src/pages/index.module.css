@@ -8,7 +8,7 @@
   text-align: center;
   position: relative;
   overflow: hidden;
-  background: linear-gradient(135deg, #2563eb, #3b82f6);
+  background: linear-gradient(135deg, #1e293b, #334155);
   color: white;
 }
 
@@ -33,7 +33,7 @@
   height: 120px;
   border-radius: 50%;
   object-fit: contain;
-  filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.1));
+  filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.3));
 }
 
 .heroButtons {
@@ -44,8 +44,8 @@
 }
 
 .primaryButton {
-  background-color: white;
-  color: #2563eb;
+  background-color: #3b82f6;
+  color: white;
   border: none;
   padding: 0.75rem 1.5rem;
   border-radius: 0.5rem;
@@ -56,7 +56,7 @@
 }
 
 .primaryButton:hover {
-  background-color: #f3f4f6;
+  background-color: #2563eb;
   transform: translateY(-2px);
   box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
 }
@@ -82,7 +82,7 @@
   border-radius: 0.75rem;
   padding: 2rem;
   text-align: center;
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
   transition: transform 0.3s, box-shadow 0.3s;
   height: 100%;
   display: flex;
@@ -92,7 +92,7 @@
 
 .infoCard:hover {
   transform: translateY(-5px);
-  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
 }
 
 .cardIcon {
@@ -103,42 +103,13 @@
 .infoCard h3 {
   margin-top: 0;
   margin-bottom: 1rem;
-  color: #2563eb;
+  color: #1e293b;
 }
 
-.chatSection {
-  background-color: #f9fafb;
-  padding: 4rem 0;
-  margin: 4rem 0;
-}
-
-.chatContainer {
-  max-width: 900px;
+.container {
+  max-width: 1200px;
   margin: 0 auto;
   padding: 0 1rem;
-}
-
-.chatHeader {
-  text-align: center;
-  margin-bottom: 2rem;
-}
-
-.chatHeader h2 {
-  color: #1f2937;
-  margin-bottom: 0.75rem;
-}
-
-.chatHeader p {
-  color: #6b7280;
-  font-size: 1.1rem;
-}
-
-.chatWidgetContainer {
-  background-color: white;
-  border-radius: 1rem;
-  padding: 1.5rem;
-  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
-  border: 1px solid #e5e7eb;
 }
 
 @media screen and (max-width: 996px) {
@@ -147,18 +118,81 @@
     gap: 0.75rem;
   }
 
-  .chatSection {
-    padding: 2rem 0;
-    margin: 2rem 0;
-  }
-
   .infoCard {
     margin-bottom: 1.5rem;
   }
 }
 
-@media screen and (max-width: 768px) {
-  .chatWidgetContainer {
-    padding: 1rem;
+/* Center content properly */
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0 -0.5rem;
+}
+
+.col {
+  padding: 0 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.col--4 {
+  flex: 0 0 33.333333%;
+  max-width: 33.333333%;
+}
+
+@media (max-width: 996px) {
+  .col--4 {
+    flex: 0 0 100%;
+    max-width: 100%;
+  }
+}
+
+.margin-vert--lg {
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+}
+
+.margin--lg {
+  margin: 2rem;
+}
+
+.text--center {
+  text-align: center;
+}
+
+.text--center img {
+  display: inline-block;
+  margin: 0 auto;
+}
+
+/* Hide any docusaurus branding */
+.docusaurus-mt-lg {
+  margin-top: 2rem;
+}
+
+/* Improve spacing */
+.container.padding-vert--xl {
+  padding-top: 4rem;
+  padding-bottom: 4rem;
+}
+
+/* Ensure content is centered */
+.col--8 {
+  flex: 0 0 66.666667%;
+  max-width: 66.666667%;
+}
+
+.col--offset--2 {
+  margin-left: 16.666667%;
+}
+
+@media (max-width: 996px) {
+  .col--8 {
+    flex: 0 0 100%;
+    max-width: 100%;
+  }
+
+  .col--offset--2 {
+    margin-left: 0;
   }
 }

@@ -5,8 +5,8 @@ import type * as Preset from '@docusaurus/preset-classic';
 // This runs in Node.js - Don't use client-side code here (browser APIs, JSX...)
 
 const config: Config = {
-  title: 'Physical AI & Humanoid Robotics Assistant',
-  tagline: 'RAG Chatbot for Robotics Concepts',
+  title: 'Physical AI & Humanoid Robotics',
+  tagline: 'Educational Book on Robotics and AI Concepts',
   favicon: 'img/favicon.ico',
 
   // Future flags, see https://docusaurus.io/docs/api/docusaurus-config#future
@@ -74,7 +74,7 @@ const config: Config = {
       respectPrefersColorScheme: true,
     },
     navbar: {
-      title: 'Physical AI & Robotics',
+      title: 'Physical AI & Robotics Book',
       logo: {
         alt: 'Physical AI & Humanoid Robotics Logo',
         src: 'img/logo.svg',
@@ -84,7 +84,7 @@ const config: Config = {
           type: 'docSidebar',
           sidebarId: 'tutorialSidebar',
           position: 'left',
-          label: 'Docs',
+          label: 'Table of Contents',
         },
         {
           href: 'https://github.com/munazhairfan/Physical-AI-and-Humanoid-Robotics-Book',
@@ -95,36 +95,8 @@ const config: Config = {
     },
     footer: {
       style: 'dark',
-      links: [
-        {
-          title: 'Documentation',
-          items: [
-            {
-              label: 'Getting Started',
-              to: '/docs/intro',
-            },
-          ],
-        },
-        {
-          title: 'Community',
-          items: [
-            {
-              label: 'GitHub',
-              href: 'https://github.com/munazhairfan/Physical-AI-and-Humanoid-Robotics-Book',
-            },
-          ],
-        },
-        {
-          title: 'More',
-          items: [
-            {
-              label: 'Research Papers',
-              href: 'https://example.com',
-            },
-          ],
-        },
-      ],
-      copyright: `Copyright © ${new Date().getFullYear()} Physical AI & Humanoid Robotics Project. Built with Docusaurus.`,
+      links: [],
+      copyright: `Copyright © ${new Date().getFullYear()} Physical AI & Humanoid Robotics Educational Project`,
     },
     prism: {
       theme: prismThemes.github,
@@ -132,13 +104,14 @@ const config: Config = {
     },
   } satisfies Preset.ThemeConfig,
 
-  // Add the floating chat as a client module to appear on all pages
+  // Enhanced plugins for educational book functionality
   plugins: [
+    // Plugin to add the global floating chat component
     async function floatingChatPlugin() {
       return {
         name: 'floating-chat-plugin',
         getClientModules() {
-          return [require.resolve('./src/components/FloatingChatClientModule')];
+          return [require.resolve('./src/components/FloatingChatLoader')];
         },
       };
     },

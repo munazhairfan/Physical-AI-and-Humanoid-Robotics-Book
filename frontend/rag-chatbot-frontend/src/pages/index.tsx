@@ -4,7 +4,6 @@ import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import Layout from '@theme/Layout';
 import HomepageFeatures from '@site/src/components/HomepageFeatures';
 import Heading from '@theme/Heading';
-import ChatWidget from '@site/src/components/ChatWidget';
 
 import styles from './index.module.css';
 
@@ -56,7 +55,7 @@ function InfoCards() {
         <div className="col col--4">
           <div className={styles.infoCard}>
             <div className={styles.cardIcon}>🧠</div>
-            <h3>AI Integration</h3>
+            <h3>AI and Control Systems</h3>
             <p>Discover how artificial intelligence algorithms enable intelligent behavior in robotic systems through perception and learning.</p>
           </div>
         </div>
@@ -65,38 +64,15 @@ function InfoCards() {
   );
 }
 
-function ChatSection() {
-  return (
-    <section className={styles.chatSection}>
-      <div className="container">
-        <div className="row">
-          <div className="col col--12">
-            <div className={styles.chatContainer}>
-              <div className={styles.chatHeader}>
-                <h2>Physical AI & Humanoid Robotics Assistant</h2>
-                <p>Ask questions about robotics concepts from the textbook. The AI will retrieve relevant information and provide detailed answers.</p>
-              </div>
-              <div className={styles.chatWidgetContainer}>
-                <ChatWidget />
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-}
-
 export default function Home(): ReactNode {
   const {siteConfig} = useDocusaurusContext();
   return (
     <Layout
-      title={`Physical AI & Humanoid Robotics Assistant`}
-      description="RAG Chatbot for robotics concepts and textbook questions">
+      title={`Physical AI & Humanoid Robotics`}
+      description="Educational Book on Robotics Concepts and AI Integration">
       <HomepageHeader />
       <main>
         <InfoCards />
-        <ChatSection />
         <HomepageFeatures />
       </main>
     </Layout>

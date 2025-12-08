@@ -7,13 +7,13 @@ COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy application code
-COPY . /app/
+COPY . .
 
 # Make startup script executable
-RUN chmod +x /app/startup.py
+RUN chmod +x startup.py
 
-# Test that the app can be imported
-RUN python -c "from app.main import app; print('Import successful')"
+# Test that the app can be imported - adjust the import path
+RUN python -c "import sys; sys.path.insert(0, '.'); from app.main import app; print('Import successful')"
 
 EXPOSE 8000
 

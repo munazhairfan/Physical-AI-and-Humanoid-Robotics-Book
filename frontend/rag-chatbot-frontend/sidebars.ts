@@ -13,52 +13,65 @@ import type {SidebarsConfig} from '@docusaurus/plugin-content-docs';
  Create as many sidebars as you want.
  */
 const sidebars: SidebarsConfig = {
-  // Manual sidebar for robotics content
+  // Enhanced sidebar for Physical AI & Humanoid Robotics Educational Book
   tutorialSidebar: [
-    'intro',
     {
       type: 'category',
-      label: 'Physical AI Concepts',
+      label: 'Introduction',
+      collapsed: false,
+      items: [
+        'intro',
+      ],
+    },
+    {
+      type: 'category',
+      label: 'Foundations of Physical AI',
+      collapsed: false,
       items: [
         'physical-ai-intro',
-        'chapter1-introduction-physical-ai'
+        'chapter1-introduction-physical-ai',
       ],
     },
     {
       type: 'category',
-      label: 'Humanoid Robotics Fundamentals',
+      label: 'Humanoid Robotics',
+      collapsed: false,
       items: [
         'humanoid-robotics',
-        'chapter2-humanoid-robotics-fundamentals'
+        'chapter2-humanoid-robotics-fundamentals',
       ],
     },
     {
       type: 'category',
-      label: 'Sensors & Perception',
+      label: 'Sensing and Perception',
+      collapsed: false,
       items: [
         'sensor-integration',
-        'chapter3-sensor-integration-perception'
+        'chapter3-sensor-integration-perception',
       ],
     },
     {
       type: 'category',
-      label: 'AI in Robotics',
+      label: 'AI and Control Systems',
+      collapsed: false,
       items: [
-        'chapter4-ai-in-humanoid-robotics'
+        'chapter4-ai-in-humanoid-robotics',
       ],
     },
     {
       type: 'category',
-      label: 'Applications',
+      label: 'Applications and Use Cases',
+      collapsed: false,
       items: [
-        'chapter5-applications-humanoid-robots'
+        'chapter5-applications-humanoid-robots',
       ],
     },
     {
       type: 'category',
-      label: 'Challenges & Future',
+      label: 'Future Directions & Ethics',
+      collapsed: false,
       items: [
-        'chapter6-challenges-future-directions'
+        'chapter6-challenges-future-directions',
       ],
     },
   ],

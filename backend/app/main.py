@@ -4,7 +4,7 @@ from typing import List, Optional
 import logging
 import asyncio
 
-app = FastAPI(title="RAG Chatbot API - Optimized for Hugging Face Spaces")
+app = FastAPI(title="RAG Chatbot API - Optimized for Railway Deployment")
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
