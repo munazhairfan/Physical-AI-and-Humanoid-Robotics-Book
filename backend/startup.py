@@ -6,21 +6,23 @@ import sys
 
 def main():
     """Main entry point for Railway deployment"""
-    # Add current directory to Python path
-    sys.path.insert(0, '/app')
+    # Add current directory to Python path to ensure imports work
+    current_dir = os.path.dirname(os.path.abspath(__file__))
+    sys.path.insert(0, current_dir)
 
     # Import uvicorn after dependencies are available
     import uvicorn
 
-    # Import the app module using importlib to handle potential import issues
+    # Import the main app - use the approach that matches app.py
     try:
-        # Direct import approach
-        from app.main import app
-    except ImportError as e:
-        # Fallback: Add the app directory to path and retry
-        sys.path.insert(0, '/app/app')
-        from main import app
-        print(f"Direct import failed with: {e}. Used fallback import.")
+        from app import app  # Import from the main app.py entry point
+    except ImportError:
+        # Fallback: try direct import from app.main
+        try:
+            from app.main import app
+        except ImportError as e:
+            print(f"Could not import app: {e}")
+            raise
 
     # Get the port from environment variable (required by Railway)
     port = int(os.environ.get("PORT", 8000))
