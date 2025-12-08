@@ -48,8 +48,9 @@ const ChatWidget: React.FC = () => {
     setError(null);
 
     try {
-      // Call backend API
-      const response = await fetch('https://munazha-rag-chatbot-backend.hf.space/chat', {
+      // Call backend API - Updated to use configurable URL
+      const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || 'https://munazha-rag-chatbot-backend.hf.space';
+      const response = await fetch(`${BACKEND_URL}/chat`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

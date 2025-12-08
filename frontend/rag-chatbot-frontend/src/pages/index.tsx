@@ -13,12 +13,77 @@ function HomepageHeader() {
   return (
     <header className={clsx('hero hero--primary', styles.heroBanner)}>
       <div className="container">
-        <Heading as="h1" className="hero__title">
-          {siteConfig.title}
-        </Heading>
-        <p className="hero__subtitle">{siteConfig.tagline}</p>
+        <div className="row">
+          <div className="col col--8 col--offset--2">
+            <div className="text--center">
+              <div className={styles.heroLogo}>
+                <img src="/img/logo.svg" alt="Robotics Logo" className={styles.heroImage} />
+              </div>
+              <Heading as="h1" className="hero__title">
+                {siteConfig.title}
+              </Heading>
+              <p className="hero__subtitle">{siteConfig.tagline}</p>
+              <div className={styles.heroButtons}>
+                <button className={styles.primaryButton}>Get Started</button>
+                <button className={styles.secondaryButton}>View Documentation</button>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </header>
+  );
+}
+
+function InfoCards() {
+  return (
+    <div className="container margin-vert--lg">
+      <div className="row">
+        <div className="col col--4">
+          <div className={styles.infoCard}>
+            <div className={styles.cardIcon}>🤖</div>
+            <h3>Physical AI Fundamentals</h3>
+            <p>Learn the core concepts of AI systems that interact with the physical world through perception, reasoning, and action.</p>
+          </div>
+        </div>
+        <div className="col col--4">
+          <div className={styles.infoCard}>
+            <div className={styles.cardIcon}>🦾</div>
+            <h3>Humanoid Robotics</h3>
+            <p>Explore the design and control principles of robots that mimic human form and behavior for operation in human environments.</p>
+          </div>
+        </div>
+        <div className="col col--4">
+          <div className={styles.infoCard}>
+            <div className={styles.cardIcon}>🧠</div>
+            <h3>AI Integration</h3>
+            <p>Discover how artificial intelligence algorithms enable intelligent behavior in robotic systems through perception and learning.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function ChatSection() {
+  return (
+    <section className={styles.chatSection}>
+      <div className="container">
+        <div className="row">
+          <div className="col col--12">
+            <div className={styles.chatContainer}>
+              <div className={styles.chatHeader}>
+                <h2>Physical AI & Humanoid Robotics Assistant</h2>
+                <p>Ask questions about robotics concepts from the textbook. The AI will retrieve relevant information and provide detailed answers.</p>
+              </div>
+              <div className={styles.chatWidgetContainer}>
+                <ChatWidget />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
   );
 }
 
@@ -30,23 +95,8 @@ export default function Home(): ReactNode {
       description="RAG Chatbot for robotics concepts and textbook questions">
       <HomepageHeader />
       <main>
-        <section className={styles.features}>
-          <div className="container">
-            <div className="row">
-              <div className="col col--12">
-                <h2 style={{textAlign: 'center', marginTop: '2rem'}}>Physical AI & Humanoid Robotics Assistant</h2>
-                <p style={{textAlign: 'center', marginBottom: '2rem'}}>
-                  Ask questions about robotics concepts from the textbook. The AI will retrieve relevant information and provide detailed answers.
-                </p>
-              </div>
-            </div>
-            <div className="row">
-              <div className="col col--12">
-                <ChatWidget />
-              </div>
-            </div>
-          </div>
-        </section>
+        <InfoCards />
+        <ChatSection />
         <HomepageFeatures />
       </main>
     </Layout>

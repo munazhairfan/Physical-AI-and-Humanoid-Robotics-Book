@@ -28,16 +28,22 @@ class VectorStoreService:
         """
         logger.info("Initializing Vector Store Service")
 
-        # Use default local Qdrant for development if no URL provided
-        if url is None:
+        # Check if we're in Hugging Face Spaces environment
+        import os
+        is_hf_space = os.getenv("HF_SPACE_ID") is not None
+
+        # Use in-memory mode for Hugging Face Spaces to avoid external dependencies
+        if is_hf_space or url is None:
             # Use in-memory mode for development without requiring a running server
             self.client = QdrantClient(":memory:")
+            logger.info("Using in-memory Qdrant for Hugging Face Spaces")
         else:
             self.client = QdrantClient(
                 url=url,
                 api_key=api_key,
                 prefer_grpc=False  # Use REST for free tier
             )
+            logger.info(f"Using external Qdrant at {url}")
 
         self.collection_name = collection_name
 

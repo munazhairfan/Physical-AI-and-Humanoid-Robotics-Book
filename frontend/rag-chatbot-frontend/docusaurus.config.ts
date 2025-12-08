@@ -131,6 +131,18 @@ const config: Config = {
       darkTheme: prismThemes.dracula,
     },
   } satisfies Preset.ThemeConfig,
+
+  // Add the floating chat as a client module to appear on all pages
+  plugins: [
+    async function floatingChatPlugin() {
+      return {
+        name: 'floating-chat-plugin',
+        getClientModules() {
+          return [require.resolve('./src/components/FloatingChatClientModule')];
+        },
+      };
+    },
+  ],
 };
 
 export default config;

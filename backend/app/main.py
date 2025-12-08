@@ -2,28 +2,47 @@ from fastapi import FastAPI, HTTPException, UploadFile, File
 from pydantic import BaseModel
 from typing import List, Optional
 import logging
+import asyncio
 
-
-# Import the embedding and LLM services
-from .embedding_service import get_embedding_service
-from .llm_service import get_llm_service
-from .vectorstore_service import get_vectorstore_service
-from .database_service import get_database_service
-from .openai_assistant_service import get_openai_assistant_service
-
-app = FastAPI(title="RAG Chatbot API - Fixed")
+app = FastAPI(title="RAG Chatbot API - Optimized for Hugging Face Spaces")
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-# Initialize services
-embedding_service = get_embedding_service()
-llm_service = get_llm_service()
-vectorstore_service = get_vectorstore_service()
-openai_assistant_service = get_openai_assistant_service()
+# Global service instances (not initialized yet)
+embedding_service = None
+llm_service = None
+vectorstore_service = None
+openai_assistant_service = None
 
-# Database service needs to be awaited, so we'll get it in each endpoint that needs it
+def get_embedding_service():
+    global embedding_service
+    if embedding_service is None:
+        from .embedding_service import get_embedding_service as _get_embedding_service
+        embedding_service = _get_embedding_service()
+    return embedding_service
+
+def get_llm_service():
+    global llm_service
+    if llm_service is None:
+        from .llm_service import get_llm_service as _get_llm_service
+        llm_service = _get_llm_service()
+    return llm_service
+
+def get_vectorstore_service():
+    global vectorstore_service
+    if vectorstore_service is None:
+        from .vectorstore_service import get_vectorstore_service as _get_vectorstore_service
+        vectorstore_service = _get_vectorstore_service()
+    return vectorstore_service
+
+def get_openai_assistant_service():
+    global openai_assistant_service
+    if openai_assistant_service is None:
+        from .openai_assistant_service import get_openai_assistant_service as _get_openai_assistant_service
+        openai_assistant_service = _get_openai_assistant_service()
+    return openai_assistant_service
 
 # Request and response models
 class EmbedRequest(BaseModel):
@@ -91,6 +110,7 @@ async def embed_text(request: EmbedRequest):
         logger.info(f"Embedding text of length {len(request.text)} with chunk size {request.chunk_size}")
 
         # Use the embedding service to generate embeddings
+        embedding_service = get_embedding_service()
         embeddings = embedding_service.embed_text(request.text, request.chunk_size)
 
         response = EmbedResponse(
@@ -114,9 +134,11 @@ async def query_documents(request: QueryRequest):
         logger.info(f"Querying for: {request.query[:50]}...")
 
         # Embed the query using the embedding service
+        embedding_service = get_embedding_service()
         query_vector = embedding_service.embed_query(request.query)
 
         # Search the vector store for similar vectors
+        vectorstore_service = get_vectorstore_service()
         results = vectorstore_service.search(query_vector, request.top_k)
 
         response = QueryResponse(results=results)
@@ -136,11 +158,14 @@ async def chat(request: ChatRequest):
     try:
         logger.info(f"Chat request with message: {request.message[:50]}...")
 
+        # Get services (they will be initialized on first access)
+        embedding_service = get_embedding_service()
+        llm_service = get_llm_service()
+        vectorstore_service = get_vectorstore_service()
+
         # Query for relevant context based on the message
-        query_results = vectorstore_service.search(
-            embedding_service.embed_query(request.message),
-            top_k=3
-        )
+        query_vector = embedding_service.embed_query(request.message)
+        query_results = vectorstore_service.search(query_vector, top_k=3)
 
         # Generate response using the LLM service
         response_text = llm_service.generate_response(
@@ -149,7 +174,7 @@ async def chat(request: ChatRequest):
             history=request.history
         )
 
-        # Store the conversation in the database
+        # Store the conversation in the database (if needed)
         db_service = await get_database_service()
         import uuid
         session_id = str(uuid.uuid4())
@@ -170,6 +195,11 @@ async def process_selected_text(request: SelectedTextRequest):
     """
     try:
         logger.info(f"Processing selected text: {request.text[:50]}...")
+
+        # Get services
+        embedding_service = get_embedding_service()
+        llm_service = get_llm_service()
+        vectorstore_service = get_vectorstore_service()
 
         # Embed the selected text
         query_vector = embedding_service.embed_query(request.text)
@@ -200,7 +230,10 @@ async def ingest_document(request: DocumentIngestRequest):
     try:
         logger.info(f"Ingesting document with title: {request.title or 'Untitled'}")
 
-        # Get the database service (it's async, so we need to await its initialization)
+        # Get services
+        vectorstore_service = get_vectorstore_service()
+
+        # Get the database service
         db_service = await get_database_service()
 
         # Store the raw document in the database
@@ -244,7 +277,10 @@ async def ingest_file(file: UploadFile = File(...)):
         content = await file.read()
         content_str = content.decode('utf-8')
 
-        # Get the database service (it's async, so we need to await its initialization)
+        # Get services
+        vectorstore_service = get_vectorstore_service()
+
+        # Get the database service
         db_service = await get_database_service()
 
         # Store the raw document in the database
@@ -283,6 +319,11 @@ async def query_book(request: DocumentQueryRequest):
     try:
         logger.info(f"Querying book with: {request.query[:50]}...")
 
+        # Get services
+        embedding_service = get_embedding_service()
+        llm_service = get_llm_service()
+        vectorstore_service = get_vectorstore_service()
+
         # Embed the query using the embedding service
         query_vector = embedding_service.embed_query(request.query)
 
@@ -314,6 +355,10 @@ async def openai_assistant_chat(request: OpenAIAssistantRequest):
         # Use the OpenAI assistant service
         assistant_service = get_openai_assistant_service()
 
+        # Get other services
+        embedding_service = get_embedding_service()
+        vectorstore_service = get_vectorstore_service()
+
         # If we should use RAG context, retrieve it first
         rag_context = ""
         if request.use_rag_context:
@@ -332,12 +377,7 @@ async def openai_assistant_chat(request: OpenAIAssistantRequest):
         if not thread_id:
             raise HTTPException(status_code=500, detail="Failed to create or access thread")
 
-        # Add the user message to the thread, including RAG context if available
-        full_message = request.message
-        if rag_context:
-            full_message = f"{request.message}\n\n{rag_context}"
-
-        success = assistant_service.add_message_to_thread(thread_id, full_message, "user")
+        success = assistant_service.add_message_to_thread(thread_id, request.message, "user")
         if not success:
             raise HTTPException(status_code=500, detail="Failed to add message to thread")
 
@@ -412,6 +452,11 @@ async def health_check():
     Health check endpoint to verify the API is running.
     """
     return {"status": "healthy", "service": "rag-chatbot-api"}
+
+# Import here to avoid circular imports
+async def get_database_service():
+    from .database_service import get_database_service as _get_database_service
+    return await _get_database_service()
 
 if __name__ == "__main__":
     import uvicorn
