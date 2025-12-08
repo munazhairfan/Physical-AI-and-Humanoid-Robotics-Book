@@ -24,7 +24,7 @@ Save this URL - you'll need it for frontend configuration.
 ### Step 1: Prepare Frontend
 - Ensure frontend is in `frontend/rag-chatbot-frontend/` directory
 - The project is already configured for Vercel deployment
-- **Important**: baseUrl is set to `/Physical-AI-and-Humanoid-Robotics-Book/` (following Vercel's suggestion)
+- **Important**: baseUrl is set to `/` for Vercel root deployment
 
 ### Step 2: Deploy to Vercel
 1. Go to [Vercel](https://vercel.com)
@@ -38,6 +38,7 @@ Save this URL - you'll need it for frontend configuration.
    - Build Command: `npm run build`
    - Output Directory: `build`
    - Install Command: `npm install`
+7. After deployment, update the `url` in `docusaurus.config.ts` with your Vercel domain
 
 ### Step 3: Complete Integration
 - Frontend will be deployed to a Vercel URL
@@ -65,7 +66,7 @@ After both deployments:
 3. Check the backend logs in Railway dashboard
 
 ### If Frontend Doesn't Load Properly
-1. Check if Vercel suggests a specific baseUrl (e.g., "/project-name/")
-2. Update baseUrl in docusaurus.config.ts accordingly
+1. Make sure baseUrl in docusaurus.config.ts is set to `/` for Vercel root deployment
+2. After deployment, update the `url` field with your actual Vercel domain
 3. Verify that all static assets load correctly
 4. Check browser console for any 404 errors or asset loading issues

@@ -53,7 +53,8 @@ Frontend will run on `http://localhost:3000`
 4. Add environment variable:
    - `REACT_APP_BACKEND_URL`: Your deployed backend URL
 5. **Important**: baseUrl is configured as `/` for Vercel root deployment
-6. Deploy
+6. After deployment, update `url` in `docusaurus.config.ts` with your Vercel domain
+7. Deploy
 
 ## 🔧 Troubleshooting
 
@@ -61,6 +62,7 @@ Frontend will run on `http://localhost:3000`
 - ✅ **Railway Import Error**: Fixed Dockerfile to remove problematic import test
 - ✅ **Vercel 404 Error**: Added proper routing configuration
 - ✅ **BaseUrl Issue**: Fixed for Vercel root deployment
+- ✅ **URL Configuration**: Updated for Vercel deployment
 - ✅ **Duplicate Backends**: Consolidated to single, properly configured backend
 - ✅ **Python Version Mismatch**: Updated to Python 3.11 consistently
 

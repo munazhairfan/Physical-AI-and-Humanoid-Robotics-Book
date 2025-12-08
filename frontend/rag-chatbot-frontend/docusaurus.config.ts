@@ -14,18 +14,17 @@ const config: Config = {
     v4: true, // Improve compatibility with the upcoming Docusaurus v4
   },
 
-  // Set the production url of your site here
-  url: 'https://munazhairfan.github.io',
+  // Set the production url of your site here (update with your Vercel domain after deployment)
+  url: 'https://physical-ai-and-humanoid-robotics-b-rosy.vercel.app/',
   // Set the /<baseUrl>/ pathname under which your site is served
-  // Vercel suggested: use the project-specific path
+  // For first deployment, you can try '/' for root, or use Vercel's suggested path
   baseUrl: '/Physical-AI-and-Humanoid-Robotics-Book/',
 
-  // GitHub pages deployment config.
-  // If you aren't using GitHub pages, you don't need these.
-  organizationName: 'munazhairfan', // Usually your GitHub org/user name.
-  projectName: 'Physical-AI-and-Humanoid-Robotics-Book', // Usually your repo name.
-  // Deployment settings for GitHub Pages
-  deploymentBranch: 'gh-pages',
+  // GitHub pages deployment config - not used for Vercel deployment
+  organizationName: 'munazhairfan', // GitHub username/organization
+  projectName: 'Physical-AI-and-Humanoid-Robotics-Book', // Repository name
+  // Deployment settings not used for Vercel
+  deploymentBranch: 'main',
   trailingSlash: false,
 
   onBrokenLinks: 'throw',
