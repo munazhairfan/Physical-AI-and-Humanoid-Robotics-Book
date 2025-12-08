@@ -24,6 +24,9 @@ const config: Config = {
   // If you aren't using GitHub pages, you don't need these.
   organizationName: 'munazhairfan', // Usually your GitHub org/user name.
   projectName: 'Physical-AI-and-Humanoid-Robotics-Book', // Usually your repo name.
+  // Deployment settings for GitHub Pages
+  deploymentBranch: 'gh-pages',
+  trailingSlash: false,
 
   onBrokenLinks: 'throw',
 
