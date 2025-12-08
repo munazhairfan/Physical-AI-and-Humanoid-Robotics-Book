@@ -35,3 +35,5 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./frontend/rag-chatbot-frontend/build
           publish_branch: gh-pages
+          # Disable Jekyll processing
+          disable_jekyll: true
