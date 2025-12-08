@@ -4,7 +4,17 @@
 
 This RAG chatbot can be deployed in multiple ways. Choose the option that best fits your needs.
 
-### Option 1: Hugging Face Spaces (Easiest)
+### Option 1: Railway (Recommended)
+
+1. Create a Railway account at [railway.app](https://railway.app)
+2. Create a new project and link it to your GitHub repository
+3. Set your environment variables in the Railway dashboard:
+   - `GEMINI_API_KEY`: Your Google Gemini API key
+4. Deploy the project using the Dockerfile
+5. Railway will automatically build and deploy using the Dockerfile
+6. Your API will be available at the URL provided by Railway
+
+### Option 2: Hugging Face Spaces
 
 1. Create a Hugging Face account at [huggingface.co](https://huggingface.co)
 2. Create a new Space with the "Docker" SDK
@@ -18,7 +28,7 @@ This RAG chatbot can be deployed in multiple ways. Choose the option that best f
    - `.env.example`
 5. The Space will automatically build and deploy using the Dockerfile
 
-### Option 2: Docker (Self-hosting)
+### Option 3: Docker (Self-hosting)
 
 1. Clone the repository
 2. Create a `.env` file with your API keys (use `.env.example` as template)
@@ -31,7 +41,7 @@ This RAG chatbot can be deployed in multiple ways. Choose the option that best f
    docker run -d -p 8000:8000 --env-file .env rag-chatbot
    ```
 
-### Option 3: Direct Python (Development)
+### Option 4: Direct Python (Development)
 
 1. Clone the repository
 2. Create a virtual environment:
@@ -75,3 +85,4 @@ The backend provides a REST API that can be integrated with any frontend. The fr
 - This deployment uses in-memory storage for documents and chat history (not suitable for production)
 - For production, connect to a Qdrant cloud instance by setting QDRANT_URL and QDRANT_API_KEY
 - The Google Gemini API has usage quotas - monitor your usage at Google AI Studio
+- Railway deployment is recommended for reliable backend hosting with 24/7 uptime
