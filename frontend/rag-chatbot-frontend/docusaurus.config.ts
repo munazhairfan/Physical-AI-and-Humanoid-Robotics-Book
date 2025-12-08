@@ -116,6 +116,10 @@ const config: Config = {
       };
     },
   ],
+
+  // Environment variables for deployment
+  themes: [],
+  stylesheets: [],
 };
 
 export default config;

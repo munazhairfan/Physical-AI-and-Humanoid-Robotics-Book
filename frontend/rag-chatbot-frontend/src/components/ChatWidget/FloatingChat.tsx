@@ -13,7 +13,7 @@ interface FloatingChatProps {
 }
 
 const FloatingChat: React.FC<FloatingChatProps> = ({
-  backendUrl = process.env.REACT_APP_BACKEND_URL || 'https://your-railway-app.up.railway.app'
+  backendUrl = process.env.REACT_APP_BACKEND_URL || 'https://physical-ai-and-humanoid-robotics-book-production.up.railway.app/'
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>([
