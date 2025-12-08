@@ -9,13 +9,13 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copy application code
 COPY . .
 
-# Make startup script executable
-RUN chmod +x startup.py
+# Make sure startup script is executable
+RUN chmod +x /app/startup.py
 
-# Skip the import test that causes issues during build
-# This is a common issue with FastAPI apps during Docker build
+# Skip the import test that causes module resolution conflicts during build
+# The app can be imported at runtime but not during build due to file structure
 
 EXPOSE 8000
 
-# Use the startup script
-CMD ["python", "startup.py"]
+# Use the app.py entrypoint for Railway compatibility
+CMD ["python", "app.py"]
