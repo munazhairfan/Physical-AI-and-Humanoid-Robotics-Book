@@ -1,0 +1,2 @@
+# Railway requirements.txt - Points to backend requirements
+-r backend/requirements.txt
