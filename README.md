@@ -52,13 +52,15 @@ Frontend will run on `http://localhost:3000`
 3. Set build directory to `frontend/rag-chatbot-frontend`
 4. Add environment variable:
    - `REACT_APP_BACKEND_URL`: Your deployed backend URL
-5. Deploy
+5. **Important**: baseUrl is configured as `/` for Vercel root deployment
+6. Deploy
 
 ## 🔧 Troubleshooting
 
 ### Common Issues Fixed
 - ✅ **Railway Import Error**: Fixed Dockerfile to remove problematic import test
 - ✅ **Vercel 404 Error**: Added proper routing configuration
+- ✅ **BaseUrl Issue**: Fixed for Vercel root deployment
 - ✅ **Duplicate Backends**: Consolidated to single, properly configured backend
 - ✅ **Python Version Mismatch**: Updated to Python 3.11 consistently
 
