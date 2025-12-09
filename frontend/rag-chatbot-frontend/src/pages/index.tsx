@@ -5,7 +5,6 @@ import Layout from '@theme/Layout';
 import HomepageFeatures from '@site/src/components/HomepageFeatures';
 import Heading from '@theme/Heading';
 import AnimatedBlobs from '@site/src/components/AnimatedBlobs/AnimatedBlobs';
-import ChatWidget from '@site/src/components/ChatWidget/ChatWidget';
 
 import styles from './index.module.css';
 
@@ -102,26 +101,6 @@ function InfoCards() {
   );
 }
 
-function ChatSection() {
-  return (
-    <div className="container margin-vert--lg">
-      <div className="row">
-        <div className="col col--8 col--offset--2">
-          <div className={clsx("text--center", styles.sectionHeader)}>
-            <Heading as="h2" className={styles.sectionTitle}>Ask Our Robotics Assistant</Heading>
-            <p className={styles.sectionSubtitle}>
-              Have questions about AI, robotics, or humanoid technology? Our assistant is here to help!
-            </p>
-          </div>
-          <div className={styles.chatContainer}>
-            <ChatWidget />
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
-
 export default function Home(): ReactNode {
   const {siteConfig} = useDocusaurusContext();
   return (
@@ -132,7 +111,6 @@ export default function Home(): ReactNode {
       <main>
         <InfoCards />
         <HomepageFeatures />
-        <ChatSection />
       </main>
     </Layout>
   );
