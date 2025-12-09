@@ -105,15 +105,7 @@ const config: Config = {
 
   // Enhanced plugins for educational book functionality
   plugins: [
-    // Plugin to add the global floating chat component
-    async function floatingChatPlugin() {
-      return {
-        name: 'floating-chat-plugin',
-        getClientModules() {
-          return [require.resolve('./src/components/FloatingChatLoader')];
-        },
-      };
-    },
+    './src/plugins/floatingChatPlugin', // Plugin to add the global floating chat component
   ],
 
   // Environment variables for deployment
