@@ -16,7 +16,7 @@ function HomepageHeader() {
           <div className="col col--8 col--offset--2">
             <div className="text--center">
               <div className={styles.heroLogo}>
-                <img src="/img/logo.svg" alt="Robotics Logo" className={styles.heroImage} />
+                <img src="/img/logo.svg" alt="Robotics Educational Book Logo" className={styles.heroImage} />
               </div>
               <div className={styles.titleContainer}>
                 <Heading as="h1" className="hero__title">
@@ -25,8 +25,8 @@ function HomepageHeader() {
               </div>
               <p className="hero__subtitle">{siteConfig.tagline}</p>
               <div className={styles.heroButtons}>
-                <button className={styles.primaryButton}>Explore Robotics</button>
-                <button className={styles.secondaryButton}>Learn Concepts</button>
+                <button className={styles.primaryButton}>Start Learning</button>
+                <button className={styles.secondaryButton}>Explore Topics</button>
               </div>
             </div>
           </div>
@@ -42,23 +42,29 @@ function InfoCards() {
       <div className="row">
         <div className="col col--4">
           <div className={styles.infoCard}>
-            <div className={styles.cardIcon}>🤖</div>
-            <h3>AI Fundamentals</h3>
-            <p>Learn the core concepts of AI systems that interact with the physical world.</p>
+            <div className={clsx(styles.cardIcon, styles.robotIcon)}>
+              🤖
+            </div>
+            <h3>Physical AI Fundamentals</h3>
+            <p>Learn the core concepts of AI systems that interact with the physical world through perception, reasoning, and action.</p>
           </div>
         </div>
         <div className="col col--4">
           <div className={styles.infoCard}>
-            <div className={styles.cardIcon}>🦾</div>
-            <h3>Humanoid Robots</h3>
-            <p>Explore the design and control principles of robots that mimic human form.</p>
+            <div className={clsx(styles.cardIcon, styles.robotIcon)}>
+              🦾
+            </div>
+            <h3>Humanoid Robotics</h3>
+            <p>Explore the design and control principles of robots that mimic human form for operation in human environments.</p>
           </div>
         </div>
         <div className="col col--4">
           <div className={styles.infoCard}>
-            <div className={styles.cardIcon}>🧠</div>
-            <h3>Control Systems</h3>
-            <p>Discover how AI algorithms enable intelligent behavior in robotic systems.</p>
+            <div className={clsx(styles.cardIcon, styles.robotIcon)}>
+              🧠
+            </div>
+            <h3>AI Control Systems</h3>
+            <p>Discover how artificial intelligence algorithms enable adaptive behavior in robotic systems.</p>
           </div>
         </div>
       </div>
