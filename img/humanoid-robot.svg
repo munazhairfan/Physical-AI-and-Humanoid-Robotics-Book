@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <rect width="200" height="200" fill="#0f172a" opacity="0"/>
+  
+  <!-- Robot body -->
+  <rect x="80" y="80" width="40" height="60" rx="5" fill="#334155" stroke="#475569" stroke-width="2"/>
+  
+  <!-- Head -->
+  <circle cx="100" cy="60" r="20" fill="#1e293b" stroke="#475569" stroke-width="2"/>
+  
+  <!-- Arms -->
+  <rect x="50" y="90" width="30" height="10" rx="5" fill="#334155" stroke="#475569" stroke-width="2"/>
+  <rect x="120" y="90" width="30" height="10" rx="5" fill="#334155" stroke="#475569" stroke-width="2"/>
+  
+  <!-- Legs -->
+  <rect x="85" y="140" width="10" height="30" rx="3" fill="#1e293b" stroke="#475569" stroke-width="2"/>
+  <rect x="105" y="140" width="10" height="30" rx="3" fill="#1e293b" stroke="#475569" stroke-width="2"/>
+  
+  <!-- Circuit patterns -->
+  <circle cx="100" cy="90" r="8" stroke="#8b5cf6" stroke-width="1" fill="none" opacity="0.5"/>
+  <circle cx="100" cy="105" r="6" stroke="#06b6d4" stroke-width="1" fill="none" opacity="0.5"/>
+  <circle cx="100" cy="120" r="4" stroke="#ec4899" stroke-width="1" fill="none" opacity="0.5"/>
+  
+  <!-- Eyes -->
+  <circle cx="92" cy="58" r="3" fill="#06b6d4"/>
+  <circle cx="108" cy="58" r="3" fill="#06b6d4"/>
+  
+  <!-- Chest panel -->
+  <rect x="85" y="95" width="30" height="15" rx="3" fill="#1e293b" stroke="#475569" stroke-width="1" opacity="0.7"/>
+  <circle cx="100" cy="102" r="2" fill="#8b5cf6" opacity="0.8"/>
+</svg>
