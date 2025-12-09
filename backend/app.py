@@ -1,42 +1,37 @@
-# app.py - Entry point for Railway deployment
-# This creates the FastAPI app instance that Railway expects
+# app.py - Cleaned version for Railway
 
 import os
-import sys
 import logging
 import uvicorn
+from fastapi import FastAPI
 
-# Configure logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-# Get the directory of this file and add the app subdirectory to path
-current_dir = os.path.dirname(os.path.abspath(__file__))
-app_dir = os.path.join(current_dir, 'app')
-if app_dir not in sys.path:
-    sys.path.insert(0, app_dir)
-
-# Import and handle any potential startup issues gracefully
 try:
-    # Import the main FastAPI application
-    from main import app  # Import from the main module inside the app directory
+    # Import main FastAPI app
+    from app.main import app
     logger.info("Successfully imported main app")
 except Exception as e:
-    logger.error(f"Error importing main app: {str(e)}")
-    # Create a fallback app for error handling
-    from fastapi import FastAPI
+    logger.error(f"Error importing main app: {e}")
+
+    # Fallback app (to prevent Railway container from stopping)
     app = FastAPI()
 
     @app.get("/")
-    async def root():
-        return {"error": "Failed to load main application", "details": str(e)}
+    def fallback_root():
+        return {"error": "Could not import main app", "details": str(e)}
+
+    @app.get("/health")
+    def health():
+        return {"status": "fallback"}
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 8000))
     logger.info(f"Starting server on port {port}")
+
     uvicorn.run(
         app,
         host="0.0.0.0",
-        port=port,
-        lifespan="on"
+        port=port
     )

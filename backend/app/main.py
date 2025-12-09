@@ -6,6 +6,10 @@ import asyncio
 
 app = FastAPI(title="RAG Chatbot API - Optimized for Railway Deployment")
 
+@app.get("/")
+async def root():
+    return {"status": "running", "service": "rag-chatbot-api"}
+
 # Configure logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -532,5 +536,6 @@ async def get_database_service():
         return MockDatabaseService()
 
 if __name__ == "__main__":
-    import uvicorn
+    import uvicorn, os
+    port = int(os.environ.get("PORT", 8000))
     uvicorn.run(app, host="0.0.0.0", port=8000)
