@@ -7,7 +7,6 @@ from typing import List, Dict, Optional
 import logging
 import os
 from dotenv import load_dotenv
-import google.generativeai as genai
 
 # Load environment variables
 load_dotenv()
@@ -28,17 +27,20 @@ class LLMService:
         logger.info("Initializing LLM Service with Google Gemini")
 
         # Get Gemini API key from environment
-        gemini_api_key = os.getenv("GEMINI_API_KEY")
-        if not gemini_api_key:
-            raise ValueError("GEMINI_API_KEY environment variable not set")
-
-        # Configure the Gemini API
-        genai.configure(api_key=gemini_api_key)
-
-        # Initialize the model
-        self.model = genai.GenerativeModel('gemini-2.0-flash')
-
-        logger.info("Gemini model initialized successfully")
+        self.gemini_api_key = os.getenv("GEMINI_API_KEY")
+        if not self.gemini_api_key:
+            logger.warning("GEMINI_API_KEY environment variable not set - will use mock functionality")
+            self.model = None
+        else:
+            try:
+                import google.generativeai as genai
+                genai.configure(api_key=self.gemini_api_key)
+                # Initialize the model
+                self.model = genai.GenerativeModel('gemini-2.0-flash')
+                logger.info("Gemini model initialized successfully with API key")
+            except Exception as e:
+                logger.error(f"Failed to initialize Gemini model: {str(e)} - will use mock functionality")
+                self.model = None
 
     def generate_response(self, query: str, context: Optional[List[Dict]] = None, history: Optional[List[Dict]] = None) -> str:
         """
@@ -54,39 +56,42 @@ class LLMService:
         """
         logger.info(f"Generating response for query: {query[:50]}...")
 
-        # Build a prompt that includes the query, context, and history
-        prompt = self._build_prompt(query, context, history)
+        if self.model:
+            # Build a prompt that includes the query, context, and history
+            prompt = self._build_prompt(query, context, history)
 
-        try:
-            # Generate response using Gemini
-            response = self.model.generate_content(
-                prompt,
-                generation_config={
-                    "temperature": 0.3,
-                }
-            )
+            try:
+                # Generate response using Gemini
+                response = self.model.generate_content(
+                    prompt,
+                    generation_config={
+                        "temperature": 0.3,
+                    }
+                )
 
-            result = response.text
-            logger.info("Response generated successfully")
-            return result
-        except Exception as e:
-            logger.error(f"Error generating response with Gemini: {str(e)}")
+                result = response.text
+                logger.info("Response generated successfully with Gemini")
+                return result
+            except Exception as e:
+                logger.error(f"Error generating response with Gemini: {str(e)}")
+        else:
+            logger.warning("LLM service not initialized with API key, using fallback response")
 
-            # If there's context available, return a response based on the context even if API fails
-            if context and len(context) > 0:
-                # Extract relevant information from the context
-                context_snippets = []
-                for item in context:
-                    content = item.get('content', '')[:300]  # Take first 300 chars
-                    source = item.get('metadata', {}).get('title', 'Unknown source')
-                    if content.strip():
-                        context_snippets.append(f"From {source}: {content}...")
+        # If there's context available, return a response based on the context even if API fails
+        if context and len(context) > 0:
+            # Extract relevant information from the context
+            context_snippets = []
+            for item in context:
+                content = item.get('content', '')[:300]  # Take first 300 chars
+                source = item.get('metadata', {}).get('title', 'Unknown source')
+                if content.strip():
+                    context_snippets.append(f"From {source}: {content}...")
 
-                if context_snippets:
-                    context_preview = "\n\n".join(context_snippets[:2])  # Show first 2 snippets
-                    return f"I found relevant information in the robotics textbook:\n\n{context_preview}\n\nHowever, I encountered an issue generating a detailed response due to API quota limits. The information above is from the textbook content you've ingested."
+            if context_snippets:
+                context_preview = "\n\n".join(context_snippets[:2])  # Show first 2 snippets
+                return f"I found relevant information in the robotics textbook:\n\n{context_preview}\n\nHowever, I encountered an issue generating a detailed response. The information above is from the textbook content you've ingested."
 
-            return f"Sorry, I encountered an error processing your request: {str(e)}"
+        return f"I'm sorry, but I couldn't process your query '{query}' because the LLM service is not properly configured. Please set the GEMINI_API_KEY environment variable."
 
     def _build_prompt(self, query: str, context: Optional[List[Dict]], history: Optional[List[Dict]]) -> str:
         """
@@ -141,7 +146,8 @@ def get_llm_service():
     if llm_service is None:
         try:
             llm_service = LLMService()
-        except ValueError as e:
+        except Exception as e:
             logger.error(f"Failed to initialize LLM service: {str(e)}")
-            raise
+            # Create a service instance even if initialization fails
+            llm_service = LLMService()  # This will handle the error internally
     return llm_service

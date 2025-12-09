@@ -7,7 +7,6 @@ import numpy as np
 import logging
 import os
 from dotenv import load_dotenv
-import google.generativeai as genai
 
 # Load environment variables
 load_dotenv()
@@ -28,14 +27,19 @@ class EmbeddingService:
         logger.info("Initializing Embedding Service with Google Gemini")
 
         # Get Gemini API key from environment
-        gemini_api_key = os.getenv("GEMINI_API_KEY")
-        if not gemini_api_key:
-            raise ValueError("GEMINI_API_KEY environment variable not set")
-
-        # Configure the Gemini API
-        genai.configure(api_key=gemini_api_key)
-
-        logger.info("Embedding service initialized successfully")
+        self.gemini_api_key = os.getenv("GEMINI_API_KEY")
+        if not self.gemini_api_key:
+            logger.warning("GEMINI_API_KEY environment variable not set - will use mock functionality")
+            self.genai = None
+        else:
+            try:
+                import google.generativeai as genai
+                genai.configure(api_key=self.gemini_api_key)
+                self.genai = genai
+                logger.info("Embedding service initialized successfully with API key")
+            except Exception as e:
+                logger.error(f"Failed to configure Gemini API: {str(e)} - will use mock functionality")
+                self.genai = None
 
     def embed_text(self, text: str, chunk_size: int = 512) -> List[List[float]]:
         """
@@ -56,31 +60,36 @@ class EmbeddingService:
         # Generate embeddings for all chunks
         embeddings = []
         for chunk in chunks:
-            try:
-                result = genai.embed_content(
-                    model="models/embedding-001",
-                    content=chunk,
-                    task_type="retrieval_document"
-                )
-                embeddings.append(result['embedding'])
-            except Exception as e:
-                logger.error(f"Error embedding chunk: {str(e)}")
-                # Add a simple fallback embedding based on text characteristics if embedding fails
-                # Use a simple hash-based approach to create a somewhat meaningful embedding
-                import hashlib
-                hash_obj = hashlib.md5(chunk.encode('utf-8'))
-                hash_hex = hash_obj.hexdigest()
+            if self.genai:
+                try:
+                    result = self.genai.embed_content(
+                        model="models/embedding-001",
+                        content=chunk,
+                        task_type="retrieval_document"
+                    )
+                    embeddings.append(result['embedding'])
+                    continue
+                except Exception as e:
+                    logger.error(f"Error embedding chunk with Gemini: {str(e)}")
+            else:
+                logger.warning("Embedding service not initialized with API key, using fallback")
 
-                # Convert hex hash to a 768-dimensional vector (simplified approach)
-                vector = []
-                for i in range(0, 768 * 2, 2):  # 768 values, each using 2 hex chars
-                    hex_pair = hash_hex[i % len(hash_hex):(i + 2) % len(hash_hex)] or '00'
-                    if len(hex_pair) == 1:
-                        hex_pair += '0'
-                    val = int(hex_pair, 16) / 255.0  # Normalize to 0-1 range
-                    vector.append(val)
+            # Add a simple fallback embedding based on text characteristics if embedding fails
+            # Use a simple hash-based approach to create a somewhat meaningful embedding
+            import hashlib
+            hash_obj = hashlib.md5(chunk.encode('utf-8'))
+            hash_hex = hash_obj.hexdigest()
 
-                embeddings.append(vector)
+            # Convert hex hash to a 768-dimensional vector (simplified approach)
+            vector = []
+            for i in range(0, 768 * 2, 2):  # 768 values, each using 2 hex chars
+                hex_pair = hash_hex[i % len(hash_hex):(i + 2) % len(hash_hex)] or '00'
+                if len(hex_pair) == 1:
+                    hex_pair += '0'
+                val = int(hex_pair, 16) / 255.0  # Normalize to 0-1 range
+                vector.append(val)
+
+            embeddings.append(vector)
 
         logger.info(f"Generated {len(embeddings)} embeddings for {len(chunks)} text chunks")
         return embeddings
@@ -98,34 +107,38 @@ class EmbeddingService:
         """
         logger.info(f"Embedding query: {query[:50]}...")
 
-        try:
-            # Generate embedding for the query using Google's embedding API
-            result = genai.embed_content(
-                model="models/embedding-001",
-                content=query,
-                task_type="retrieval_query"
-            )
-            embedding = result['embedding']
+        if self.genai:
+            try:
+                # Generate embedding for the query using Google's embedding API
+                result = self.genai.embed_content(
+                    model="models/embedding-001",
+                    content=query,
+                    task_type="retrieval_query"
+                )
+                embedding = result['embedding']
 
-            logger.info("Query embedding generated successfully")
-            return embedding
-        except Exception as e:
-            logger.error(f"Error embedding query: {str(e)}")
-            # Return a hash-based fallback vector if embedding fails
-            import hashlib
-            hash_obj = hashlib.md5(query.encode('utf-8'))
-            hash_hex = hash_obj.hexdigest()
+                logger.info("Query embedding generated successfully with Gemini")
+                return embedding
+            except Exception as e:
+                logger.error(f"Error embedding query with Gemini: {str(e)}")
+        else:
+            logger.warning("Embedding service not initialized with API key, using fallback for query")
 
-            # Convert hex hash to a 768-dimensional vector (simplified approach)
-            vector = []
-            for i in range(0, 768 * 2, 2):  # 768 values, each using 2 hex chars
-                hex_pair = hash_hex[i % len(hash_hex):(i + 2) % len(hash_hex)] or '00'
-                if len(hex_pair) == 1:
-                    hex_pair += '0'
-                val = int(hex_pair, 16) / 255.0  # Normalize to 0-1 range
-                vector.append(val)
+        # Return a hash-based fallback vector if embedding fails
+        import hashlib
+        hash_obj = hashlib.md5(query.encode('utf-8'))
+        hash_hex = hash_obj.hexdigest()
 
-            return vector
+        # Convert hex hash to a 768-dimensional vector (simplified approach)
+        vector = []
+        for i in range(0, 768 * 2, 2):  # 768 values, each using 2 hex chars
+            hex_pair = hash_hex[i % len(hash_hex):(i + 2) % len(hash_hex)] or '00'
+            if len(hex_pair) == 1:
+                hex_pair += '0'
+            val = int(hex_pair, 16) / 255.0  # Normalize to 0-1 range
+            vector.append(val)
+
+        return vector
 
 
 # Global instance of the embedding service
@@ -141,7 +154,8 @@ def get_embedding_service():
     if embedding_service is None:
         try:
             embedding_service = EmbeddingService()
-        except ValueError as e:
+        except Exception as e:
             logger.error(f"Failed to initialize embedding service: {str(e)}")
-            raise
+            # Create a service instance even if initialization fails
+            embedding_service = EmbeddingService()  # This will handle the error internally
     return embedding_service

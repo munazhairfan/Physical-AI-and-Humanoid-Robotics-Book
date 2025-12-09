@@ -5,9 +5,6 @@ Handles operations with the Qdrant vector database for document indexing and ret
 from typing import List, Dict, Optional
 import logging
 import uuid
-from qdrant_client import QdrantClient
-from qdrant_client.http import models
-from qdrant_client.http.models import Distance, VectorParams, PointStruct
 
 logger = logging.getLogger(__name__)
 
@@ -32,23 +29,34 @@ class VectorStoreService:
         import os
         is_hf_space = os.getenv("HF_SPACE_ID") is not None
 
-        # Use in-memory mode for Hugging Face Spaces to avoid external dependencies
-        if is_hf_space or url is None:
-            # Use in-memory mode for development without requiring a running server
-            self.client = QdrantClient(":memory:")
-            logger.info("Using in-memory Qdrant for Hugging Face Spaces")
-        else:
-            self.client = QdrantClient(
-                url=url,
-                api_key=api_key,
-                prefer_grpc=False  # Use REST for free tier
-            )
-            logger.info(f"Using external Qdrant at {url}")
+        try:
+            from qdrant_client import QdrantClient
+            from qdrant_client.http import models
+            from qdrant_client.http.models import Distance, VectorParams, PointStruct
 
-        self.collection_name = collection_name
+            # Use in-memory mode for Hugging Face Spaces to avoid external dependencies
+            if is_hf_space or url is None:
+                # Use in-memory mode for development without requiring a running server
+                self.client = QdrantClient(":memory:")
+                logger.info("Using in-memory Qdrant for Hugging Face Spaces")
+            else:
+                self.client = QdrantClient(
+                    url=url,
+                    api_key=api_key,
+                    prefer_grpc=False  # Use REST for free tier
+                )
+                logger.info(f"Using external Qdrant at {url}")
 
-        # Initialize the collection if it doesn't exist
-        self._ensure_collection_exists()
+            self.collection_name = collection_name
+
+            # Initialize the collection if it doesn't exist
+            self._ensure_collection_exists()
+
+        except ImportError:
+            logger.warning("Qdrant client not available - using mock vector store service")
+            self.client = None
+            self.collection_name = collection_name
+            logger.info("Mock vector store service initialized")
 
     def _ensure_collection_exists(self):
         """
@@ -62,6 +70,7 @@ class VectorStoreService:
             if not collection_exists:
                 # Create collection with appropriate parameters
                 # Using 768 dimensions for Google Gemini embeddings
+                from qdrant_client.http.models import VectorParams, Distance
                 self.client.create_collection(
                     collection_name=self.collection_name,
                     vectors_config=VectorParams(size=768, distance=Distance.COSINE)
@@ -71,7 +80,7 @@ class VectorStoreService:
                 logger.info(f"Collection {self.collection_name} already exists")
         except Exception as e:
             logger.error(f"Error ensuring collection exists: {str(e)}")
-            raise
+            # Don't raise the exception to prevent application crashes
 
     def index_document(self, text: str, doc_id: Optional[str] = None, metadata: Optional[Dict] = None) -> str:
         """
@@ -91,40 +100,52 @@ class VectorStoreService:
         if doc_id is None:
             doc_id = str(uuid.uuid4())
 
+        if self.client is None:
+            # Mock implementation when Qdrant client is not available
+            logger.warning("Mock vectorstore: Would index document")
+            return doc_id
+
         # In a real implementation, we would get embeddings from the embedding service
         # For now, we'll use mock embeddings
-        from .embedding_service import get_embedding_service
-        embedding_service = get_embedding_service()
-        embeddings = embedding_service.embed_text(text, chunk_size=512)
+        try:
+            from .embedding_service import get_embedding_service
+            embedding_service = get_embedding_service()
+            embeddings = embedding_service.embed_text(text, chunk_size=512)
 
-        # Prepare points for insertion
-        points = []
-        for i, embedding in enumerate(embeddings):
-            # Each chunk gets its own point in the vector store
-            # Create a proper UUID for the point ID
-            import uuid as uuid_lib
-            point_id = str(uuid_lib.uuid4())
-            payload = {
-                "text": text[i*512:(i+1)*512],  # Store the actual text chunk
-                "original_doc_id": doc_id,
-                "chunk_index": i,
-                "metadata": metadata or {}
-            }
+            # Prepare points for insertion
+            points = []
+            for i, embedding in enumerate(embeddings):
+                # Each chunk gets its own point in the vector store
+                # Create a proper UUID for the point ID
+                import uuid as uuid_lib
+                from qdrant_client.http.models import PointStruct
+                point_id = str(uuid_lib.uuid4())
+                payload = {
+                    "text": text[i*512:(i+1)*512],  # Store the actual text chunk
+                    "original_doc_id": doc_id,
+                    "chunk_index": i,
+                    "metadata": metadata or {}
+                }
 
-            point = PointStruct(
-                id=point_id,
-                vector=embedding,
-                payload=payload
+                point = PointStruct(
+                    id=point_id,
+                    vector=embedding,
+                    payload=payload
+                )
+                points.append(point)
+
+            # Insert points into the collection
+            self.client.upsert(
+                collection_name=self.collection_name,
+                points=points
             )
-            points.append(point)
 
-        # Insert points into the collection
-        self.client.upsert(
-            collection_name=self.collection_name,
-            points=points
-        )
+            logger.info(f"Successfully indexed {len(points)} chunks for document {doc_id}")
+        except ImportError:
+            logger.warning("Qdrant client not available - skipping document index")
+        except Exception as e:
+            logger.error(f"Error indexing document: {str(e)}")
 
-        logger.info(f"Successfully indexed {len(points)} chunks for document {doc_id}")
         return doc_id
 
     def index_documents(self, documents: List[Dict]) -> List[str]:
@@ -164,40 +185,50 @@ class VectorStoreService:
         """
         logger.info(f"Performing similarity search with top_k={top_k}")
 
-        # Determine the correct method based on client capabilities
-        # Check if this is an in-memory client (doesn't have search method)
-        if not hasattr(self.client, 'search'):
-            # Use query_points for in-memory client
-            search_results = self.client.query_points(
-                collection_name=self.collection_name,
-                query=query_vector,
-                limit=top_k
-            )
-            search_points = search_results.points  # query_points returns QueryResponse
-        else:
-            # Use search for regular HTTP/gRPC client
-            search_results = self.client.search(
-                collection_name=self.collection_name,
-                query_vector=query_vector,
-                limit=top_k
-            )
-            search_points = search_results  # search returns list of ScoredPoint
+        if self.client is None:
+            # Mock implementation when Qdrant client is not available
+            logger.warning("Mock vectorstore: Returning empty search results")
+            return []
 
-        # Format results
-        results = []
-        for result in search_points:
-            formatted_result = {
-                "id": result.id,
-                "content": result.payload.get("text", "") if result.payload else "",
-                "score": result.score,
-                "metadata": result.payload.get("metadata", {}) if result.payload else {},
-                "original_doc_id": result.payload.get("original_doc_id", "") if result.payload else "",
-                "chunk_index": result.payload.get("chunk_index", 0) if result.payload else 0
-            }
-            results.append(formatted_result)
+        try:
+            from qdrant_client.http import models
+            # Determine the correct method based on client capabilities
+            # Check if this is an in-memory client (doesn't have search method)
+            if not hasattr(self.client, 'search'):
+                # Use query_points for in-memory client
+                search_results = self.client.query_points(
+                    collection_name=self.collection_name,
+                    query=query_vector,
+                    limit=top_k
+                )
+                search_points = search_results.points  # query_points returns QueryResponse
+            else:
+                # Use search for regular HTTP/gRPC client
+                search_results = self.client.search(
+                    collection_name=self.collection_name,
+                    query_vector=query_vector,
+                    limit=top_k
+                )
+                search_points = search_results  # search returns list of ScoredPoint
 
-        logger.info(f"Search completed, returning {len(results)} results")
-        return results
+            # Format results
+            results = []
+            for result in search_points:
+                formatted_result = {
+                    "id": result.id,
+                    "content": result.payload.get("text", "") if result.payload else "",
+                    "score": result.score,
+                    "metadata": result.payload.get("metadata", {}) if result.payload else {},
+                    "original_doc_id": result.payload.get("original_doc_id", "") if result.payload else "",
+                    "chunk_index": result.payload.get("chunk_index", 0) if result.payload else 0
+                }
+                results.append(formatted_result)
+
+            logger.info(f"Search completed, returning {len(results)} results")
+            return results
+        except Exception as e:
+            logger.error(f"Error performing search: {str(e)}")
+            return []
 
     def delete_document(self, doc_id: str):
         """
@@ -208,25 +239,33 @@ class VectorStoreService:
         """
         logger.info(f"Deleting document: {doc_id}")
 
-        # Find all points with this document ID
-        filter_condition = models.Filter(
-            must=[
-                models.FieldCondition(
-                    key="original_doc_id",
-                    match=models.MatchValue(value=doc_id)
-                )
-            ]
-        )
+        if self.client is None:
+            logger.warning("Mock vectorstore: Would delete document")
+            return
 
-        # Delete points matching the filter
-        self.client.delete(
-            collection_name=self.collection_name,
-            points_selector=models.FilterSelector(
-                filter=filter_condition
+        try:
+            from qdrant_client.http import models
+            # Find all points with this document ID
+            filter_condition = models.Filter(
+                must=[
+                    models.FieldCondition(
+                        key="original_doc_id",
+                        match=models.MatchValue(value=doc_id)
+                    )
+                ]
             )
-        )
 
-        logger.info(f"Successfully deleted document: {doc_id}")
+            # Delete points matching the filter
+            self.client.delete(
+                collection_name=self.collection_name,
+                points_selector=models.FilterSelector(
+                    filter=filter_condition
+                )
+            )
+
+            logger.info(f"Successfully deleted document: {doc_id}")
+        except Exception as e:
+            logger.error(f"Error deleting document: {str(e)}")
 
     def get_document(self, doc_id: str) -> Optional[Dict]:
         """
@@ -240,44 +279,53 @@ class VectorStoreService:
         """
         logger.info(f"Retrieving document: {doc_id}")
 
-        # Find all points with this document ID
-        filter_condition = models.Filter(
-            must=[
-                models.FieldCondition(
-                    key="original_doc_id",
-                    match=models.MatchValue(value=doc_id)
-                )
-            ]
-        )
+        if self.client is None:
+            logger.warning("Mock vectorstore: Would return document")
+            return None
 
-        results = self.client.scroll(
-            collection_name=self.collection_name,
-            scroll_filter=filter_condition,
-            limit=1000  # Assuming a document won't have more than 1000 chunks
-        )
+        try:
+            from qdrant_client.http import models
+            # Find all points with this document ID
+            filter_condition = models.Filter(
+                must=[
+                    models.FieldCondition(
+                        key="original_doc_id",
+                        match=models.MatchValue(value=doc_id)
+                    )
+                ]
+            )
 
-        if results[0]:
-            # Combine all chunks of the document
-            chunks = []
-            for point in results[0]:
-                chunks.append({
-                    "text": point.payload.get("text", ""),
-                    "chunk_index": point.payload.get("chunk_index", 0)
-                })
+            results = self.client.scroll(
+                collection_name=self.collection_name,
+                scroll_filter=filter_condition,
+                limit=1000  # Assuming a document won't have more than 1000 chunks
+            )
 
-            # Sort chunks by index to reconstruct the document
-            chunks.sort(key=lambda x: x["chunk_index"])
+            if results[0]:
+                # Combine all chunks of the document
+                chunks = []
+                for point in results[0]:
+                    chunks.append({
+                        "text": point.payload.get("text", ""),
+                        "chunk_index": point.payload.get("chunk_index", 0)
+                    })
 
-            full_text = "".join(chunk["text"] for chunk in chunks)
+                # Sort chunks by index to reconstruct the document
+                chunks.sort(key=lambda x: x["chunk_index"])
 
-            return {
-                "id": doc_id,
-                "text": full_text,
-                "metadata": results[0][0].payload.get("metadata", {})
-            }
+                full_text = "".join(chunk["text"] for chunk in chunks)
 
-        logger.info(f"Document {doc_id} not found")
-        return None
+                return {
+                    "id": doc_id,
+                    "text": full_text,
+                    "metadata": results[0][0].payload.get("metadata", {})
+                }
+
+            logger.info(f"Document {doc_id} not found")
+            return None
+        except Exception as e:
+            logger.error(f"Error retrieving document: {str(e)}")
+            return None
 
 # Global instance of the vector store service
 # In a real application, this might be managed by a dependency injection framework
@@ -290,8 +338,13 @@ def get_vectorstore_service():
     """
     global vectorstore_service
     if vectorstore_service is None:
-        # Force in-memory mode for development to avoid dependency on external services
-        url = None  # This will trigger in-memory mode in VectorStoreService.__init__
-        api_key = None
-        vectorstore_service = VectorStoreService(url=url, api_key=api_key)
+        try:
+            # Force in-memory mode for development to avoid dependency on external services
+            url = None  # This will trigger in-memory mode in VectorStoreService.__init__
+            api_key = None
+            vectorstore_service = VectorStoreService(url=url, api_key=api_key)
+        except Exception as e:
+            logger.error(f"Failed to initialize vectorstore service: {str(e)}")
+            # Create a service even if initialization fails
+            vectorstore_service = VectorStoreService()
     return vectorstore_service
