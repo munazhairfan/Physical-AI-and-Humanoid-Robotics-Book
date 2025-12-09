@@ -49,7 +49,7 @@ const ChatWidget: React.FC = () => {
 
     try {
       // Call backend API - Updated to use configurable URL
-      const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || 'https://physical-ai-and-humanoid-robotics-book-production.up.railway.app/';
+      const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || (window.location.hostname === 'localhost' ? 'http://localhost:8000' : 'https://physical-ai-and-humanoid-robotics-book-production.up.railway.app/');
       const response = await fetch(`${BACKEND_URL}/chat`, {
         method: 'POST',
         headers: {
