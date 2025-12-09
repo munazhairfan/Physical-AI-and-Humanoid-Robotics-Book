@@ -19,29 +19,81 @@ openai_assistant_service = None
 def get_embedding_service():
     global embedding_service
     if embedding_service is None:
-        from .embedding_service import get_embedding_service as _get_embedding_service
-        embedding_service = _get_embedding_service()
+        try:
+            from .embedding_service import get_embedding_service as _get_embedding_service
+            embedding_service = _get_embedding_service()
+        except ValueError as e:
+            logger.error(f"Failed to initialize embedding service: {str(e)}")
+            # Return a mock service that provides basic functionality
+            class MockEmbeddingService:
+                def embed_text(self, text, chunk_size=512):
+                    logger.warning("Mock embedding service: returning dummy embeddings")
+                    # Return a simple dummy embedding
+                    return [[0.1] * 768]  # 768-dim vector like Gemini embeddings
+
+                def embed_query(self, query):
+                    logger.warning("Mock embedding service: returning dummy query embedding")
+                    return [0.1] * 768  # 768-dim vector like Gemini embeddings
+
+            embedding_service = MockEmbeddingService()
     return embedding_service
 
 def get_llm_service():
     global llm_service
     if llm_service is None:
-        from .llm_service import get_llm_service as _get_llm_service
-        llm_service = _get_llm_service()
+        try:
+            from .llm_service import get_llm_service as _get_llm_service
+            llm_service = _get_llm_service()
+        except ValueError as e:
+            logger.error(f"Failed to initialize LLM service: {str(e)}")
+            # Return a mock service that provides basic functionality
+            class MockLLMService:
+                def generate_response(self, query, context=None, history=None):
+                    logger.warning("Mock LLM service: returning mock response")
+                    return f"I'm sorry, but I couldn't process your query '{query}' because the LLM service is not properly configured. Please set the GEMINI_API_KEY environment variable."
+
+            llm_service = MockLLMService()
     return llm_service
 
 def get_vectorstore_service():
     global vectorstore_service
     if vectorstore_service is None:
-        from .vectorstore_service import get_vectorstore_service as _get_vectorstore_service
-        vectorstore_service = _get_vectorstore_service()
+        try:
+            from .vectorstore_service import get_vectorstore_service as _get_vectorstore_service
+            vectorstore_service = _get_vectorstore_service()
+        except Exception as e:
+            logger.error(f"Failed to initialize vectorstore service: {str(e)}")
+            # Return a mock service that provides basic functionality
+            class MockVectorStoreService:
+                def index_document(self, text, doc_id=None, metadata=None):
+                    logger.warning("Mock vectorstore service: would index document")
+                    return doc_id or "mock-doc-id"
+
+                def search(self, query_vector, top_k=5):
+                    logger.warning("Mock vectorstore service: returning empty search results")
+                    return []
+
+                def delete_document(self, doc_id):
+                    logger.warning(f"Mock vectorstore service: would delete document {doc_id}")
+
+                def get_document(self, doc_id):
+                    logger.warning(f"Mock vectorstore service: would return document {doc_id}")
+                    return None
+
+            vectorstore_service = MockVectorStoreService()
     return vectorstore_service
 
 def get_openai_assistant_service():
     global openai_assistant_service
     if openai_assistant_service is None:
-        from .openai_assistant_service import get_openai_assistant_service as _get_openai_assistant_service
-        openai_assistant_service = _get_openai_assistant_service()
+        try:
+            from .openai_assistant_service import get_openai_assistant_service as _get_openai_assistant_service
+            openai_assistant_service = _get_openai_assistant_service()
+        except Exception as e:
+            logger.error(f"Failed to initialize OpenAI assistant service: {str(e)}")
+            # Return the mock service that's already implemented
+            from .openai_assistant_service import MockGeminiAssistantService
+            openai_assistant_service = MockGeminiAssistantService()
     return openai_assistant_service
 
 # Request and response models
