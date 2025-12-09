@@ -10,7 +10,7 @@ logger = logging.getLogger(__name__)
 
 try:
     # Import the main FastAPI app from app/main.py
-    from app.main import app
+    from app import app
     logger.info("Successfully imported main app")
 
 except Exception as e:
