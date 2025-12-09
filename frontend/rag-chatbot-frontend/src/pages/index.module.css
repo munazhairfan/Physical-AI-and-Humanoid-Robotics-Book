@@ -37,6 +37,21 @@ html[data-theme='dark'] {
   justify-content: center;
 }
 
+/* Ensure perfect centering of content */
+.heroBanner .container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+.heroBanner .row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
 /* Hero illustration positioning */
 .heroBanner::before {
   content: '';
@@ -48,6 +63,13 @@ html[data-theme='dark'] {
   background: radial-gradient(circle at 10% 20%, rgba(139, 92, 246, 0.05) 0%, transparent 20%),
               radial-gradient(circle at 90% 80%, rgba(6, 182, 212, 0.05) 0%, transparent 20%);
   pointer-events: none;
+  z-index: 1;
+}
+
+/* Ensure content stays above the blobs */
+.container {
+  position: relative;
+  z-index: 2;
 }
 
 .robotIllustrationContainer {
@@ -282,6 +304,13 @@ html[data-theme='dark'] {
   100% { transform: scale(1); }
 }
 
+/* Adjust SVG styling */
+.cardIcon svg {
+  width: 60%;
+  height: 60%;
+  color: white;
+}
+
 .infoCard h3 {
   margin-top: 0;
   margin-bottom: 1rem;
@@ -411,4 +440,51 @@ html[data-theme='dark'] .infoCard p {
 html[data-theme='dark'] .headerContent {
   background: var(--background-secondary);
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+/* Chat section styles */
+.sectionHeader {
+  margin-bottom: 2rem;
+}
+
+.sectionTitle {
+  color: var(--text-primary);
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  position: relative;
+  display: inline-block;
+}
+
+.sectionTitle::after {
+  content: '';
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80px;
+  height: 4px;
+  background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
+  border-radius: 2px;
+}
+
+.sectionSubtitle {
+  color: var(--text-secondary);
+  font-size: 1.1rem;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.chatContainer {
+  margin-top: 2rem;
+  padding: 0 1rem;
+}
+
+@media (max-width: 996px) {
+  .chatContainer {
+    padding: 0;
+  }
+
+  .sectionTitle {
+    font-size: 1.5rem;
+  }
 }
