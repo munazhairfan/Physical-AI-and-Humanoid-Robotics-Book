@@ -7,9 +7,9 @@ COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy application code
-COPY . .
+COPY . /app/
 
-# Make sure startup script is executable
+# Make startup script executable
 RUN chmod +x /app/startup.py
 
 # Skip the import test that causes module resolution conflicts during build

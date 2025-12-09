@@ -44,12 +44,9 @@ def main():
 
         # Get the port from environment variable (required by Railway)
         port = int(os.environ.get("PORT", 8000))
-
         logger.info(f"Starting server on port {port}")
-
-        # Run the application with uvicorn
         uvicorn.run(
-            app,  # Pass the app instance directly
+            app,  # Direct app instance reference
             host="0.0.0.0",
             port=port,
             workers=1,

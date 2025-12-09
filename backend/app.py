@@ -1,9 +1,10 @@
-# app.py - EntryPoint for Railway deployment
-# This file is used by Railway to find and start the application
+# app.py - Entry point for Railway deployment
+# This creates the FastAPI app instance that Railway expects
 
 import os
 import sys
 import logging
+import uvicorn
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -17,6 +18,7 @@ if app_dir not in sys.path:
 
 # Import and handle any potential startup issues gracefully
 try:
+    # Import the main FastAPI application
     from main import app  # Import from the main module inside the app directory
     logger.info("Successfully imported main app")
 except Exception as e:
@@ -30,9 +32,8 @@ except Exception as e:
         return {"error": "Failed to load main application", "details": str(e)}
 
 if __name__ == "__main__":
-    import uvicorn
     port = int(os.environ.get("PORT", 8000))
-    print(f"Starting server on port {port}")
+    logger.info(f"Starting server on port {port}")
     uvicorn.run(
         app,
         host="0.0.0.0",

@@ -7,4 +7,3 @@ numpy==1.26.4
 google-generativeai==0.8.4
 python-dotenv==1.0.1
 python-multipart==0.0.20
-mangum==0.17.0
