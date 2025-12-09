@@ -174,11 +174,14 @@ async def chat(request: ChatRequest):
             history=request.history
         )
 
-        # Store the conversation in the database (if needed)
-        db_service = await get_database_service()
-        import uuid
-        session_id = str(uuid.uuid4())
-        await db_service.store_chat_history(session_id, request.message, response_text)
+        # Store the conversation in the database (if needed) - make this optional
+        try:
+            db_service = await get_database_service()
+            import uuid
+            session_id = str(uuid.uuid4())
+            await db_service.store_chat_history(session_id, request.message, response_text)
+        except Exception as db_error:
+            logger.warning(f"Database operation failed: {str(db_error)} - continuing without history storage")
 
         response = ChatResponse(response=response_text)
         logger.info("Successfully generated chat response")
@@ -453,10 +456,28 @@ async def health_check():
     """
     return {"status": "healthy", "service": "rag-chatbot-api"}
 
-# Import here to avoid circular imports
+# Import here to avoid circular imports - make it more robust
 async def get_database_service():
-    from .database_service import get_database_service as _get_database_service
-    return await _get_database_service()
+    try:
+        from .database_service import get_database_service as _get_database_service
+        return await _get_database_service()
+    except ImportError as e:
+        logger.error(f"Failed to import database service: {str(e)}")
+        # Return a mock service that provides basic functionality without database
+        class MockDatabaseService:
+            async def store_chat_history(self, session_id, user_message, bot_response, context_metadata=None):
+                logger.warning(f"Mock DB: Would store chat history for session {session_id}")
+                pass
+
+            async def get_chat_history(self, session_id):
+                logger.warning(f"Mock DB: Would return chat history for session {session_id}")
+                return []
+
+            async def get_recent_chat_sessions(self, limit=10):
+                logger.warning("Mock DB: Would return recent chat sessions")
+                return []
+
+        return MockDatabaseService()
 
 if __name__ == "__main__":
     import uvicorn
