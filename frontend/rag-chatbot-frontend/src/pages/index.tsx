@@ -13,8 +13,8 @@ function HomepageHeader() {
     <header className={clsx('hero hero--primary', styles.heroBanner)}>
       <div className="container">
         <div className="row">
-          <div className="col col--8 col--offset--2">
-            <div className="text--center">
+          <div className="col col--10 col--offset--1"> {/* Increased width and adjusted offset for better centering */}
+            <div className={clsx("text--center", styles.headerContent)}>
               <div className={styles.heroLogo}>
                 <img src="/img/logo.svg" alt="Robotics Educational Book Logo" className={styles.heroImage} />
               </div>
@@ -31,6 +31,13 @@ function HomepageHeader() {
             </div>
           </div>
         </div>
+
+        {/* Adding a decorative robot illustration */}
+        <div className={styles.robotIllustrationContainer}>
+          <div className={styles.robotIllustration}>
+            <img src="/img/Cool robot-bro.svg" alt="Robotic AI Illustration" className={styles.robotImage} />
+          </div>
+        </div>
       </div>
     </header>
   );
@@ -43,28 +50,28 @@ function InfoCards() {
         <div className="col col--4">
           <div className={styles.infoCard}>
             <div className={clsx(styles.cardIcon, styles.robotIcon)}>
-              🤖
-            </div>
-            <h3>Physical AI Fundamentals</h3>
-            <p>Learn the core concepts of AI systems that interact with the physical world through perception, reasoning, and action.</p>
-          </div>
-        </div>
-        <div className="col col--4">
-          <div className={styles.infoCard}>
-            <div className={clsx(styles.cardIcon, styles.robotIcon)}>
               🦾
             </div>
-            <h3>Humanoid Robotics</h3>
-            <p>Explore the design and control principles of robots that mimic human form for operation in human environments.</p>
+            <h3>Advanced AI Learning</h3>
+            <p>Explore cutting-edge concepts in artificial intelligence for robotics, from neural networks to machine learning algorithms that power autonomous machines.</p>
           </div>
         </div>
         <div className="col col--4">
           <div className={styles.infoCard}>
             <div className={clsx(styles.cardIcon, styles.robotIcon)}>
-              🧠
+              🤖
             </div>
-            <h3>AI Control Systems</h3>
-            <p>Discover how artificial intelligence algorithms enable adaptive behavior in robotic systems.</p>
+            <h3>Humanoid Robotics</h3>
+            <p>Understand the mechanics and control systems behind humanoid robots, including gait planning, balance control, and human-robot interaction.</p>
+          </div>
+        </div>
+        <div className="col col--4">
+          <div className={styles.infoCard}>
+            <div className={clsx(styles.cardIcon, styles.robotIcon)}>
+              🔬
+            </div>
+            <h3>Interactive Labs</h3>
+            <p>Engaging hands-on experiments and simulations to deepen your understanding of robotics principles and physical AI concepts.</p>
           </div>
         </div>
       </div>

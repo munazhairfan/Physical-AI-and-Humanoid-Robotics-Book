@@ -68,7 +68,7 @@ const config: Config = {
 
   themeConfig: {
     // Replace with your project's social card
-    image: 'img/docusaurus-social-card.jpg', // Use the default Docusaurus social card
+    image: 'img/logo.svg', // Use the logo as social card
     colorMode: {
       respectPrefersColorScheme: true,
     },
