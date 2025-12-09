@@ -12,7 +12,7 @@ const ChatWidget: React.FC = () => {
   const [messages, setMessages] = useState<Message[]>([
     {
       id: '1',
-      content: 'Hello! I\'m your Physical AI & Humanoid Robotics assistant. Ask me anything about robotics concepts from the textbook!',
+      content: '🤖 Hello! I\'m your Robotics Assistant. Ask me anything about physical AI and humanoid robotics concepts!',
       role: 'assistant',
       timestamp: new Date(),
     }
@@ -87,7 +87,7 @@ const ChatWidget: React.FC = () => {
 
       const errorMessage: Message = {
         id: (Date.now() + 1).toString(),
-        content: 'Sorry, I encountered an error processing your request. Please try again.',
+        content: '🤖 Sorry, I encountered an error. Please try again or check your connection.',
         role: 'assistant',
         timestamp: new Date(),
       };
@@ -100,7 +100,8 @@ const ChatWidget: React.FC = () => {
   return (
     <div className={styles.chatContainer}>
       <div className={styles.chatHeader}>
-        <h3>Physical AI & Humanoid Robotics Assistant</h3>
+        <div className={styles.robotIcon}>🤖</div>
+        <h3>Robotics Assistant</h3>
       </div>
 
       <div className={styles.chatMessages}>
@@ -147,7 +148,7 @@ const ChatWidget: React.FC = () => {
           className={styles.chatButton}
           disabled={isLoading || !inputValue.trim()}
         >
-          Send
+          Send 🚀
         </button>
       </form>
 

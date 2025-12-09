@@ -1,5 +1,5 @@
-/* You can override the default Docusaurus styling here. */
-/* Custom styles for educational book */
+/* Custom styles for Physical AI & Humanoid Robotics educational book */
+/* Robot-themed dark/light mode compatible styles */
 
 /* Typography and spacing */
 html {
@@ -8,6 +8,21 @@ html {
 
 h1, h2, h3, h4, h5, h6 {
   font-weight: 600;
+  color: #1e293b;
+}
+
+/* Robot-themed colors and styling */
+:root {
+  --robot-primary: #8b5cf6;
+  --robot-secondary: #06b6d4;
+  --robot-accent: #ec4899;
+  --robot-bg-dark: #0f172a;
+  --robot-bg-medium: #1e293b;
+  --robot-bg-light: #334155;
+  --robot-text-light: #e2e8f0;
+  --robot-text-medium: #cbd5e1;
+  --robot-text-dark: #f1f5f9;
+  --robot-border: #475569;
 }
 
 /* Layout improvements */
@@ -17,17 +32,30 @@ h1, h2, h3, h4, h5, h6 {
   padding: 0 20px;
 }
 
-/* Card styles for info boxes */
+/* Robot-themed card styles */
 .card {
-  border-radius: 12px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-  transition: transform 0.2s, box-shadow 0.2s;
-  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s, box-shadow 0.3s, background 0.3s, border 0.3s;
+  border: 1px solid var(--robot-border);
+  background: linear-gradient(145deg, #f1f5f9, #e2e8f0);
+  overflow: hidden;
+  position: relative;
+}
+
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--robot-primary), var(--robot-secondary));
 }
 
 .card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  transform: translateY(-6px);
+  box-shadow: 0 15px 35px rgba(139, 92, 246, 0.3);
 }
 
 /* Enhanced documentation page styles */
@@ -41,71 +69,131 @@ h1, h2, h3, h4, h5, h6 {
   padding: 0 20px;
 }
 
-/* Sidebar improvements */
+/* Sidebar improvements with robot theme */
 .menu {
   font-size: 15px;
 }
 
 .menu__link {
+  border-radius: 12px;
+  margin: 4px 0;
+  padding: 8px 16px;
+  transition: all 0.2s ease;
+  background: transparent;
   border-radius: 8px;
-  margin: 2px 0;
 }
 
 .menu__link--active {
-  background-color: #2563eb;
+  background: linear-gradient(90deg, var(--robot-primary), var(--robot-secondary));
   color: white;
   font-weight: 600;
 }
 
-/* Navbar enhancements */
+/* Navbar enhancements with robot theme */
 .navbar {
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  background: linear-gradient(135deg, var(--robot-bg-medium), var(--robot-bg-dark));
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  color: var(--robot-text-light);
 }
 
-/* Button styles */
+.navbar__title {
+  color: var(--robot-text-light);
+  font-weight: 700;
+}
+
+.navbar__link {
+  color: var(--robot-text-medium);
+}
+
+.navbar__link:hover {
+  color: var(--robot-text-light);
+}
+
+/* Button styles with robot theme */
 .button {
-  border-radius: 8px;
+  border-radius: 50px;
   font-weight: 600;
-  transition: all 0.2s;
+  transition: all 0.3s ease;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
 }
 
-/* Code block enhancements */
+.button--primary {
+  background: linear-gradient(135deg, var(--robot-primary), var(--robot-secondary));
+  color: white;
+  box-shadow: 0 4px 15px rgba(139, 92, 246, 0.4);
+}
+
+.button--primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(139, 92, 246, 0.6);
+}
+
+/* Code block enhancements with robot theme */
 .codeBlockContainer {
-  border-radius: 8px;
+  border-radius: 12px;
   overflow: hidden;
+  background: #1e293b;
+  border: 1px solid var(--robot-border);
 }
 
-/* Blockquote styles */
+/* Blockquote styles with robot theme */
 blockquote {
-  border-left: 4px solid #2563eb;
-  background-color: #eff6ff;
-  padding: 1rem 1.5rem;
+  border-left: 4px solid var(--robot-primary);
+  background: linear-gradient(135deg, #f0f9ff, #e0f2fe);
+  padding: 1.25rem 1.75rem;
   margin: 1.5rem 0;
-  border-radius: 0 8px 8px 0;
+  border-radius: 0 12px 12px 0;
+  font-style: italic;
+  position: relative;
 }
 
-/* Table enhancements */
+blockquote::before {
+  content: '🤖';
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  font-size: 1.2rem;
+}
+
+/* Table enhancements with robot theme */
 table {
-  border-radius: 8px;
+  border-radius: 12px;
   overflow: hidden;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  border: 1px solid var(--robot-border);
 }
 
 th {
-  background-color: #f1f5f9;
+  background: linear-gradient(135deg, var(--robot-bg-medium), var(--robot-bg-dark));
+  color: var(--robot-text-light);
+  padding: 1rem;
 }
 
-/* Footer improvements */
+td {
+  padding: 1rem;
+  border-bottom: 1px solid var(--robot-border);
+}
+
+/* Footer improvements with robot theme */
 .footer {
-  background-color: #1e293b;
-  color: #cbd5e1;
-  padding: 3rem 0 2rem;
+  background: linear-gradient(135deg, var(--robot-bg-dark), #0c1220);
+  color: var(--robot-text-medium);
+  padding: 4rem 0 2rem;
+}
+
+.footer__title {
+  color: var(--robot-text-light);
 }
 
 .footer__copyright {
   text-align: center;
-  color: #94a3b8;
+  color: var(--robot-text-medium);
   font-size: 0.875rem;
+  margin-top: 2rem;
 }
 
 /* Mobile responsiveness */
@@ -116,6 +204,11 @@ th {
 
   .menu {
     font-size: 14px;
+  }
+
+  .button {
+    width: 100%;
+    margin-bottom: 0.5rem;
   }
 }
 
@@ -129,52 +222,133 @@ body {
   z-index: 9999;
 }
 
-/* Additional global styles for educational feel */
+/* Additional robot-themed global styles */
+.tabs {
+  border-radius: 12px;
+  overflow: hidden;
+  background: #f8fafc;
+}
+
 .tabs__item {
   border-radius: 8px 8px 0 0;
+  border: 1px solid var(--robot-border);
+  margin: 0 2px;
+}
+
+.tabs__item:hover {
+  background: rgba(139, 92, 246, 0.1);
 }
 
 /* Improve readability */
 .markdown {
-  line-height: 1.7;
+  line-height: 1.8;
 }
 
 .markdown h1, .markdown h2, .markdown h3 {
   margin-top: 2rem;
   margin-bottom: 1rem;
+  color: #1e293b;
+  position: relative;
+}
+
+.markdown h1::after, .markdown h2::after, .markdown h3::after {
+  content: '';
+  position: absolute;
+  bottom: -8px;
+  left: 0;
+  width: 50px;
+  height: 3px;
+  background: linear-gradient(90deg, var(--robot-primary), var(--robot-secondary));
+  border-radius: 2px;
 }
 
 .markdown p {
-  margin-bottom: 1.25rem;
+  margin-bottom: 1.5rem;
+  color: #334155;
 }
 
 .markdown ul, .markdown ol {
   margin-bottom: 1.5rem;
+  padding-left: 1.5rem;
+}
+
+.markdown li {
+  margin-bottom: 0.75rem;
 }
 
 /* Enhanced code styling */
 .prism-code {
   font-size: 0.9rem;
-  line-height: 1.5;
+  line-height: 1.6;
+  border-radius: 8px;
 }
 
-/* Button primary styling */
-.button--primary {
-  background-color: #2563eb;
-  border-color: #2563eb;
+/* Dark mode robot theme */
+html[data-theme='dark'] {
+  --robot-primary: #a78bfa;
+  --robot-secondary: #22d3ee;
+  --robot-accent: #f472b6;
+  --robot-bg-dark: #0f172a;
+  --robot-bg-medium: #1e293b;
+  --robot-bg-light: #334155;
+  --robot-text-light: #f1f5f9;
+  --robot-text-medium: #cbd5e1;
+  --robot-text-dark: #94a3b8;
+  --robot-border: #475569;
 }
 
-.button--primary:hover {
-  background-color: #1d4ed8;
-  border-color: #1d4ed8;
+html[data-theme='dark'] h1,
+html[data-theme='dark'] h2,
+html[data-theme='dark'] h3,
+html[data-theme='dark'] h4,
+html[data-theme='dark'] h5,
+html[data-theme='dark'] h6 {
+  color: var(--robot-text-light);
 }
 
-/* Dark mode adjustments */
 html[data-theme='dark'] .card {
-  background-color: #1e293b;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: linear-gradient(145deg, var(--robot-bg-medium), var(--robot-bg-dark));
+  border: 1px solid var(--robot-border);
+}
+
+html[data-theme='dark'] .card::before {
+  background: linear-gradient(90deg, var(--robot-primary), var(--robot-secondary));
 }
 
 html[data-theme='dark'] blockquote {
-  background-color: #1e293b;
+  background: linear-gradient(135deg, var(--robot-bg-medium), var(--robot-bg-dark));
+  border-left: 4px solid var(--robot-primary);
+}
+
+html[data-theme='dark'] .markdown p {
+  color: var(--robot-text-medium);
+}
+
+html[data-theme='dark'] .tabs {
+  background: var(--robot-bg-dark);
+}
+
+/* Robot-themed animations */
+@keyframes robotPulse {
+  0% { box-shadow: 0 0 0 0 rgba(139, 92, 246, 0.4); }
+  70% { box-shadow: 0 0 0 12px rgba(139, 92, 246, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(139, 92, 246, 0); }
+}
+
+.robot-element {
+  animation: robotPulse 2s infinite;
+}
+
+/* Robot-themed icons enhancement */
+.robot-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--robot-primary), var(--robot-secondary));
+  color: white;
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
 }

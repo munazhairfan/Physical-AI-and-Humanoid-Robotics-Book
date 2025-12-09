@@ -18,13 +18,15 @@ function HomepageHeader() {
               <div className={styles.heroLogo}>
                 <img src="/img/logo.svg" alt="Robotics Logo" className={styles.heroImage} />
               </div>
-              <Heading as="h1" className="hero__title">
-                {siteConfig.title}
-              </Heading>
+              <div className={styles.titleContainer}>
+                <Heading as="h1" className="hero__title">
+                  {siteConfig.title}
+                </Heading>
+              </div>
               <p className="hero__subtitle">{siteConfig.tagline}</p>
               <div className={styles.heroButtons}>
-                <button className={styles.primaryButton}>Get Started</button>
-                <button className={styles.secondaryButton}>View Documentation</button>
+                <button className={styles.primaryButton}>Explore Robotics</button>
+                <button className={styles.secondaryButton}>Learn Concepts</button>
               </div>
             </div>
           </div>
@@ -41,22 +43,22 @@ function InfoCards() {
         <div className="col col--4">
           <div className={styles.infoCard}>
             <div className={styles.cardIcon}>🤖</div>
-            <h3>Physical AI Fundamentals</h3>
-            <p>Learn the core concepts of AI systems that interact with the physical world through perception, reasoning, and action.</p>
+            <h3>AI Fundamentals</h3>
+            <p>Learn the core concepts of AI systems that interact with the physical world.</p>
           </div>
         </div>
         <div className="col col--4">
           <div className={styles.infoCard}>
             <div className={styles.cardIcon}>🦾</div>
-            <h3>Humanoid Robotics</h3>
-            <p>Explore the design and control principles of robots that mimic human form and behavior for operation in human environments.</p>
+            <h3>Humanoid Robots</h3>
+            <p>Explore the design and control principles of robots that mimic human form.</p>
           </div>
         </div>
         <div className="col col--4">
           <div className={styles.infoCard}>
             <div className={styles.cardIcon}>🧠</div>
-            <h3>AI and Control Systems</h3>
-            <p>Discover how artificial intelligence algorithms enable intelligent behavior in robotic systems through perception and learning.</p>
+            <h3>Control Systems</h3>
+            <p>Discover how AI algorithms enable intelligent behavior in robotic systems.</p>
           </div>
         </div>
       </div>

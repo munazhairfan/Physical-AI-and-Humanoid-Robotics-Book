@@ -68,14 +68,14 @@ const config: Config = {
 
   themeConfig: {
     // Replace with your project's social card
-    image: 'img/docusaurus-social-card.jpg',
+    image: 'img/docusaurus-social-card.jpg', // Use the default Docusaurus social card
     colorMode: {
       respectPrefersColorScheme: true,
     },
     navbar: {
-      title: 'Physical AI & Robotics Book',
+      title: 'Physical AI & Robotics',
       logo: {
-        alt: 'Physical AI & Humanoid Robotics Logo',
+        alt: 'Robotics Educational Book Logo',
         src: 'img/logo.svg',
       },
       items: [
@@ -83,7 +83,7 @@ const config: Config = {
           type: 'docSidebar',
           sidebarId: 'tutorialSidebar',
           position: 'left',
-          label: 'Table of Contents',
+          label: 'Contents',
         },
         {
           href: 'https://github.com/munazhairfan/Physical-AI-and-Humanoid-Robotics-Book',
