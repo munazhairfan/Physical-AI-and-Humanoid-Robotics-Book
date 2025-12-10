@@ -51,6 +51,17 @@ const FloatingChat: React.FC<FloatingChatProps> = ({ backendUrl }) => {
     scrollToBottom();
   }, [messages]);
 
+  // Add a resize handler for better responsiveness on small devices
+  useEffect(() => {
+    const handleResize = () => {
+      // Force re-render to adjust to new viewport dimensions
+      setIsOpen(prev => prev); // This will trigger a re-render without changing state
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
   // Mock response function for when backend is not available
   const getMockResponse = (userMessage: string): string => {
     const lowerCaseMsg = userMessage.toLowerCase();
@@ -94,6 +105,10 @@ const FloatingChat: React.FC<FloatingChatProps> = ({ backendUrl }) => {
     setIsLoading(true);
 
     try {
+      console.log('Attempting to connect to backend:', `${currentBackendUrl}/chat`);
+      console.log('Sending message:', message);
+
+      // Try the configured backend URL
       const response = await fetch(`${currentBackendUrl}/chat`, {
         method: 'POST',
         headers: {
@@ -107,13 +122,18 @@ const FloatingChat: React.FC<FloatingChatProps> = ({ backendUrl }) => {
         }),
       });
 
+      console.log('Response received:', response.status, response.ok);
+
       if (!response.ok) {
         // If backend returns an error, use mock response instead
         console.warn('Backend error, using mock response');
+        console.warn('Response status:', response.status);
+        console.warn('Response status text:', response.statusText);
         throw new Error(`HTTP error! status: ${response.status}`);
       }
 
       const data = await response.json();
+      console.log('Backend response data:', data);
 
       // Add assistant response to the chat
       const assistantMessage: Message = {
@@ -125,6 +145,7 @@ const FloatingChat: React.FC<FloatingChatProps> = ({ backendUrl }) => {
 
       setMessages(prev => [...prev, assistantMessage]);
     } catch (error) {
+      console.error('Full error object:', error);
       console.warn('Backend not available, using mock response:', error);
 
       // Use mock response instead of showing error

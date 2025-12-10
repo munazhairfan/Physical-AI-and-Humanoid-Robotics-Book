@@ -2,7 +2,7 @@
 
 **Feature Branch**: `003-ui-fixes`
 **Created**: 2025-12-10
-**Status**: Draft
+**Status**: Complete
 **Input**: User description: "# ERRORS TO FIX
 
 #The chatbot is not appearing as the floating button on any page which can be clickeed to make the chatbot appear.

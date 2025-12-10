@@ -1,5 +1,6 @@
 import type {ReactNode} from 'react';
 import clsx from 'clsx';
+import Link from '@docusaurus/Link';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import Layout from '@theme/Layout';
 import Heading from '@theme/Heading';
@@ -21,14 +22,14 @@ function HomepageHeader() {
             <img src="/img/chatbot.svg" alt="Robotics Educational Book Logo" className={styles.heroImage} />
           </div>
           <div className={styles.titleContainer}>
-            <Heading as="h1" className="hero__title">
+            <Heading as="h1" className={styles.hero__title}>
               {siteConfig.title}
             </Heading>
-          <p className="hero__subtitle">{siteConfig.tagline}</p>
+          <p className={styles.hero__subtitle}>{siteConfig.tagline}</p>
           </div>
           <div className={styles.heroButtons}>
-            <button className={styles.primaryButton}>Start Learning</button>
-            <button className={styles.secondaryButton}>Explore Topics</button>
+            <Link to="/docs/intro" className={styles.primaryButton}>Start Learning</Link>
+            <Link to="/docs/intro" className={styles.secondaryButton}>Explore Topics</Link>
           </div>
         </div>
       </div>
@@ -45,6 +46,7 @@ export default function Home(): ReactNode {
       description="Educational Book on Robotics Concepts and AI Integration">
       <HomepageHeader />
       <main>
+        {/* Add any additional content here if needed */}
       </main>
     </Layout>
   );

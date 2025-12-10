@@ -1,48 +1,199 @@
 # Quickstart Guide: UI Fixes and Improvements
 
-## Setup
+**Date**: 2025-12-10  
+**Feature**: UI Fixes and Improvements (`specs/003-ui-fixes`)  
+**Status**: Complete  
+**Input**: Feature specification from `/specs/003-ui-fixes/spec.md`
 
-1. Ensure you have Node.js >=20.0 installed
-2. Navigate to the frontend directory: `cd frontend/rag-chatbot-frontend`
-3. Install dependencies: `npm install`
-4. Start the development server: `npm start`
+## Overview
 
-## Key Files to Modify
+This quickstart guide provides immediate setup and implementation instructions for the anime-themed UI fixes and improvements. Follow these steps to quickly implement the visual enhancements and functionality fixes.
 
-### Chatbot Implementation
-- `src/components/FloatingChatLoader.tsx` - Loader for the floating chat
-- `src/components/ChatWidget/FloatingChat.tsx` - Main floating chat component
-- `src/plugins/floatingChatPlugin.js` - Plugin registration
+## Prerequisites
 
-### Homepage Elements
-- `src/pages/index.tsx` - Main homepage with header and buttons
-- `src/components/HomepageFeatures/index.tsx` - Feature cards with SVG icons
-- `src/components/HomepageFeatures/styles.module.css` - Feature card styling
+- **Node.js** >= 20.0
+- **npm** or **yarn** package manager
+- **Git** for version control
+- **Text editor** with TypeScript/React support
 
-### Styling
-- `src/css/custom.css` - Custom CSS overrides
-- `src/pages/index.module.css` - Homepage-specific styles
-- Component-specific CSS modules
+## Setup Commands
 
-### SVG Assets
-- `ui/` - Directory containing new anime-themed SVGs
-- `static/img/` - Current SVG assets
+### 1. Clone and Install Dependencies
 
-## Development Workflow
+```bash
+# Navigate to frontend directory
+cd frontend/rag-chatbot-frontend
 
-1. **Fix Chatbot**: Verify the floating chat is working on all pages
-2. **Replace SVGs**: Update homepage cards and feature tabs with anime-themed SVGs
-3. **Apply Theme**: Implement anime theme with vibrant colors and sharp shapes
-4. **Fix Text Opacity**: Update CSS to improve text visibility
-5. **Add Button Links**: Implement navigation for homepage buttons
-6. **Remove Unwanted Elements**: Remove keyboard emojis and Docusaurus icons
-7. **Test**: Verify all changes work across different pages and screen sizes
+# Install dependencies
+npm install
 
-## Testing
+# Verify installation
+npm run build
+```
 
-- Run `npm start` to start the development server
-- Navigate to different pages to verify the floating chat appears
-- Check that all buttons have proper functionality
-- Verify SVG replacements look good and are properly sized
-- Confirm text has proper contrast and visibility
-- Test responsive design on different screen sizes
+### 2. Start Development Server
+
+```bash
+# Start development server
+npm start
+
+# Your site will be available at http://localhost:3000
+```
+
+## Implementation Commands
+
+### Apply Anime Theme
+
+```bash
+# Step 1: Update the main CSS file
+# Edit: src/css/custom.css
+# Add: Anime theme variables and styling
+
+# Step 2: Update homepage styles
+# Edit: src/pages/index.module.css
+# Add: Theme-specific styling for hero banner and components
+```
+
+### Implement Floating Chat
+
+```bash
+# Verify floating chat plugin is active
+# Check: docusaurus.config.ts
+# Ensure: './src/plugins/floatingChatPlugin' is in plugins array
+
+# Verify components
+# Check: src/components/FloatingChatLoader.tsx
+# Check: src/components/ChatWidget/FloatingChat.tsx
+```
+
+### Update Homepage Links
+
+```bash
+# Update navigation buttons
+# Edit: src/pages/index.tsx
+# Fix: Link to="/docs/intro" for both buttons
+```
+
+## Configuration Files to Modify
+
+### 1. CSS Custom Properties (src/css/custom.css)
+```css
+:root {
+  --anime-primary: #ff6b6b;
+  --anime-secondary: #4ecdc4;
+  --anime-accent: #ffbe0b;
+}
+```
+
+### 2. Homepage Styling (src/pages/index.module.css)
+```css
+.heroBanner {
+  padding: 2rem 0;
+  margin-bottom: 0;
+}
+```
+
+### 3. Footer Styling (src/css/custom.css)
+```css
+.footer {
+  padding: 1rem 2rem 2rem;
+  margin-top: 0;
+}
+```
+
+## Quick Verification Steps
+
+### 1. Visual Checks
+```bash
+# Open browser to localhost:3000
+# Verify: Floating chat button appears on all pages
+# Verify: Anime theme colors are applied
+# Verify: Text has proper opacity
+# Verify: Buttons have working links
+```
+
+### 2. Mobile Responsiveness
+```bash
+# Open browser developer tools
+# Toggle device toolbar
+# Test: Responsive design on mobile viewports
+# Verify: Chat widget adapts to small screens
+```
+
+## Common Issues and Solutions
+
+### Issue: Chat button not appearing
+**Solution:**
+```bash
+# Check docusaurus.config.ts
+# Ensure floatingChatPlugin is in plugins array
+# Verify FloatingChatLoader.tsx is properly configured
+```
+
+### Issue: Theme not applying
+**Solution:**
+```bash
+# Check CSS custom properties are properly defined
+# Verify CSS modules are importing correctly
+# Clear browser cache and restart dev server
+```
+
+### Issue: Text opacity too low
+**Solution:**
+```bash
+# Check text color contrast in CSS
+# Update opacity values in relevant components
+# Verify dark/light mode variables
+```
+
+## Deployment Commands
+
+```bash
+# Build for production
+npm run build
+
+# Serve production build locally for testing
+npm run serve
+
+# Deploy to hosting platform
+# (Follow your platform's specific deployment steps)
+```
+
+## Feature Verification
+
+After implementation, verify these key features:
+
+- [ ] Floating chat button appears on all pages
+- [ ] Anime theme is consistently applied throughout
+- [ ] Homepage buttons navigate to correct pages
+- [ ] Text has proper visibility and contrast
+- [ ] SVG icons are replaced with anime-themed alternatives
+- [ ] Unwanted emojis and dinosaur icons are removed
+- [ ] Site is responsive on mobile devices
+- [ ] Chat widget functions properly on all screen sizes
+
+## Next Steps
+
+1. **Customize theme** - Adjust color palette to match specific anime style preferences
+2. **Add animations** - Implement additional hover effects and transitions
+3. **Content updates** - Add more anime-themed content after UI is stable
+4. **Performance optimization** - Optimize CSS and images for faster loading
+5. **Accessibility audit** - Ensure all UI changes maintain accessibility standards
+
+## Troubleshooting
+
+### If changes don't appear:
+```bash
+# Clear Docusaurus cache
+npx docusaurus clear
+
+# Restart development server
+npm start
+```
+
+### If CSS changes don't update:
+- Check CSS module naming conventions
+- Verify imports in component files
+- Confirm CSS custom properties are properly defined
+
+This quickstart provides the essential steps to implement the UI fixes and improvements. For detailed implementation steps, refer to the complete tasks in `tasks.md`.
