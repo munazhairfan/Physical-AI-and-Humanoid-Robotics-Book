@@ -368,7 +368,7 @@ const FloatingChat: React.FC<FloatingChatProps> = ({ backendUrl }) => {
           {messages.map((message) => (
             <div
               key={message.id}
-              className={`${styles.message} ${styles[`${message.role}-message`]}`}
+              className={`${styles.message} ${message.role === 'user' ? styles['user-message'] : message.role === 'assistant' ? styles['assistant-message'] : styles['assistant-message']}`}
             >
               <div className={styles['message-content']}>
                 {String(message.content || '')}
