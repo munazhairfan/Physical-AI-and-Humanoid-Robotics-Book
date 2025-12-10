@@ -371,7 +371,7 @@ const FloatingChat: React.FC<FloatingChatProps> = ({ backendUrl }) => {
               className={`${styles.message} ${styles[`${message.role}-message`]}`}
             >
               <div className={styles['message-content']}>
-                {message.content}
+                {String(message.content || '')}
               </div>
               <div className={styles['message-timestamp']}>
                 {message.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
