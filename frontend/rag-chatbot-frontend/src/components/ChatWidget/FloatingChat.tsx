@@ -15,14 +15,22 @@ interface FloatingChatProps {
 const FloatingChat: React.FC<FloatingChatProps> = ({ backendUrl }) => {
   // Initialize backend URL inside the component to avoid process issues
   const [resolvedBackendUrl, setResolvedBackendUrl] = useState(() => {
-    if (typeof window !== 'undefined') {
-      // Check if we're in browser environment and use appropriate URL
-      return window.location.hostname === 'localhost'
-        ? 'http://localhost:8000'
-        : (process.env.REACT_APP_BACKEND_URL || 'https://physical-ai-humanoid-rb-production.up.railway.app/');
+    // Server-side rendering check - window is not available during SSR
+    if (typeof window === 'undefined') {
+      // Server-side fallback
+      return 'https://physical-ai-and-humanoid-robotics-book-production.up.railway.app/';
     }
-    // Server-side fallback
-    return process.env.REACT_APP_BACKEND_URL || 'https://physical-ai-humanoid-rb-production.up.railway.app/';
+
+    // Client-side - window is available
+    // Get the backend URL from a global variable that can be set during deployment
+    // This avoids the process.env issue in browser environments
+    const envBackendUrl = (window as any).REACT_APP_BACKEND_URL ||
+                         (window as any).env?.REACT_APP_BACKEND_URL;
+
+    // Check if we're in browser environment and use appropriate URL
+    return window.location.hostname === 'localhost'
+      ? 'http://localhost:8000'
+      : (envBackendUrl || 'https://physical-ai-and-humanoid-robotics-book-production.up.railway.app/');
   });
 
   // Use the provided backendUrl if available, otherwise use the resolved one
