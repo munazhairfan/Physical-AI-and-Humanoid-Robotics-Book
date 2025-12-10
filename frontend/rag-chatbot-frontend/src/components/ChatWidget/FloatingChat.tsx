@@ -158,7 +158,9 @@ const FloatingChat: React.FC<FloatingChatProps> = ({ backendUrl }) => {
       console.log('Sending message:', message);
 
       // Try the configured backend URL
-      const response = await fetch(`${currentBackendUrl}/chat`, {
+      // Ensure there's no trailing slash in the backend URL to prevent double slashes
+      const normalizedBackendUrl = currentBackendUrl.replace(/\/$/, '');
+      const response = await fetch(`${normalizedBackendUrl}/chat`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -235,7 +237,9 @@ const FloatingChat: React.FC<FloatingChatProps> = ({ backendUrl }) => {
       console.log('Sending selected text:', selectedText);
 
       // Try the configured backend URL with the selected_text endpoint
-      const response = await fetch(`${currentBackendUrl}/selected_text`, {
+      // Ensure there's no trailing slash in the backend URL to prevent double slashes
+      const normalizedBackendUrl = currentBackendUrl.replace(/\/$/, '');
+      const response = await fetch(`${normalizedBackendUrl}/selected_text`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
