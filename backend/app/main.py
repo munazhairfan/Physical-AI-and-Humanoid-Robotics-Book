@@ -1,9 +1,11 @@
 from fastapi import FastAPI, HTTPException, UploadFile, File
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.middleware.trustedhost import TrustedHostMiddleware
 from pydantic import BaseModel
 from typing import List, Optional
 import logging
 import asyncio
+import os
 
 app = FastAPI(title="RAG Chatbot API - Optimized for Railway Deployment")
 
@@ -14,6 +16,12 @@ app.add_middleware(
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
+)
+
+# Add TrustedHostMiddleware for Railway deployment
+app.add_middleware(
+    TrustedHostMiddleware,
+    allowed_hosts=["*"]  # Railway-specific hosts will be allowed
 )
 
 @app.get("/")
@@ -34,7 +42,7 @@ def get_embedding_service():
     global embedding_service
     if embedding_service is None:
         try:
-            from .embedding_service import get_embedding_service as _get_embedding_service
+            from app.embedding_service import get_embedding_service as _get_embedding_service
             embedding_service = _get_embedding_service()
         except ValueError as e:
             logger.error(f"Failed to initialize embedding service: {str(e)}")
@@ -56,7 +64,7 @@ def get_llm_service():
     global llm_service
     if llm_service is None:
         try:
-            from .llm_service import get_llm_service as _get_llm_service
+            from app.llm_service import get_llm_service as _get_llm_service
             llm_service = _get_llm_service()
         except ValueError as e:
             logger.error(f"Failed to initialize LLM service: {str(e)}")
@@ -73,7 +81,7 @@ def get_vectorstore_service():
     global vectorstore_service
     if vectorstore_service is None:
         try:
-            from .vectorstore_service import get_vectorstore_service as _get_vectorstore_service
+            from app.vectorstore_service import get_vectorstore_service as _get_vectorstore_service
             vectorstore_service = _get_vectorstore_service()
         except Exception as e:
             logger.error(f"Failed to initialize vectorstore service: {str(e)}")
@@ -101,12 +109,12 @@ def get_openai_assistant_service():
     global openai_assistant_service
     if openai_assistant_service is None:
         try:
-            from .openai_assistant_service import get_openai_assistant_service as _get_openai_assistant_service
+            from app.openai_assistant_service import get_openai_assistant_service as _get_openai_assistant_service
             openai_assistant_service = _get_openai_assistant_service()
         except Exception as e:
             logger.error(f"Failed to initialize OpenAI assistant service: {str(e)}")
             # Return the mock service that's already implemented
-            from .openai_assistant_service import MockGeminiAssistantService
+            from app.openai_assistant_service import MockGeminiAssistantService
             openai_assistant_service = MockGeminiAssistantService()
     return openai_assistant_service
 
@@ -213,6 +221,9 @@ async def query_documents(request: QueryRequest):
     except Exception as e:
         logger.error(f"Error in query_documents: {str(e)}")
         raise HTTPException(status_code=500, detail=f"Query failed: {str(e)}")
+
+# Import database service at the top level
+from app.database_service import get_database_service
 
 @app.post("/chat", response_model=ChatResponse)
 async def chat(request: ChatRequest):
@@ -522,30 +533,8 @@ async def health_check():
     """
     return {"status": "healthy", "service": "rag-chatbot-api"}
 
-# Import here to avoid circular imports - make it more robust
-async def get_database_service():
-    try:
-        from .database_service import get_database_service as _get_database_service
-        return await _get_database_service()
-    except ImportError as e:
-        logger.error(f"Failed to import database service: {str(e)}")
-        # Return a mock service that provides basic functionality without database
-        class MockDatabaseService:
-            async def store_chat_history(self, session_id, user_message, bot_response, context_metadata=None):
-                logger.warning(f"Mock DB: Would store chat history for session {session_id}")
-                pass
-
-            async def get_chat_history(self, session_id):
-                logger.warning(f"Mock DB: Would return chat history for session {session_id}")
-                return []
-
-            async def get_recent_chat_sessions(self, limit=10):
-                logger.warning("Mock DB: Would return recent chat sessions")
-                return []
-
-        return MockDatabaseService()
 
 if __name__ == "__main__":
     import uvicorn
     port = int(os.environ.get("PORT", 8000))
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+    uvicorn.run(app, host="0.0.0.0", port=port)
