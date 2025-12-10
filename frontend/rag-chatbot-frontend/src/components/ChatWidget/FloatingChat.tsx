@@ -17,10 +17,12 @@ const FloatingChat: React.FC<FloatingChatProps> = ({ backendUrl }) => {
   const [resolvedBackendUrl, setResolvedBackendUrl] = useState(() => {
     if (typeof window !== 'undefined') {
       // Check if we're in browser environment and use appropriate URL
-      return window.location.hostname === 'localhost' ? 'http://localhost:8000' : 'https://physical-ai-humanoid-rb-production.up.railway.app/';
+      return window.location.hostname === 'localhost'
+        ? 'http://localhost:8000'
+        : (process.env.REACT_APP_BACKEND_URL || 'https://physical-ai-humanoid-rb-production.up.railway.app/');
     }
     // Server-side fallback
-    return 'https://physical-ai-humanoid-rb-production.up.railway.app/';
+    return process.env.REACT_APP_BACKEND_URL || 'https://physical-ai-humanoid-rb-production.up.railway.app/';
   });
 
   // Use the provided backendUrl if available, otherwise use the resolved one
