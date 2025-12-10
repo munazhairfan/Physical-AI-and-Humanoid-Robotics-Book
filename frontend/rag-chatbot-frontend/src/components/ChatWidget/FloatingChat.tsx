@@ -191,7 +191,16 @@ const FloatingChat: React.FC<FloatingChatProps> = ({ backendUrl }) => {
 
       // Add assistant response to the chat
       // Check if response has the expected structure
-      const responseContent = data.response || data.text || data.message || JSON.stringify(data);
+      let responseContent = '';
+      if (data && typeof data === 'object') {
+        responseContent = data.response || data.text || data.message || '';
+      } else {
+        responseContent = String(data || '');
+      }
+
+      // Ensure content is a proper string
+      responseContent = typeof responseContent === 'string' ? responseContent : JSON.stringify(responseContent) || '';
+
       const assistantMessage: Message = {
         id: (Date.now() + 1).toString(),
         content: responseContent,
@@ -270,7 +279,16 @@ const FloatingChat: React.FC<FloatingChatProps> = ({ backendUrl }) => {
 
       // Add assistant response to the chat
       // Check if response has the expected structure
-      const responseContent = data.response || data.text || data.message || JSON.stringify(data);
+      let responseContent = '';
+      if (data && typeof data === 'object') {
+        responseContent = data.response || data.text || data.message || '';
+      } else {
+        responseContent = String(data || '');
+      }
+
+      // Ensure content is a proper string
+      responseContent = typeof responseContent === 'string' ? responseContent : JSON.stringify(responseContent) || '';
+
       const assistantMessage: Message = {
         id: (Date.now() + 1).toString(),
         content: responseContent,
