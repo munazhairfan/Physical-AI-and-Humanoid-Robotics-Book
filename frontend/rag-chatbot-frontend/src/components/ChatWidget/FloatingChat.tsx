@@ -374,7 +374,9 @@ const FloatingChat: React.FC<FloatingChatProps> = ({ backendUrl }) => {
                 {String(message.content || '')}
               </div>
               <div className={styles['message-timestamp']}>
-                {message.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                {message.timestamp instanceof Date
+                  ? message.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+                  : new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
               </div>
             </div>
           ))}
