@@ -190,9 +190,11 @@ const FloatingChat: React.FC<FloatingChatProps> = ({ backendUrl }) => {
       console.log('Backend response data:', data);
 
       // Add assistant response to the chat
+      // Check if response has the expected structure
+      const responseContent = data.response || data.text || data.message || JSON.stringify(data);
       const assistantMessage: Message = {
         id: (Date.now() + 1).toString(),
-        content: data.response,
+        content: responseContent,
         role: 'assistant',
         timestamp: new Date(),
       };
@@ -267,9 +269,11 @@ const FloatingChat: React.FC<FloatingChatProps> = ({ backendUrl }) => {
       console.log('Backend response data for selected text:', data);
 
       // Add assistant response to the chat
+      // Check if response has the expected structure
+      const responseContent = data.response || data.text || data.message || JSON.stringify(data);
       const assistantMessage: Message = {
         id: (Date.now() + 1).toString(),
-        content: data.response,
+        content: responseContent,
         role: 'assistant',
         timestamp: new Date(),
       };
