@@ -154,12 +154,12 @@ const FloatingChat: React.FC<FloatingChatProps> = ({ backendUrl }) => {
     setIsLoading(true);
 
     try {
-      console.log('Attempting to connect to backend:', `${currentBackendUrl}/chat`);
+      // Ensure there's no trailing slash in the backend URL to prevent double slashes
+      const normalizedBackendUrl = currentBackendUrl.replace(/\/$/, '');
+      console.log('Attempting to connect to backend:', `${normalizedBackendUrl}/chat`);
       console.log('Sending message:', message);
 
       // Try the configured backend URL
-      // Ensure there's no trailing slash in the backend URL to prevent double slashes
-      const normalizedBackendUrl = currentBackendUrl.replace(/\/$/, '');
       const response = await fetch(`${normalizedBackendUrl}/chat`, {
         method: 'POST',
         headers: {
@@ -233,12 +233,12 @@ const FloatingChat: React.FC<FloatingChatProps> = ({ backendUrl }) => {
     setIsTextSelectMenuOpen(false); // Close the context menu
 
     try {
-      console.log('Attempting to connect to backend:', `${currentBackendUrl}/selected_text`);
+      // Ensure there's no trailing slash in the backend URL to prevent double slashes
+      const normalizedBackendUrl = currentBackendUrl.replace(/\/$/, '');
+      console.log('Attempting to connect to backend:', `${normalizedBackendUrl}/selected_text`);
       console.log('Sending selected text:', selectedText);
 
       // Try the configured backend URL with the selected_text endpoint
-      // Ensure there's no trailing slash in the backend URL to prevent double slashes
-      const normalizedBackendUrl = currentBackendUrl.replace(/\/$/, '');
       const response = await fetch(`${normalizedBackendUrl}/selected_text`, {
         method: 'POST',
         headers: {
