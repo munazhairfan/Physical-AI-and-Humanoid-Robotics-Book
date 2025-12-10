@@ -12,21 +12,33 @@ interface FloatingChatProps {
   backendUrl?: string;
 }
 
-const FloatingChat: React.FC<FloatingChatProps> = ({
-  backendUrl = process.env.REACT_APP_BACKEND_URL || (window.location.hostname === 'localhost' ? 'http://localhost:8000' : 'https://physical-ai-and-humanoid-robotics-book-production.up.railway.app/')
-}) => {
+const FloatingChat: React.FC<FloatingChatProps> = ({ backendUrl }) => {
+  // Initialize backend URL inside the component to avoid process issues
+  const [resolvedBackendUrl, setResolvedBackendUrl] = useState(() => {
+    if (typeof window !== 'undefined') {
+      // Check if we're in browser environment and use appropriate URL
+      return window.location.hostname === 'localhost' ? 'http://localhost:8000' : 'https://physical-ai-and-humanoid-robotics-book-production.up.railway.app/';
+    }
+    // Server-side fallback
+    return 'https://physical-ai-and-humanoid-robotics-book-production.up.railway.app/';
+  });
+
+  // Use the provided backendUrl if available, otherwise use the resolved one
+  const currentBackendUrl = backendUrl || resolvedBackendUrl;
+
+  // Debug log to see if component is rendering
+  console.log('FloatingChat component rendered');
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>([
     {
       id: '1',
-      content: 'Hello! I\'m your Physical AI & Humanoid Robotics assistant. Ask me anything about robotics concepts or select text on the page to get explanations!',
+      content: 'Hello! I\'m your Physical AI & Humanoid Robotics assistant. Ask me anything about robotics concepts!',
       role: 'assistant',
       timestamp: new Date(),
     }
   ]);
   const [inputValue, setInputValue] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const [selectedText, setSelectedText] = useState<string | null>(null);
   const messagesEndRef = useRef<null | HTMLDivElement>(null);
 
   // Function to scroll to the bottom of the chat
@@ -38,22 +50,6 @@ const FloatingChat: React.FC<FloatingChatProps> = ({
   useEffect(() => {
     scrollToBottom();
   }, [messages]);
-
-  // Function to handle text selection
-  useEffect(() => {
-    const handleSelection = () => {
-      const selectedTextObj = window.getSelection();
-      const text = selectedTextObj?.toString().trim();
-      if (text && text.length > 10) { // Only consider meaningful selections
-        setSelectedText(text);
-      }
-    };
-
-    document.addEventListener('mouseup', handleSelection);
-    return () => {
-      document.removeEventListener('mouseup', handleSelection);
-    };
-  }, []);
 
   // Mock response function for when backend is not available
   const getMockResponse = (userMessage: string): string => {
@@ -82,7 +78,7 @@ const FloatingChat: React.FC<FloatingChatProps> = ({
   };
 
   // Function to send a message to the backend
-  const sendMessage = async (message: string, isFromSelectedText: boolean = false) => {
+  const sendMessage = async (message: string) => {
     if (!message.trim() || isLoading) return;
 
     // Add user message to the chat
@@ -98,30 +94,18 @@ const FloatingChat: React.FC<FloatingChatProps> = ({
     setIsLoading(true);
 
     try {
-      // Determine which endpoint to call based on if it's selected text
-      let response;
-      if (isFromSelectedText) {
-        response = await fetch(`${backendUrl}/selected_text`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ text: message }),
-        });
-      } else {
-        response = await fetch(`${backendUrl}/chat`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            message: message,
-            history: messages
-              .filter(msg => msg.role === 'user' || msg.role === 'assistant')
-              .map(msg => ({ role: msg.role, content: msg.content }))
-          }),
-        });
-      }
+      const response = await fetch(`${currentBackendUrl}/chat`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          message: message,
+          history: messages
+            .filter(msg => msg.role === 'user' || msg.role === 'assistant')
+            .map(msg => ({ role: msg.role, content: msg.content }))
+        }),
+      });
 
       if (!response.ok) {
         // If backend returns an error, use mock response instead
@@ -164,23 +148,20 @@ const FloatingChat: React.FC<FloatingChatProps> = ({
     sendMessage(inputValue);
   };
 
-  // Handle selected text action
-  const handleSelectedText = () => {
-    if (selectedText) {
-      sendMessage(selectedText, true);
-      setSelectedText(null);
-    }
-  };
-
   return (
-    <>
+    <div>
       {/* Floating Chat Button */}
       <button
         className={styles['floating-chat-button']}
         onClick={() => setIsOpen(!isOpen)}
         aria-label="Open chat"
       >
-        <span className={styles.icon}>🤖</span>
+        <img
+          src="/img/chatbot.svg"
+          alt="Chat"
+          className={styles.chatIcon}
+          style={{ width: '70%', height: '70%', objectFit: 'contain' }}
+        />
       </button>
 
       {/* Chat Popup */}
@@ -221,12 +202,6 @@ const FloatingChat: React.FC<FloatingChatProps> = ({
               </div>
             </div>
           )}
-          {selectedText && (
-            <div className={styles['selected-text-notice']} onClick={handleSelectedText}>
-              <span>Selected: "{selectedText.substring(0, 50)}{selectedText.length > 50 ? '...' : ''}"</span>
-              <button className={styles['use-selected-btn']}>Use this text</button>
-            </div>
-          )}
           <div ref={messagesEndRef} />
         </div>
 
@@ -259,12 +234,12 @@ const FloatingChat: React.FC<FloatingChatProps> = ({
             right: 0,
             bottom: 0,
             backgroundColor: 'rgba(0, 0, 0, 0.2)',
-            zIndex: 999,
+            zIndex: 1040, /* Bootstrap modal backdrop level */
           }}
           onClick={() => setIsOpen(false)}
         />
       )}
-    </>
+    </div>
   );
 };
 

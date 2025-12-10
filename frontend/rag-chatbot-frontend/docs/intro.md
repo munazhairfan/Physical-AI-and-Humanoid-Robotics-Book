@@ -151,7 +151,7 @@ The integrated AI assistant enhances your learning by:
 - Helping with problem-solving approaches
 - Supporting various learning styles and pace preferences
 
-**Remember**: Always use the floating chat button (🤖) located at the bottom right of every page to access the AI assistant when you need help or have questions.
+**Remember**: Always use the floating chat button located at the bottom right of every page to access the AI assistant when you need help or have questions.
 
 ## Getting Started
 

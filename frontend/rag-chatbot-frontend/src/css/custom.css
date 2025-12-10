@@ -1,5 +1,5 @@
 /* Custom styles for Physical AI & Humanoid Robotics educational book */
-/* Robot-themed dark/light mode compatible styles with proper centering and accessibility */
+/* Anime-themed dark/light mode compatible styles with proper centering and accessibility */
 
 /* Typography and spacing */
 html {
@@ -11,7 +11,33 @@ h1, h2, h3, h4, h5, h6 {
   color: #1e293b;
 }
 
-/* Robot-themed colors and styling with proper light/dark theme support */
+/* Anime-themed colors and styling with proper light/dark theme support */
+:root {
+  --anime-primary: #ff6b6b; /* Vibrant red */
+  --anime-secondary: #4ecdc4; /* Teal */
+  --anime-accent: #ffbe0b; /* Bright yellow */
+  --anime-bg-light: #f8f9fa;
+  --anime-bg-light-secondary: #ffffff;
+  --anime-bg-dark: #1a1a2e;
+  --anime-bg-dark-secondary: #16213e;
+  --anime-text-light: #f1f5f9;
+  --anime-text-dark: #1e293b;
+  --anime-text-secondary: #64748b;
+  --anime-border-light: #e2e8f0;
+  --anime-border-dark: #334155;
+  --transition-fast: 0.2s;
+  --transition-medium: 0.3s;
+  --transition-slow: 0.5s;
+  --border-radius-sharp: 0px; /* Sharp corners for anime style */
+  --border-radius-soft: 8px; /* Slightly rounded for some elements */
+  --border-radius-round: 50%; /* Fully rounded */
+  --shadow-light: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --shadow-medium: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  --shadow-heavy: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  --shadow-anime: 0 0 15px rgba(255, 107, 107, 0.4), 0 0 30px rgba(255, 190, 11, 0.2); /* Anime glow effect */
+}
+
+/* Robot-themed fallback colors (for backward compatibility) */
 :root {
   --robot-primary: #ec4899; /* Pink */
   --robot-secondary: #f59e0b; /* Yellow/Orange */
@@ -303,14 +329,10 @@ html[data-theme='dark'] .footer__copyright {
   }
 }
 
-/* Ensure the floating chat appears above other elements */
+/* Body z-index baseline */
 body {
   position: relative;
-}
-
-#floating-chat-root {
-  position: relative;
-  z-index: 9999;
+  /* z-index: 1; Ensure base z-index is set */
 }
 
 /* Additional robot-themed global styles */
@@ -429,20 +451,79 @@ html[data-theme='dark'] {
   --robot-border-light: #334155;
 }
 
-/* Ensure proper centering for all content */
-.row {
-  display: flex;
-  flex-wrap: wrap;
-  margin: 0 -0.5rem;
-  justify-content: center;
+/* Anime-themed utility classes for sharp shapes and styling */
+.anime-sharp {
+  border-radius: var(--border-radius-sharp) !important;
 }
 
-.col {
-  padding: 0 0.5rem;
-  margin-bottom: 1rem;
+.anime-soft {
+  border-radius: var(--border-radius-soft) !important;
 }
 
-/* Robot-themed animations */
+.anime-round {
+  border-radius: var(--border-radius-round) !important;
+}
+
+.anime-glow {
+  box-shadow: var(--shadow-anime);
+  transition: box-shadow var(--transition-medium) ease;
+}
+
+.anime-glow:hover {
+  box-shadow: 0 0 20px rgba(255, 107, 107, 0.6), 0 0 40px rgba(255, 190, 11, 0.4);
+}
+
+.anime-gradient {
+  background: linear-gradient(135deg, var(--anime-primary), var(--anime-secondary));
+  color: white;
+}
+
+.anime-text-primary {
+  color: var(--anime-primary);
+}
+
+.anime-text-secondary {
+  color: var(--anime-secondary);
+}
+
+.anime-text-accent {
+  color: var(--anime-accent);
+}
+
+.anime-bg-primary {
+  background-color: var(--anime-primary);
+}
+
+.anime-bg-secondary {
+  background-color: var(--anime-secondary);
+}
+
+.anime-bg-accent {
+  background-color: var(--anime-accent);
+}
+
+/* Anime-themed animations */
+@keyframes animePulse {
+  0% { box-shadow: 0 0 0 0 rgba(255, 107, 107, 0.4); }
+  70% { box-shadow: 0 0 0 12px rgba(255, 107, 107, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(255, 107, 107, 0); }
+}
+
+@keyframes animeFloat {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+  100% { transform: translateY(0px); }
+}
+
+.anime-pulse {
+  animation: animePulse 2s infinite;
+}
+
+.anime-float {
+  animation: animeFloat 3s ease-in-out infinite;
+}
+
+/* Robot-themed animations (for backward compatibility) */
 @keyframes robotPulse {
   0% { box-shadow: 0 0 0 0 rgba(236, 72, 153, 0.4); }
   70% { box-shadow: 0 0 0 12px rgba(236, 72, 153, 0); }
@@ -453,7 +534,22 @@ html[data-theme='dark'] {
   animation: robotPulse 2s infinite;
 }
 
-/* Robot-themed icons enhancement */
+/* Anime-themed icons enhancement */
+.anime-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 60px;
+  height: 60px;
+  border-radius: var(--border-radius-sharp);
+  background: linear-gradient(135deg, var(--anime-primary), var(--anime-secondary));
+  color: white;
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  box-shadow: var(--shadow-light);
+}
+
+/* Robot-themed icons enhancement (for backward compatibility) */
 .robot-icon {
   display: inline-flex;
   align-items: center;

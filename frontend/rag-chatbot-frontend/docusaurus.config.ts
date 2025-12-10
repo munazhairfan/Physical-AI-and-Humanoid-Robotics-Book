@@ -68,7 +68,7 @@ const config: Config = {
 
   themeConfig: {
     // Replace with your project's social card
-    image: 'img/logo.svg', // Use the logo as social card
+    image: 'img/chatbot.svg', // Use the logo as social card
     colorMode: {
       respectPrefersColorScheme: true,
     },
@@ -76,7 +76,7 @@ const config: Config = {
       title: 'Physical AI & Robotics',
       logo: {
         alt: 'Robotics Educational Book Logo',
-        src: 'img/logo.svg',
+        src: 'img/chatbot.svg',
       },
       items: [
         {

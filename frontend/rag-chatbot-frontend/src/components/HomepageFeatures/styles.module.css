@@ -1,38 +1,21 @@
 .features {
   display: flex;
   align-items: center;
+  justify-content: center;
   padding: 4rem 0;
   width: 100%;
-  background: linear-gradient(135deg, #0f172a, #1e293b);
+  background: #ffffff;
   position: relative;
-  overflow: hidden;
 }
 
 .features::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background:
-    radial-gradient(circle at 10% 20%, rgba(139, 92, 246, 0.05) 0%, transparent 20%),
-    radial-gradient(circle at 90% 80%, rgba(6, 182, 212, 0.05) 0%, transparent 20%),
-    repeating-linear-gradient(
-      0deg,
-      transparent,
-      transparent 2px,
-      rgba(139, 92, 246, 0.03) 2px,
-      rgba(139, 92, 246, 0.03) 4px
-    );
+  content: none; /* Remove background elements to ensure no conflicts with floating chat */
 }
 
 .featureSvg {
-  height: 220px;
-  width: 220px;
-  filter: drop-shadow(0 10px 20px rgba(139, 92, 246, 0.3));
+  height: 200px;
+  width: 200px;
   transition: transform 0.3s ease;
-  animation: float 4s ease-in-out infinite;
 }
 
 .col--4 {
@@ -40,24 +23,11 @@
 }
 
 .col--4:hover .featureSvg {
-  transform: scale(1.1) rotateY(10deg);
-  filter: drop-shadow(0 15px 30px rgba(139, 92, 246, 0.5));
+  transform: scale(1.1);
 }
 
 .col--4:hover .text--center {
   transform: translateY(-5px);
-}
-
-@keyframes float {
-  0% {
-    transform: translateY(0px);
-  }
-  50% {
-    transform: translateY(-15px);
-  }
-  100% {
-    transform: translateY(0px);
-  }
 }
 
 .text--center {
@@ -65,10 +35,9 @@
 }
 
 .text--center h3 {
-  color: #f1f5f9;
+  color: #000000;
   font-size: 1.5rem;
   margin-bottom: 1rem;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
   position: relative;
 }
 
@@ -80,25 +49,18 @@
   transform: translateX(-50%);
   width: 50px;
   height: 3px;
-  background: linear-gradient(90deg, #8b5cf6, #06b6d4);
+  background: #000000;
   border-radius: 2px;
 }
 
 .text--center p {
-  color: #cbd5e1;
+  color: #000000;
   line-height: 1.7;
-}
-
-.padding-horiz--md {
-  padding-left: 1rem;
-  padding-right: 1rem;
 }
 
 .container {
   max-width: 1200px;
   margin: 0 auto;
-  position: relative;
-  z-index: 1;
 }
 
 @media (max-width: 996px) {

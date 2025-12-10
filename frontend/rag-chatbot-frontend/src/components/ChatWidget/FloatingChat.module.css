@@ -1,29 +1,32 @@
-/* Robot-themed Floating Chat Styles */
+/* White and Red Themed Floating Chat Styles */
 .floating-chat-button {
-  position: fixed;
-  bottom: 25px;
-  right: 25px;
-  width: 70px;
-  height: 70px;
-  border-radius: 50%;
-  background: linear-gradient(135deg, #8b5cf6, #06b6d4);
-  color: white;
-  border: none;
-  cursor: pointer;
-  box-shadow: 0 8px 25px rgba(139, 92, 246, 0.4);
-  z-index: 1000;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 28px;
-  transition: all 0.3s ease;
-  animation: robotPulse 2s infinite;
-  border: 2px solid rgba(255, 255, 255, 0.3);
+  position: fixed !important;
+  bottom: 25px !important;
+  right: 25px !important;
+  width: 70px !important;
+  height: 70px !important;
+  border-radius: 50% !important;
+  background: linear-gradient(135deg, #ffffff, #888787) !important;
+  color: #000000 !important;
+  border: none !important;
+  cursor: pointer !important;
+  box-shadow: 0 8px 25px rgba(90, 89, 89, 0.4) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  font-size: 28px !important;
+  transition: all 0.3s ease !important;
+  animation: robotPulse 2s infinite !important;
+  border: 2px solid rgba(255, 255, 255, 0.3) !important;
+  pointer-events: auto !important; /* Ensure button is clickable */
+  z-index: 2147483647 !important; /* Maximum possible z-index to ensure it's always on top */
+  /* Force it to appear above everything */
+  transform: translateZ(9999px) !important;
 }
 
 .floating-chat-button:hover {
-  transform: scale(1.15) rotate(10deg);
-  box-shadow: 0 12px 30px rgba(139, 92, 246, 0.6);
+  transform: scale(1.15) rotate(5deg);
+  box-shadow: 0 12px 30px rgba(90, 89, 89, 0.4);
   filter: brightness(1.1);
 }
 
@@ -34,17 +37,32 @@
 .floating-chat-button .icon {
   font-size: 32px;
   animation: float 3s ease-in-out infinite;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+.chatIcon {
+  font-size: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
 }
 
 @keyframes robotPulse {
   0% {
-    box-shadow: 0 8px 25px rgba(139, 92, 246, 0.4);
+    box-shadow: 0 8px 25px rgba(90, 89, 89, 0.4);
   }
   50% {
-    box-shadow: 0 0 0 15px rgba(139, 92, 246, 0.3);
+    box-shadow: 0 0 0 15px rgba(90, 89, 89, 0.4);
   }
   100% {
-    box-shadow: 0 8px 25px rgba(139, 92, 246, 0.4);
+    box-shadow: 0 8px 25px rgba(90, 89, 89, 0.4);
   }
 }
 
@@ -60,41 +78,43 @@
   }
 }
 
-/* Chat Popup Styles - Robot Themed */
+/* Chat Popup Styles - White and Red Theme */
 .chat-popup {
-  position: fixed;
-  bottom: 100px;
-  right: 25px;
-  width: 420px;
-  height: 600px;
-  background: linear-gradient(160deg, #1e293b, #0f172a);
-  border-radius: 20px;
-  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
-  z-index: 1000;
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-  transform: translateY(20px);
-  opacity: 0;
-  visibility: hidden;
-  transition: all 0.4s cubic-bezier(0.17, 0.67, 0.5, 1.2);
-  border: 1px solid #475569;
+  position: fixed !important;
+  bottom: 100px !important;
+  right: 25px !important;
+  width: 420px !important;
+  height: 60vh !important; /* Use viewport height instead of fixed pixels */
+  max-height: 600px !important; /* Maximum height */
+  min-height: 400px !important; /* Minimum height */
+  background: #ffffff !important;
+  border-radius: 20px !important;
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5) !important;
+  display: flex !important;
+  flex-direction: column !important;
+  overflow: hidden !important;
+  transform: translateY(20px) !important;
+  opacity: 0 !important;
+  visibility: hidden !important;
+  transition: all 0.4s cubic-bezier(0.17, 0.67, 0.5, 1.2) !important;
+  border: 2px solid #000000 !important;
+  z-index: 2147483646 !important; /* Just below the button but still highest possible */
 }
 
 .chat-popup.open {
-  transform: translateY(0);
-  opacity: 1;
-  visibility: visible;
+  transform: translateY(0) !important;
+  opacity: 1 !important;
+  visibility: visible !important;
 }
 
 .chat-popup-header {
-  background: linear-gradient(135deg, #8b5cf6, #06b6d4);
-  color: white;
+  background: linear-gradient(135deg, black, #ffffff);
+  color: #000000;
   padding: 20px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+  border-bottom: 2px solid #000000;
   position: relative;
 }
 
@@ -105,7 +125,7 @@
   left: 0;
   right: 0;
   height: 2px;
-  background: linear-gradient(90deg, transparent, white, transparent);
+  background: linear-gradient(90deg, black, #ffffff);
 }
 
 .chat-popup-header h3 {
@@ -115,15 +135,16 @@
   display: flex;
   align-items: center;
   gap: 8px;
+  color: white;
 }
 
 .chat-popup-header h3::before {
-  content: '🤖';
+  content: '💬';
   font-size: 1.2em;
 }
 
 .chat-popup-header .close-btn {
-  background: rgba(255, 255, 255, 0.2);
+  background: rgba(0, 0, 0, 0.2);
   border: none;
   color: white;
   font-size: 22px;
@@ -136,11 +157,10 @@
   justify-content: center;
   border-radius: 50%;
   transition: all 0.2s;
-  backdrop-filter: blur(4px);
 }
 
 .chat-popup-header .close-btn:hover {
-  background: rgba(255, 255, 255, 0.3);
+  background: rgba(0, 0, 0, 0.3);
   transform: rotate(90deg);
 }
 
@@ -151,10 +171,8 @@
   display: flex;
   flex-direction: column;
   gap: 18px;
-  background:
-    radial-gradient(ellipse at bottom, #1a2238 0%, transparent 70%),
-    linear-gradient(to bottom, #0f172a, #1e293b);
-  background-attachment: fixed;
+  background: #ffffff;
+  color: #000000;
 }
 
 .message {
@@ -164,8 +182,9 @@
   position: relative;
   animation: slideIn 0.3s ease-out;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  border: 1px solid rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(4px);
+  border: 1px solid #000000;
+  background: #ffffff;
+  color: #000000;
 }
 
 .message::before {
@@ -176,6 +195,7 @@
   right: 0;
   height: 3px;
   border-radius: 20px 20px 0 0;
+  background: #000000;
 }
 
 @keyframes slideIn {
@@ -185,25 +205,26 @@
 
 .user-message {
   align-self: flex-end;
-  background: linear-gradient(135deg, #7c3aed, #2563eb);
+  background: #000000;
   color: white;
+  border: 1px solid #000000;
   border-bottom-right-radius: 4px;
 }
 
 .user-message::before {
-  background: linear-gradient(90deg, #c084fc, #38bdf8);
+  background: #ffffff;
 }
 
 .assistant-message {
   align-self: flex-start;
-  background: linear-gradient(135deg, #334155, #1e293b);
-  color: #cbd5e1;
-  border: 1px solid #475569;
+  background: #ffffff;
+  color: #000000;
+  border: 2px solid #000000;
   border-bottom-left-radius: 4px;
 }
 
 .assistant-message::before {
-  background: linear-gradient(90deg, #06b6d4, #8b5cf6);
+  background: #000000;
 }
 
 .message-content {
@@ -229,7 +250,7 @@
 .typing-indicator span {
   width: 12px;
   height: 12px;
-  background-color: #8b5cf6;
+  background-color: #000000;
   border-radius: 50%;
   display: inline-block;
   animation: typingRobot 1.4s infinite ease-in-out both;
@@ -257,32 +278,31 @@
 .chat-input-form {
   display: flex;
   padding: 18px 20px 22px;
-  background: linear-gradient(to top, #1e293b, #0f172a);
-  border-top: 1px solid #475569;
+  background: #ffffff;
+  border-top: 2px solid #000000;
   gap: 10px;
 }
 
 .chat-input {
   flex: 1;
   padding: 16px;
-  border: 2px solid #475569;
+  border: 2px solid #000000;
   border-radius: 16px;
   font-size: 15px;
   transition: all 0.3s;
-  background: rgba(30, 41, 59, 0.7);
-  color: #e2e8f0;
-  backdrop-filter: blur(4px);
+  background: #ffffff;
+  color: #000000;
 }
 
 .chat-input:focus {
   outline: none;
-  border-color: #8b5cf6;
-  box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.3);
+  border-color: #000000;
+  box-shadow: 0 0 0 3px rgba(90, 89, 89, 0.4);
 }
 
 .send-button {
   padding: 16px 22px;
-  background: linear-gradient(135deg, #8b5cf6, #06b6d4);
+  background: #000000;
   color: white;
   border: none;
   border-radius: 16px;
@@ -291,54 +311,43 @@
   font-weight: 600;
   transition: all 0.3s;
   min-width: 90px;
-  border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .send-button:hover:not(:disabled) {
   transform: translateY(-2px);
-  box-shadow: 0 6px 15px rgba(139, 92, 246, 0.4);
+  box-shadow: 0 6px 15px rgba(90, 89, 89, 0.4);
   filter: brightness(1.1);
 }
 
 .send-button:disabled {
-  background: #475569;
+  background: #cccccc;
   cursor: not-allowed;
   transform: none;
   box-shadow: none;
 }
 
 .selected-text-notice {
-  background: linear-gradient(135deg, #7e22ce, #0891b2);
-  color: white;
+  background: #ffffff;
+  color: #000000;
   padding: 14px 18px;
   border-radius: 16px;
   margin-top: 10px;
   font-size: 13px;
   cursor: pointer;
-  border: 2px dashed #c084fc;
+  border: 2px dashed #000000;
   display: flex;
   justify-content: space-between;
   align-items: center;
   transition: all 0.3s;
-  animation: glow 2s infinite alternate;
 }
 
 .selected-text-notice:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 15px rgba(139, 92, 246, 0.3);
-}
-
-@keyframes glow {
-  from {
-    box-shadow: 0 0 5px rgba(192, 132, 252, 0.5);
-  }
-  to {
-    box-shadow: 0 0 20px rgba(192, 132, 252, 0.8);
-  }
+  box-shadow: 0 6px 15px rgba(90, 89, 89, 0.4);
 }
 
 .use-selected-btn {
-  background: linear-gradient(135deg, #ec4899, #f43f5e);
+  background: #000000;
   color: white;
   border: none;
   padding: 8px 16px;
@@ -347,25 +356,46 @@
   font-size: 12px;
   font-weight: 600;
   transition: all 0.2s;
-  border: 1px solid rgba(255, 255, 255, 0.3);
 }
 
 .use-selected-btn:hover {
   transform: translateY(-2px);
-  box-shadow: 0 4px 10px rgba(236, 72, 153, 0.4);
+  box-shadow: 0 4px 10px rgba(90, 89, 89, 0.4);
 }
 
 .welcome-message {
   text-align: center;
   padding: 20px;
-  color: #94a3b8;
+  color: #666666;
   font-style: italic;
   font-size: 14px;
 }
 
-/* Dark mode specific - already handled by the robot theme */
+/* Dark mode specific - override to maintain white/red theme */
 html[data-theme='dark'] .chat-popup {
-  background: linear-gradient(160deg, #1e293b, #0f172a);
+  background: #ffffff;
+  color: #000000;
+}
+
+html[data-theme='dark'] .chat-messages {
+  background: #ffffff;
+  color: #000000;
+}
+
+/* Additional responsive styles for better viewport handling - aligned with global CSS */
+@media (max-height: 700px) {
+  .chat-popup {
+    height: 70vh;
+    max-height: 500px;
+  }
+}
+
+@media (max-height: 600px) {
+  .chat-popup {
+    height: 65vh;
+    max-height: 400px;
+    bottom: 70px; /* Adjusted to prevent top cut-off */
+  }
 }
 
 /* Responsive styles */
@@ -373,6 +403,7 @@ html[data-theme='dark'] .chat-popup {
   .chat-popup {
     width: calc(100vw - 30px);
     height: 65vh;
+    max-height: none; /* Remove max-height constraint on mobile */
     bottom: 15px;
     right: 15px;
     left: 15px;
@@ -385,5 +416,14 @@ html[data-theme='dark'] .chat-popup {
   .floating-chat-button {
     width: 65px;
     height: 65px;
+  }
+}
+
+/* Very small screens */
+@media (max-height: 500px) {
+  .chat-popup {
+    height: 60vh;
+    max-height: 300px;
+    bottom: 50px; /* Further adjust to prevent top cut-off */
   }
 }

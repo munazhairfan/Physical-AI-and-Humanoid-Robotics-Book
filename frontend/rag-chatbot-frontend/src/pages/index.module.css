@@ -26,9 +26,6 @@ html[data-theme='dark'] {
 
 .heroBanner {
   padding: 4rem 0;
-  text-align: center;
-  position: relative;
-  overflow: hidden;
   background: var(--background-primary);
   color: var(--text-primary);
   min-height: 70vh;
@@ -37,79 +34,15 @@ html[data-theme='dark'] {
   justify-content: center;
 }
 
-/* Ensure perfect centering of content */
-.heroBanner .container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-}
-
-.heroBanner .row {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-}
-
-/* Hero illustration positioning */
-.heroBanner::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: radial-gradient(circle at 10% 20%, rgba(139, 92, 246, 0.05) 0%, transparent 20%),
-              radial-gradient(circle at 90% 80%, rgba(6, 182, 212, 0.05) 0%, transparent 20%);
-  pointer-events: none;
-  z-index: 1;
-}
-
-/* Ensure content stays above the blobs */
+/* Simplified centering using text-align on container */
 .container {
-  position: relative;
-  z-index: 2;
-}
-
-.robotIllustrationContainer {
-  position: absolute;
-  bottom: -50px;
-  right: -50px;
-  width: 300px;
-  height: 300px;
-  pointer-events: none;
-  opacity: 0.2;
-  z-index: 0;
-}
-
-.robotIllustration {
-  width: 100%;
-  height: 100%;
-  animation: float 6s ease-in-out infinite;
-}
-
-.robotImage {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  opacity: 0.3;
-}
-
-@keyframes float {
-  0% { transform: translateY(0px) rotate(0deg); }
-  50% { transform: translateY(-20px) rotate(5deg); }
-  100% { transform: translateY(0px) rotate(0deg); }
+  text-align: center;
 }
 
 @media screen and (max-width: 996px) {
   .heroBanner {
     padding: 2rem;
     min-height: 60vh;
-  }
-
-  .robotIllustrationContainer {
-    display: none;
   }
 }
 
@@ -121,6 +54,9 @@ html[data-theme='dark'] {
 
 .heroLogo {
   margin-bottom: 1.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .heroImage {
@@ -128,22 +64,23 @@ html[data-theme='dark'] {
   height: 150px;
   border-radius: 50%;
   object-fit: contain;
-  filter: drop-shadow(0 4px 15px rgba(139, 92, 246, 0.3));
   transition: transform 0.3s ease;
-  border: 3px solid var(--accent-primary);
+  border: 3px solid black;
   background: var(--background-secondary);
   padding: 10px;
 }
 
 .heroImage:hover {
-  transform: scale(1.1) rotate(5deg);
-  filter: drop-shadow(0 8px 25px rgba(139, 92, 246, 0.5));
+  transform: scale(1.1);
 }
 
 .titleContainer {
   position: relative;
   margin-bottom: 1rem;
-  display: inline-block;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 .titleContainer::after {
@@ -160,7 +97,7 @@ html[data-theme='dark'] {
 
 .headerContent {
   position: relative;
-  z-index: 1;
+  /* z-index: 1; */
   background: var(--background-secondary);
   padding: 2rem;
   border-radius: 20px;
@@ -171,11 +108,15 @@ html[data-theme='dark'] {
   color: var(--text-primary);
   font-size: 2.5rem;
   margin: 0.5rem 0;
+  text-align: center;
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .hero__subtitle {
   color: var(--text-secondary);
+  text-align: center;
+  display: flex;
+  justify-content: center;
   font-size: 1.2rem;
   margin: 1rem 0;
 }
@@ -317,14 +258,14 @@ html[data-theme='dark'] {
   color: var(--text-primary);
   font-size: 1.5rem;
   position: relative;
-  z-index: 1;
+  /* z-index: 1; */
 }
 
 .infoCard p {
   color: var(--text-secondary);
   line-height: 1.7;
   position: relative;
-  z-index: 1;
+  /* z-index: 1; */
 }
 
 .container {

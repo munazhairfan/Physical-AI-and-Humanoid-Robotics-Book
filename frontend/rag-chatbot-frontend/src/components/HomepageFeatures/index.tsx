@@ -3,124 +3,110 @@ import clsx from 'clsx';
 import Heading from '@theme/Heading';
 import styles from './styles.module.css';
 
-// Robot-themed Feature Components
-const RobotBrainSVG = () => (
+// Anime-themed Feature Components
+const AnimeBrainSVG = () => (
   <svg className={styles.featureSvg} width="120" height="120" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <g clipPath="url(#clip0_1_2)">
-      <path d="M12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2Z" stroke="url(#paint0_linear_1_2)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-      <path d="M8 10H16" stroke="url(#paint1_linear_1_2)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-      <path d="M8 14H13" stroke="url(#paint2_linear_1_2)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-      <path d="M10 8V16" stroke="url(#paint3_linear_1_2)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-      <path d="M14 8V16" stroke="url(#paint4_linear_1_2)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-    </g>
+    <path d="M12 2C8.13401 2 5 5.13401 5 9C5 10.05 5.28 11.03 5.78 11.87L3 22H5.5L7.02 16H16.98L18.5 22H21L18.22 11.87C18.72 11.03 19 10.05 19 9C19 5.13401 15.866 2 12 2Z" fill="url(#brain_gradient)"/>
+    <path d="M12 6C10.3431 6 9 7.34315 9 9C9 10.6569 10.3431 12 12 12C13.6569 12 15 10.6569 15 9C15 7.34315 13.6569 6 12 6Z" fill="url(#brain_inner_gradient)"/>
     <defs>
-      <linearGradient id="paint0_linear_1_2" x1="2" y1="12" x2="22" y2="12" gradientUnits="userSpaceOnUse">
-        <stop stopColor="#EC4899"/>
-        <stop offset="1" stopColor="#F59E0B"/>
+      <linearGradient id="brain_gradient" x1="5" y1="2" x2="19" y2="22" gradientUnits="userSpaceOnUse">
+        <stop stopColor="#ff6b6b"/>
+        <stop offset="1" stopColor="#ffbe0b"/>
       </linearGradient>
-      <linearGradient id="paint1_linear_1_2" x1="8" y1="10" x2="16" y2="10" gradientUnits="userSpaceOnUse">
-        <stop stopColor="#8B5CF6"/>
-        <stop offset="1" stopColor="#EC4899"/>
+      <linearGradient id="brain_inner_gradient" x1="9" y1="6" x2="15" y2="12" gradientUnits="userSpaceOnUse">
+        <stop stopColor="#4ecdc4"/>
+        <stop offset="1" stopColor="#ff6b6b"/>
       </linearGradient>
-      <linearGradient id="paint2_linear_1_2" x1="8" y1="14" x2="13" y2="14" gradientUnits="userSpaceOnUse">
-        <stop stopColor="#06B6D4"/>
-        <stop offset="1" stopColor="#3B82F6"/>
-      </linearGradient>
-      <linearGradient id="paint3_linear_1_2" x1="10" y1="8" x2="10" y2="16" gradientUnits="userSpaceOnUse">
-        <stop stopColor="#F59E0B"/>
-        <stop offset="1" stopColor="#FBBF24"/>
-      </linearGradient>
-      <linearGradient id="paint4_linear_1_2" x1="14" y1="8" x2="14" y2="16" gradientUnits="userSpaceOnUse">
-        <stop stopColor="#EC4899"/>
-        <stop offset="1" stopColor="#F43F5E"/>
-      </linearGradient>
-      <clipPath id="clip0_1_2">
-        <rect width="24" height="24" fill="white"/>
-      </clipPath>
     </defs>
   </svg>
 );
 
-const HumanoidRobotSVG = () => (
+const AnimeRobotSVG = () => (
   <svg className={styles.featureSvg} width="120" height="120" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <g clipPath="url(#clip0_1_4)">
-      <path d="M4 17C4 15.3431 5.34315 14 7 14H17C18.6569 14 20 15.3431 20 17V20C20 21.1046 19.1046 22 18 22H6C4.89543 22 4 21.1046 4 20V17Z" stroke="url(#paint0_linear_1_4)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-      <path d="M12 14V10" stroke="url(#paint1_linear_1_4)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-      <path d="M8 10H16" stroke="url(#paint2_linear_1_4)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-      <path d="M12 6C13.1046 6 14 5.10457 14 4C14 2.89543 13.1046 2 12 2C10.89543 2 10 2.89543 10 4C10 5.10457 10.89543 6 12 6Z" stroke="url(#paint3_linear_1_4)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-    </g>
+    <path d="M8 4V2H16V4H8Z" fill="url(#robot_headband)"/>
+    <rect x="5" y="4" width="14" height="16" rx="2" fill="url(#robot_body)"/>
+    <rect x="7" y="6" width="10" height="12" rx="1" fill="url(#robot_chest)"/>
+    <circle cx="9" cy="8" r="1" fill="url(#robot_eye)"/>
+    <circle cx="15" cy="8" r="1" fill="url(#robot_eye)"/>
+    <rect x="10" y="10" width="4" height="1" rx="0.5" fill="url(#robot_mouth)"/>
+    <path d="M4 8L2 10V14L4 16" stroke="url(#robot_arm)" strokeWidth="2"/>
+    <path d="M20 8L22 10V14L20 16" stroke="url(#robot_arm)" strokeWidth="2"/>
+    <path d="M8 20L6 22H18L16 20" stroke="url(#robot_leg)" strokeWidth="2"/>
     <defs>
-      <linearGradient id="paint0_linear_1_4" x1="4" y1="14" x2="20" y2="14" gradientUnits="userSpaceOnUse">
-        <stop stopColor="#EC4899"/>
-        <stop offset="1" stopColor="#F59E0B"/>
+      <linearGradient id="robot_headband" x1="8" y1="2" x2="16" y2="4" gradientUnits="userSpaceOnUse">
+        <stop stopColor="#ff6b6b"/>
+        <stop offset="1" stopColor="#ffbe0b"/>
       </linearGradient>
-      <linearGradient id="paint1_linear_1_4" x1="12" y1="10" x2="12" y2="14" gradientUnits="userSpaceOnUse">
-        <stop stopColor="#06B6D4"/>
-        <stop offset="1" stopColor="#3B82F6"/>
+      <linearGradient id="robot_body" x1="5" y1="4" x2="19" y2="20" gradientUnits="userSpaceOnUse">
+        <stop stopColor="#4ecdc4"/>
+        <stop offset="1" stopColor="#ff6b6b"/>
       </linearGradient>
-      <linearGradient id="paint2_linear_1_4" x1="8" y1="10" x2="16" y2="10" gradientUnits="userSpaceOnUse">
-        <stop stopColor="#8B5CF6"/>
-        <stop offset="1" stopColor="#EC4899"/>
+      <linearGradient id="robot_chest" x1="7" y1="6" x2="17" y2="18" gradientUnits="userSpaceOnUse">
+        <stop stopColor="#ffbe0b"/>
+        <stop offset="1" stopColor="#4ecdc4"/>
       </linearGradient>
-      <linearGradient id="paint3_linear_1_4" x1="10" y1="2" x2="14" y2="2" gradientUnits="userSpaceOnUse">
-        <stop stopColor="#F59E0B"/>
-        <stop offset="1" stopColor="#FBBF24"/>
+      <linearGradient id="robot_eye" x1="8" y1="7" x2="10" y2="9" gradientUnits="userSpaceOnUse">
+        <stop stopColor="#ff6b6b"/>
+        <stop offset="1" stopColor="#ffbe0b"/>
       </linearGradient>
-      <clipPath id="clip0_1_4">
-        <rect width="24" height="24" fill="white"/>
-      </clipPath>
+      <linearGradient id="robot_mouth" x1="10" y1="10" x2="14" y2="11" gradientUnits="userSpaceOnUse">
+        <stop stopColor="#ff6b6b"/>
+        <stop offset="1" stopColor="#ffbe0b"/>
+      </linearGradient>
+      <linearGradient id="robot_arm" x1="2" y1="10" x2="22" y2="10" gradientUnits="userSpaceOnUse">
+        <stop stopColor="#4ecdc4"/>
+        <stop offset="1" stopColor="#ff6b6b"/>
+      </linearGradient>
+      <linearGradient id="robot_leg" x1="6" y1="22" x2="18" y2="22" gradientUnits="userSpaceOnUse">
+        <stop stopColor="#ff6b6b"/>
+        <stop offset="1" stopColor="#4ecdc4"/>
+      </linearGradient>
     </defs>
   </svg>
 );
 
-const RobotLabSVG = () => (
+const AnimeLabSVG = () => (
   <svg className={styles.featureSvg} width="120" height="120" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <g clipPath="url(#clip0_1_5)">
-      <path d="M8 7H16" stroke="url(#paint0_linear_1_5)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-      <path d="M5 12H19" stroke="url(#paint1_linear_1_5)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-      <path d="M2 17H22" stroke="url(#paint2_linear_1_5)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-      <path d="M12 2V22" stroke="url(#paint3_linear_1_5)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-      <path d="M3 2L21 2" stroke="url(#paint4_linear_1_5)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-      <path d="M3 7L21 7" stroke="url(#paint5_linear_1_5)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-      <path d="M3 12L21 12" stroke="url(#paint6_linear_1_5)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-      <path d="M3 17L21 17" stroke="url(#paint7_linear_1_5)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-    </g>
+    <rect x="3" y="10" width="18" height="10" rx="2" fill="url(#lab_table)"/>
+    <circle cx="8" cy="14" r="1.5" fill="url(#lab_beaker1)"/>
+    <circle cx="12" cy="14" r="1.5" fill="url(#lab_beaker2)"/>
+    <circle cx="16" cy="14" r="1.5" fill="url(#lab_beaker3)"/>
+    <path d="M8 12.5L8 9" stroke="url(#lab_beaker1)" strokeWidth="1.5"/>
+    <path d="M12 12.5L12 9" stroke="url(#lab_beaker2)" strokeWidth="1.5"/>
+    <path d="M16 12.5L16 9" stroke="url(#lab_beaker3)" strokeWidth="1.5"/>
+    <path d="M10 6L14 6" stroke="url(#lab_microscope)" strokeWidth="2" strokeLinecap="round"/>
+    <path d="M12 6L12 3" stroke="url(#lab_microscope)" strokeWidth="2" strokeLinecap="round"/>
+    <circle cx="12" cy="2.5" r="1.5" fill="url(#lab_microscope_lens)"/>
+    <rect x="1" y="20" width="22" height="2" fill="url(#lab_floor)"/>
     <defs>
-      <linearGradient id="paint0_linear_1_5" x1="5" y1="7" x2="19" y2="7" gradientUnits="userSpaceOnUse">
-        <stop stopColor="#EC4899"/>
-        <stop offset="1" stopColor="#F59E0B"/>
+      <linearGradient id="lab_table" x1="3" y1="10" x2="21" y2="20" gradientUnits="userSpaceOnUse">
+        <stop stopColor="#ffbe0b"/>
+        <stop offset="1" stopColor="#4ecdc4"/>
       </linearGradient>
-      <linearGradient id="paint1_linear_1_5" x1="5" y1="12" x2="19" y2="12" gradientUnits="userSpaceOnUse">
-        <stop stopColor="#06B6D4"/>
-        <stop offset="1" stopColor="#3B82F6"/>
+      <linearGradient id="lab_beaker1" x1="6.5" y1="12.5" x2="9.5" y2="15.5" gradientUnits="userSpaceOnUse">
+        <stop stopColor="#ff6b6b"/>
+        <stop offset="1" stopColor="#ffbe0b"/>
       </linearGradient>
-      <linearGradient id="paint2_linear_1_5" x1="2" y1="17" x2="22" y2="17" gradientUnits="userSpaceOnUse">
-        <stop stopColor="#8B5CF6"/>
-        <stop offset="1" stopColor="#EC4899"/>
+      <linearGradient id="lab_beaker2" x1="10.5" y1="12.5" x2="13.5" y2="15.5" gradientUnits="userSpaceOnUse">
+        <stop stopColor="#4ecdc4"/>
+        <stop offset="1" stopColor="#ff6b6b"/>
       </linearGradient>
-      <linearGradient id="paint3_linear_1_5" x1="12" y1="2" x2="12" y2="22" gradientUnits="userSpaceOnUse">
-        <stop stopColor="#F59E0B"/>
-        <stop offset="1" stopColor="#FBBF24"/>
+      <linearGradient id="lab_beaker3" x1="14.5" y1="12.5" x2="17.5" y2="15.5" gradientUnits="userSpaceOnUse">
+        <stop stopColor="#ffbe0b"/>
+        <stop offset="1" stopColor="#4ecdc4"/>
       </linearGradient>
-      <linearGradient id="paint4_linear_1_5" x1="3" y1="2" x2="21" y2="2" gradientUnits="userSpaceOnUse">
-        <stop stopColor="#EC4899"/>
-        <stop offset="1" stopColor="#F43F5E"/>
+      <linearGradient id="lab_microscope" x1="10" y1="3" x2="14" y2="6" gradientUnits="userSpaceOnUse">
+        <stop stopColor="#ff6b6b"/>
+        <stop offset="1" stopColor="#ffbe0b"/>
       </linearGradient>
-      <linearGradient id="paint5_linear_1_5" x1="3" y1="7" x2="21" y2="7" gradientUnits="userSpaceOnUse">
-        <stop stopColor="#06B6D4"/>
-        <stop offset="1" stopColor="#38BDF8"/>
+      <linearGradient id="lab_microscope_lens" x1="10.5" y1="1" x2="13.5" y2="4" gradientUnits="userSpaceOnUse">
+        <stop stopColor="#4ecdc4"/>
+        <stop offset="1" stopColor="#ff6b6b"/>
       </linearGradient>
-      <linearGradient id="paint6_linear_1_5" x1="3" y1="12" x2="21" y2="12" gradientUnits="userSpaceOnUse">
-        <stop stopColor="#8B5CF6"/>
-        <stop offset="1" stopColor="#A78BFA"/>
+      <linearGradient id="lab_floor" x1="1" y1="20" x2="23" y2="22" gradientUnits="userSpaceOnUse">
+        <stop stopColor="#ff6b6b"/>
+        <stop offset="1" stopColor="#4ecdc4"/>
       </linearGradient>
-      <linearGradient id="paint7_linear_1_5" x1="3" y1="17" x2="21" y2="17" gradientUnits="userSpaceOnUse">
-        <stop stopColor="#F59E0B"/>
-        <stop offset="1" stopColor="#FBBF24"/>
-      </linearGradient>
-      <clipPath id="clip0_1_5">
-        <rect width="24" height="24" fill="white"/>
-      </clipPath>
     </defs>
   </svg>
 );
@@ -134,7 +120,7 @@ type FeatureItem = {
 const FeatureList: FeatureItem[] = [
   {
     title: 'Advanced AI Learning',
-    Svg: RobotBrainSVG,
+    Svg: AnimeBrainSVG,
     description: (
       <>
         Explore cutting-edge concepts in artificial intelligence for robotics,
@@ -144,7 +130,7 @@ const FeatureList: FeatureItem[] = [
   },
   {
     title: 'Humanoid Robotics',
-    Svg: HumanoidRobotSVG,
+    Svg: AnimeRobotSVG,
     description: (
       <>
         Understand the mechanics and control systems behind humanoid robots,
@@ -154,7 +140,7 @@ const FeatureList: FeatureItem[] = [
   },
   {
     title: 'Interactive Labs',
-    Svg: RobotLabSVG,
+    Svg: AnimeLabSVG,
     description: (
       <>
         Engaging hands-on experiments and simulations to deepen your understanding
