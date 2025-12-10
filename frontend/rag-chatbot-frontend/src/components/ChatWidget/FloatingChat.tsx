@@ -352,7 +352,7 @@ const FloatingChat: React.FC<FloatingChatProps> = ({ backendUrl }) => {
       )}
 
       {/* Chat Popup */}
-      <div className={`${styles['chat-popup']} ${isOpen ? styles.open : ''}`}>
+      <div className={`${styles['chat-popup']} ${isOpen ? styles.open || '' : ''}`}>
         <div className={styles['chat-popup-header']}>
           <h3>Robotics Assistant</h3>
           <button
