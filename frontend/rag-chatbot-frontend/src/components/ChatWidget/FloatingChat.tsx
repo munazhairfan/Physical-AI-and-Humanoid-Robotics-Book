@@ -6,6 +6,8 @@ interface Message {
   content: string;
   role: 'user' | 'assistant';
   timestamp: Date;
+  // Store formatted timestamp to ensure consistency between server and client
+  formattedTimestamp?: string;
 }
 
 interface FloatingChatProps {
@@ -352,7 +354,7 @@ const FloatingChat: React.FC<FloatingChatProps> = ({ backendUrl }) => {
       )}
 
       {/* Chat Popup */}
-      <div className={`${styles['chat-popup']} ${isOpen ? styles.open || '' : ''}`}>
+      <div className={`${styles['chat-popup']} ${isOpen ? styles.open : ''}`}>
         <div className={styles['chat-popup-header']}>
           <h3>Robotics Assistant</h3>
           <button
@@ -374,9 +376,7 @@ const FloatingChat: React.FC<FloatingChatProps> = ({ backendUrl }) => {
                 {String(message.content || '')}
               </div>
               <div className={styles['message-timestamp']}>
-                {message.timestamp instanceof Date
-                  ? message.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-                  : new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                {message.timestamp.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false })}
               </div>
             </div>
           ))}

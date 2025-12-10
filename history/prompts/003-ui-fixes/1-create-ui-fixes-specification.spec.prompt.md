@@ -25,17 +25,62 @@ tests: []
 ## Prompt
 
 ```
-# ERRORS TO FIX
+### sp.specify("ui.chatbot.floating-button")
+# UI Enhancement: Floating Chatbot Button and Theme Improvements
+## Specification
 
-#The chatbot is not appearing as the floating button on any page which can be clickeed to make the chatbot appear.
-#remove svg from the card on home page and replace them with the svg that is in ui folder
-# also remove the svg from the tab below where there are headings advanced ai learner etc and change them with some ready made ui from the google or any other website
-most of the text is showing very light maybe there is opacity issue or the theme issue
-# the buttons on the home page do not have anylink attached
-# the theme of the site should be anime
-# use good fonts colors and sharp shapes
-# remove the keyboard emojis from eveywhere
-#remove the dinosaur icon of docusauras from everywhere
+### Goal
+Implement a floating chatbot button that is accessible from all pages of the website, update the visual theme to be anime-styled, and fix various UI/UX issues throughout the site.
+
+### Requirements
+
+#### 1. Floating Chatbot Button
+- Implement a persistent floating button that remains visible on all pages
+- Button should open the chatbot interface when clicked
+- Button should be positioned consistently across all page types
+- Button should have appropriate styling that fits the new theme
+
+#### 2. SVG Icon Replacement
+- Replace SVG icons on homepage cards with new anime-themed alternatives from the UI folder
+- Replace SVG icons in the tab section (Advanced AI Learner, etc.) with modern, anime-themed UI elements
+- Ensure icons are properly sized and aligned with surrounding content
+
+#### 3. Text Visibility Issues
+- Address opacity issues that make text appear too light on various backgrounds
+- Ensure all text meets accessibility standards for contrast and readability
+- Update theme to improve overall text visibility across the site
+
+#### 4. Homepage Button Functionality
+- Implement functional links for all homepage buttons
+- Ensure links navigate to appropriate sections or pages
+- Add proper hover and click states for improved user experience
+
+#### 5. Anime Theme Implementation
+- Apply consistent anime-themed styling throughout the site
+- Update color palette, fonts, and visual elements to match anime aesthetic
+- Use sharp shapes and modern design principles within the anime theme
+
+#### 6. Cleanup Requirements
+- Remove all keyboard emojis from the website
+- Remove Docusaurus dinosaur icons from all locations
+- Ensure clean, professional appearance while maintaining anime theme
+
+### Technical Implementation
+- Use Docusaurus-optimized components for consistency
+- Maintain responsive design across all device sizes
+- Follow accessibility standards (WCAG 2.1 AA)
+- Ensure performance is not degraded by new visual elements
+
+### Success Criteria
+- Chatbot button is accessible on all pages and functions correctly
+- All text meets minimum contrast ratios for readability
+- Homepage buttons navigate to correct destinations
+- New anime theme is consistently applied throughout the site
+- All unwanted elements (emojis, dinosaur icons) are removed
+- Site maintains fast loading times and good performance
+
+### Return
+Produce a plan using `sp.plan()` next, breaking this feature into implementation tasks.
 ```
 
 ## Response
