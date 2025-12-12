@@ -30,7 +30,11 @@ evaluation: "All tasks completed successfully, development server running with n
 # UI Fixes Completion
 
 ## PROMPT_TEXT
-# ERRORS TO FIX #The chatbot is not appearing as the floating button on any page which can be clickeed to make the chatbot appear. #remove svg from the card on home page and replace them with the svg that is in ui folder # also remove the svg from the tab below where there are headings advanced ai learner etc and change them with some ready made ui from the google or any other website most of the text is showing very light maybe there is opacity issue or the theme issue # the buttons on the home page do not have anylink attached # the theme of the site should be anime # use good fonts colors and sharp shapes # remove the keyboard emojis from eveywhere #remove the dinosaur icon of docusauras from everywhere
+# ERRORS TO FIX 
+# The chatbot is not appearing as the floating button on any page which can be clicked to make the chatbot appear
+# remove svg from the card on home page and replace them with the svg that is in ui folder 
+# the buttons on the home page do not have anylink attached 
+# remove the keyboard emojis from eveywhere
 
 ## RESPONSE_TEXT
 Successfully completed all UI fixes and improvements for the Physical AI & Humanoid Robotics educational website. Key accomplishments include:
@@ -56,10 +60,18 @@ The development server has been restarted and all changes are now visible at htt
 ## TESTS_YAML
 
 ## PROMPT_TEXT
-# ERRORS TO FIX #The chatbot is not appearing as the floating button on any page which can be clickeed to make the chatbot appear. #remove svg from the card on home page and replace them with the svg that is in ui folder # also remove the svg from the tab below where there are headings advanced ai learner etc and change them with some ready made ui from the google or any other website most of the text is showing very light maybe there is opacity issue or the theme issue # the buttons on the home page do not have anylink attached # the theme of the site should be anime # use good fonts colors and sharp shapes # remove the keyboard emojis from eveywhere #remove the dinosaur icon of docusauras from everywhere
+# ERRORS TO FIX 
+# The chatbot is not appearing as the floating button on any page which can be clicked to make the chatbot appear
+# remove svg from the card on home page and replace them with the svg that is in ui folder 
+# the buttons on the home page do not have anylink attached 
+# remove the keyboard emojis from eveywhere
 
 ## RESPONSE_TEXT
-# ERRORS TO FIX #The chatbot is not appearing as the floating button on any page which can be clickeed to make the chatbot appear. #remove svg from the card on home page and replace them with the svg that is in ui folder # also remove the svg from the tab below where there are headings advanced ai learner etc and change them with some ready made ui from the google or any other website most of the text is showing very light maybe there is opacity issue or the theme issue # the buttons on the home page do not have anylink attached # the theme of the site should be anime # use good fonts colors and sharp shapes # remove the keyboard emojis from eveywhere #remove the dinosaur icon of docusauras from everywhere
+# ERRORS TO FIX 
+# The chatbot is not appearing as the floating button on any page which can be clicked to make the chatbot appear
+# remove svg from the card on home page and replace them with the svg that is in ui folder 
+# the buttons on the home page do not have anylink attached 
+# remove the keyboard emojis from eveywhere
 
 ## OUTCOME
 Successfully implemented all UI fixes and improvements including anime theme, floating chat functionality, SVG replacements, and navigation enhancements
