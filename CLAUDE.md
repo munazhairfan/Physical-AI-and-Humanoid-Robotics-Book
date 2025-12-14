@@ -208,3 +208,14 @@ Wait for consent; never auto-create ADRs. Group related decisions (stacks, authe
 
 ## Code Standards
 See `.specify/memory/constitution.md` for code quality, testing, performance, security, and architecture principles.
+
+## Active Technologies
+- JavaScript/TypeScript, Python 3.11 + Docusaurus framework, FastAPI, Google Gemini API (008-text-selection-chatbot)
+- N/A (client-side functionality) (008-text-selection-chatbot)
+- TypeScript/JavaScript, Node.js + better-auth, @better-auth/cli, @neondatabase/serverless, pg, express, cookie-parser (001-auth-system)
+- Neon Serverless Postgres database (001-auth-system)
+- JavaScript/TypeScript with Node.js 18+ + better-auth, @neondatabase/serverless, pg, express, cookie-parser (001-auth-system)
+- Neon Serverless Postgres database with automatic schema generation (001-auth-system)
+
+## Recent Changes
+- 008-text-selection-chatbot: Added JavaScript/TypeScript, Python 3.11 + Docusaurus framework, FastAPI, Google Gemini API

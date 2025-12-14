@@ -1,0 +1,47 @@
+openapi: 3.0.0
+info:
+  title: Text Selection Chatbot API
+  version: 1.0.0
+  description: API contracts for the text selection chatbot feature
+paths:
+  /selected_text:
+    post:
+      summary: Process selected text and return AI response
+      description: Accepts selected text from the frontend and returns an AI-generated response
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - text
+              properties:
+                text:
+                  type: string
+                  description: The text that was selected by the user
+                  example: "Machine learning is a subset of artificial intelligence"
+                context:
+                  type: string
+                  description: Additional context about how the text was selected
+                  example: "User selected this text and asked for more information"
+      responses:
+        '200':
+          description: Successful response with AI-generated content
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - response
+                properties:
+                  response:
+                    type: string
+                    description: AI-generated response to the selected text
+                    example: "Machine learning is indeed a subset of AI that focuses on algorithms that can learn from data..."
+        '400':
+          description: Bad request if required fields are missing
+        '500':
+          description: Internal server error if processing fails
+components:
+  schemas: {}

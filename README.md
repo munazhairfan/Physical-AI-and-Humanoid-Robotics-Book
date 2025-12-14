@@ -1,157 +1,297 @@
-# Physical AI & Humanoid Robotics Educational Platform
+# Authentication System with Better Auth and Neon Postgres
 
-An interactive educational platform on Physical AI & Humanoid Robotics with integrated RAG chatbot for enhanced learning.
+This project implements a production-ready authentication system using Better Auth with Neon Serverless Postgres database. The system provides email/password authentication, OAuth integration with Google and GitHub, secure session management, and protected API endpoints.
 
-## 📚 Project Structure
+## Features
 
-```
-Physical-AI-and-Humanoid-Robotics/
-├── backend/                    # RAG API service (FastAPI)
-│   ├── app/                   # Main application code
-│   ├── requirements.txt       # Python dependencies
-│   ├── Dockerfile            # Deployment configuration
-│   ├── app.py               # Main entry point
-│   └── startup.py           # Railway startup script
-├── frontend/                 # Docusaurus documentation site
-│   └── rag-chatbot-frontend/ # The actual Docusaurus site
-│       ├── src/              # React components
-│       │   └── components/   # Chat widget component
-│       ├── docs/            # Book content
-│       ├── package.json     # Frontend dependencies
-│       ├── vercel.json      # Vercel deployment config
-│       └── docusaurus.config.ts
-├── .github/workflows/        # GitHub Actions workflows
-│   └── gh-pages.yml         # GitHub Pages deployment
-├── .env                     # Environment variables (not in repo)
-└── DEPLOYMENT_GUIDE.md      # Detailed deployment instructions
-```
+- ✅ Email/password registration and login
+- ✅ OAuth integration with Google and GitHub
+- ✅ Secure session management with httpOnly cookies
+- ✅ Protected routes requiring authentication
+- ✅ Database integration with Neon Serverless Postgres
+- ✅ Client-side authentication helper functions
+- ✅ Logout functionality
+- ✅ Session validation middleware
+- ✅ Next.js API route integration
+- ✅ Express.js server with protected routes
 
-## 🚀 Quick Start
+## Prerequisites
 
-### Backend (RAG API)
+- Node.js 18+ installed
+- npm or yarn package manager
+- Neon Postgres account and database URL
+- Google OAuth credentials (Client ID and Secret)
+- GitHub OAuth credentials (Client ID and Secret)
+
+## Setup Instructions
+
+### 1. Clone the repository
+
 ```bash
-cd backend
-pip install -r requirements.txt
-# Set your GEMINI_API_KEY in environment
-python app.py
+git clone <repository-url>
+cd <repository-name>
 ```
-Backend will run on `http://localhost:8000`
 
-### Frontend (Documentation)
+### 2. Install dependencies
+
 ```bash
-cd frontend/rag-chatbot-frontend
 npm install
-# Set REACT_APP_BACKEND_URL to your backend URL
-npm start
 ```
-Frontend will run on `http://localhost:3000`
 
-## ☁️ GitHub Deployment
+### 3. Configure environment variables
 
-### Prerequisites
+Create a `.env` file in the root directory with the following structure:
 
-1. A GitHub account
-2. Accounts on deployment platforms:
-   - [Railway](https://railway.app) for backend deployment
-   - [Vercel](https://vercel.com) for frontend deployment
+```env
+# Database Configuration
+DATABASE_URL=your_neon_connection_string
 
-### Backend Deployment (Railway)
+# Better Auth Configuration
+BETTER_AUTH_SECRET=your_secret
+BETTER_AUTH_URL=http://localhost:3000
 
-1. **Prepare for Deployment**
-   - Ensure all changes are committed to your GitHub repository
-   - The backend is configured with a `Dockerfile` and `startup.py` for Railway deployment
+# Google OAuth Configuration
+GOOGLE_CLIENT_ID=your_google_client_id
+GOOGLE_CLIENT_SECRET=your_google_client_secret
 
-2. **Deploy to Railway**
-   - Go to [Railway](https://railway.app)
-   - Connect your GitHub account
-   - Create a new project and select this repository
-   - Choose the `backend` directory as the root
-   - Railway will automatically detect the Python project and use the Dockerfile
-   - Add environment variable:
-     - Key: `GEMINI_API_KEY`
-     - Value: Your Google Gemini API key
-   - Deploy the project
+# GitHub OAuth Configuration
+GITHUB_CLIENT_ID=your_github_client_id
+GITHUB_CLIENT_SECRET=your_github_client_secret
+```
 
-3. **Note Your Backend URL**
-   - After deployment, Railway will provide a URL like: `https://your-app-name.up.railway.app`
-   - Save this URL - you'll need it for frontend configuration
+### 4. Run database migrations
 
-### Frontend Deployment (Vercel)
+First, generate the schema:
 
-1. **Prepare for Deployment**
-   - The frontend is already configured for Vercel deployment
-   - baseUrl is set to `/` for Vercel root deployment
+```bash
+npx @better-auth/cli generate
+```
 
-2. **Deploy to Vercel**
-   - Go to [Vercel](https://vercel.com)
-   - Connect your GitHub account
-   - Create a new project and select this repository
-   - Set the root directory to: `frontend/rag-chatbot-frontend`
-   - Add environment variable:
-     - Key: `REACT_APP_BACKEND_URL`
-     - Value: Your Railway backend URL from the previous step
-   - Configure build settings:
-     - Build Command: `npm run build`
-     - Output Directory: `build`
-     - Install Command: `npm install`
-   - Deploy the project
+Then run the migrations:
 
-### Alternative: GitHub Pages Deployment
+```bash
+npx @better-auth/cli migrate
+```
 
-If you prefer to deploy the frontend on GitHub Pages:
+### 5. Start the server
 
-1. The repository already includes a GitHub Actions workflow for GitHub Pages deployment
-2. The workflow is configured in `.github/workflows/gh-pages.yml`
-3. To enable GitHub Pages deployment:
-   - Go to your repository settings
-   - Navigate to "Pages" section
-   - Select source as "GitHub Actions"
-   - The workflow will automatically build and deploy the frontend on pushes to main branch
+```bash
+npm run auth-server
+```
 
-## 🤖 API Key Configuration
+Or for development with auto-reload:
 
-The application uses Google's Gemini API for AI responses. The GEMINI_API_KEY is required for the backend to function properly:
+```bash
+npm run dev
+```
 
-- **Backend**: Set as environment variable on Railway (`GEMINI_API_KEY`)
-- **Security**: The API key is stored in environment variables and never committed to the repository
-- **Local Development**: Create a `.env` file in the backend directory with your API key
+## API Endpoints
 
-## 🔧 Troubleshooting
+### Authentication Routes
 
-### If Chat Widget Doesn't Connect
-1. Check that your backend URL is correctly set in the frontend environment variables
-2. Verify your backend is properly deployed and accessible
-3. Check browser console for any connection errors
+- `POST /api/auth/signup` - Create new user account
+- `POST /api/auth/login` - Authenticate user and create session
+- `POST /api/auth/logout` - End user session
+- `GET /api/auth/me` - Get current user info (protected)
+- `GET /api/auth/session` - Get current session info (for client-side validation)
+- `GET /api/auth/oauth/google` - Initiate Google OAuth
+- `GET /api/auth/oauth/github` - Initiate GitHub OAuth
 
-### If Backend Deployment Fails
-1. Make sure Dockerfile doesn't have import tests during build
-2. Verify Python version compatibility (should be 3.11+)
-3. Check the backend logs in Railway dashboard
+### Protected Routes
 
-### If Frontend Doesn't Load Properly
-1. Make sure baseUrl in docusaurus.config.ts is set to `/` for Vercel root deployment
-2. After deployment, update the `url` field with your actual deployment domain
-3. Verify that all static assets load correctly
-4. Check browser console for any 404 errors or asset loading issues
+The system includes middleware for protecting routes that require authentication:
 
-### Common Issues Fixed
-- ✅ **Railway Import Error**: Fixed Dockerfile to remove problematic import test
-- ✅ **Vercel 404 Error**: Added proper routing configuration
-- ✅ **BaseUrl Issue**: Fixed for Vercel root deployment
-- ✅ **URL Configuration**: Updated for Vercel deployment
-- ✅ **Duplicate Backends**: Consolidated to single, properly configured backend
-- ✅ **Python Version Mismatch**: Updated to Python 3.11 consistently
+- `requireAuth` middleware - Requires valid authentication, returns 401 if not authenticated
+- `checkAuth` middleware - Checks authentication but doesn't require it, adds user info to request if authenticated
 
-## 🤝 Integration
+Example protected endpoint: `GET /api/protected/profile` - Requires authentication to access user profile
 
-The floating chat widget on the documentation site connects to the backend API to provide contextual answers about robotics concepts, creating an interactive learning experience.
+### OAuth Setup
 
-## 📖 Features
+#### Google OAuth
 
-- Interactive robotics textbook with integrated Q&A
-- Select text to get explanations from AI
-- Knowledge base for robotics concepts
-- Conversational interface for learning
-- Multi-modal support for complex robotics queries
-- Real-time vector search for relevant context
-- Responsive design for all devices
+1. Go to [Google Cloud Console](https://console.cloud.google.com/)
+2. Create a new project or select an existing one
+3. Enable the Google+ API
+4. Create credentials (OAuth 2.0 Client IDs)
+5. Add authorized redirect URIs: `http://localhost:3000/api/auth/oauth/google/callback`
+6. Add `GOOGLE_CLIENT_ID` and `GOOGLE_CLIENT_SECRET` to your `.env` file
+
+#### GitHub OAuth
+
+1. Go to [GitHub Developer Settings](https://github.com/settings/developers)
+2. Create a new OAuth App
+3. Set Homepage URL to your application URL
+4. Set Authorization callback URL to `http://localhost:3000/api/auth/oauth/github/callback`
+5. Add `GITHUB_CLIENT_ID` and `GITHUB_CLIENT_SECRET` to your `.env` file
+
+## Next.js Integration
+
+The system includes proper integration for Next.js applications:
+
+### API Routes
+The Better Auth API routes are available at `frontend/rag-chatbot-frontend/src/pages/api/auth/[...auth].js`, which handles all Better Auth API requests automatically.
+
+### Middleware
+Server-side middleware is available in `frontend/rag-chatbot-frontend/src/utils/auth-middleware.js`:
+- `withAuth()` - Higher-order function to protect pages that require authentication
+- `getSession()` - Function to get session in getServerSideProps
+- `getAuthSession()` - Client-side function to check authentication status
+
+Express.js middleware is available in `server/middleware/auth-middleware.js`:
+- `requireAuth` - Middleware to protect routes that require authentication
+- `checkAuth` - Middleware to check authentication but not require it
+
+## Client-Side Usage
+
+The client-side authentication helper is available in `client/auth-client.js`:
+
+```javascript
+import { signup, login, getUserInfo } from './client/auth-client.js';
+
+// Signup
+try {
+  const result = await signup({
+    email: 'user@example.com',
+    password: 'securePassword123',
+    firstName: 'John',
+    lastName: 'Doe'
+  });
+  console.log('User created:', result);
+} catch (error) {
+  console.error('Signup failed:', error);
+}
+
+// Login
+try {
+  const result = await login({
+    email: 'user@example.com',
+    password: 'securePassword123'
+  });
+  console.log('Logged in:', result);
+} catch (error) {
+  console.error('Login failed:', error);
+}
+
+// Get user info
+try {
+  const result = await getUserInfo();
+  console.log('User info:', result);
+} catch (error) {
+  console.error('Failed to get user info:', error);
+}
+
+// Logout
+try {
+  const result = await logout();
+  console.log('Logged out:', result);
+} catch (error) {
+  console.error('Logout failed:', error);
+}
+```
+
+## Security Features
+
+- Passwords are automatically hashed using bcrypt
+- Secure httpOnly cookies for session management
+- CSRF protection with sameSite attribute
+- Input validation and sanitization
+- Rate limiting for authentication endpoints (configurable)
+
+## Database Schema
+
+The system uses the following tables (created automatically by Better Auth):
+
+- `users` - User accounts with email, password hash, and profile info
+- `sessions` - Active user sessions with expiration
+- `accounts` - OAuth provider accounts linked to users
+- `verification_tokens` - Tokens for email verification and password resets
+
+## Environment Variables
+
+| Variable | Description | Required |
+|----------|-------------|----------|
+| `DATABASE_URL` | Neon Postgres connection string | Yes |
+| `BETTER_AUTH_SECRET` | Secret key for JWT signing | Yes |
+| `BETTER_AUTH_URL` | Base URL of your application | Yes |
+| `GOOGLE_CLIENT_ID` | Google OAuth client ID | No* |
+| `GOOGLE_CLIENT_SECRET` | Google OAuth client secret | No* |
+| `GITHUB_CLIENT_ID` | GitHub OAuth client ID | No* |
+| `GITHUB_CLIENT_SECRET` | GitHub OAuth client secret | No* |
+
+*Required only if using OAuth providers
+
+## Development
+
+To run the development server with auto-reload:
+
+```bash
+npm run dev
+```
+
+To run tests:
+
+```bash
+npm test
+```
+
+## Production Deployment
+
+1. Use a strong secret for `BETTER_AUTH_SECRET`
+2. Ensure your `BETTER_AUTH_URL` is set to your production URL
+3. Configure proper OAuth redirect URIs for your domain
+4. Use environment variables for all secrets in production
+5. Consider using a reverse proxy (nginx) for production deployment
+
+## Troubleshooting
+
+### Database Connection Issues
+
+- Verify your Neon connection string format
+- Check that your database allows connections from your application
+- Ensure your firewall rules allow database connections
+
+### Better Auth and Neon Compatibility
+
+You may encounter a "Failed to initialize database adapter" error when running the authentication server. This is a known compatibility issue between Better Auth and Neon's serverless architecture. The server has been configured with graceful error handling to continue running despite this issue.
+
+If you see this error:
+```
+[BetterAuthError: Failed to initialize database adapter]
+```
+
+The server will continue running but authentication operations may fail. To resolve this:
+
+1. Verify your Neon Postgres connection string in `.env` is correct
+2. Check that the database tables were created by running: `node check-schema.js`
+3. Ensure the tables exist by running: `node execute-schema.js` (if needed)
+4. Consider updating to the latest Better Auth version for improved Neon compatibility
+5. For production, ensure SSL settings match your Neon configuration
+6. Alternative: Consider using a standard PostgreSQL database instead of Neon's serverless option
+
+The authentication system includes manual table creation scripts to work around potential migration issues with Neon:
+- `create-better-auth-tables.sql` - SQL script to manually create required tables
+- `execute-schema.js` - Script to execute the schema creation
+- `check-schema.js` - Script to verify tables exist
+
+Additionally, diagnostic utilities are provided for troubleshooting:
+- `check-schema.js` - Script to verify tables exist
+- `execute-schema.js` - Script to execute schema creation (if migrations fail)
+- `run-migrations.js` - Alternative migration execution script
+- `test/auth-test.js` - Authentication system test script
+
+### OAuth Configuration Issues
+
+- Verify that your redirect URIs match exactly what's configured in Google/GitHub
+- Check that your client IDs and secrets are correct
+- Ensure your OAuth providers are properly configured in `server/auth/betterAuth.js`
+
+### Session Management Issues
+
+- Confirm that your cookies are properly configured for your domain
+- Check that HTTPS is used in production (secure flag)
+- Verify that your session expiration times are appropriate
+
+## Support
+
+For support, please open an issue in the GitHub repository or contact the development team.
