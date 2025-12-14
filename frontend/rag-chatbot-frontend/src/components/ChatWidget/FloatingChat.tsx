@@ -399,6 +399,31 @@ const FloatingChat: React.FC<FloatingChatProps> = ({ backendUrl }) => {
     sendMessage(inputValue);
   };
 
+  // Handle messages from the text selection JavaScript functionality
+  useEffect(() => {
+    const handleMessage = (event: MessageEvent) => {
+      console.log('Received message from selection chatbot:', event.data);
+      if (event.data && event.data.type === 'SELECTED_TEXT') {
+        console.log('Processing selected text:', event.data.text);
+        // Add the selected text as a user message and send it to the backend
+        const selectedText = event.data.text;
+        if (selectedText && typeof selectedText === 'string' && selectedText.trim()) {
+          // Open the chat if it's not already open
+          setIsOpen(true);
+          // Send the selected text to the backend using the now-defined sendMessage function
+          sendMessage(selectedText);
+        }
+      }
+    };
+
+    window.addEventListener('message', handleMessage);
+
+    // Clean up the event listener
+    return () => {
+      window.removeEventListener('message', handleMessage);
+    };
+  }, [sendMessage, setIsOpen]); // Now sendMessage is properly defined
+
   return (
     <div>
       {/* Floating Chat Button */}
