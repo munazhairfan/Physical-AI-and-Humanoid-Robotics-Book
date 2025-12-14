@@ -30,9 +30,10 @@ const FloatingChat: React.FC<FloatingChatProps> = ({ backendUrl }) => {
                          (window as any).env?.REACT_APP_BACKEND_URL;
 
     // Check if we're in browser environment and use appropriate URL
-    return window.location.hostname === 'localhost'
-      ? 'http://localhost:8000'
-      : (envBackendUrl || 'https://physical-ai-and-humanoid-robotics-book-production.up.railway.app/');
+    // Updated to ensure Railway URL is used in production and localhost for development
+    return window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+      ? 'http://localhost:8000'  // Development
+      : (envBackendUrl || 'https://physical-ai-and-humanoid-robotics-book-production.up.railway.app/');  // Production
   });
 
   // Use the provided backendUrl if available, otherwise use the resolved one
@@ -51,9 +52,6 @@ const FloatingChat: React.FC<FloatingChatProps> = ({ backendUrl }) => {
   ]);
   const [inputValue, setInputValue] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const [isTextSelectMenuOpen, setIsTextSelectMenuOpen] = useState(false);
-  const [textSelectPosition, setTextSelectPosition] = useState({ x: 0, y: 0 });
-  const [selectedText, setSelectedText] = useState('');
   const messagesEndRef = useRef<null | HTMLDivElement>(null);
 
   // Function to scroll to the bottom of the chat
@@ -77,41 +75,6 @@ const FloatingChat: React.FC<FloatingChatProps> = ({ backendUrl }) => {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  // Text selection functionality
-  useEffect(() => {
-    const handleSelection = () => {
-      const selection = window.getSelection();
-      if (selection && selection.toString().trim() !== '') {
-        const range = selection.getRangeAt(0);
-        const rect = range.getBoundingClientRect();
-
-        // Show the context menu near the selected text
-        setTextSelectPosition({
-          x: rect.left + window.scrollX,
-          y: rect.top + window.scrollY - 40 // Position above the selection
-        });
-        setSelectedText(selection.toString().trim());
-        setIsTextSelectMenuOpen(true);
-      } else {
-        setIsTextSelectMenuOpen(false);
-      }
-    };
-
-    const handleMouseDown = (e: MouseEvent) => {
-      // Close the context menu if clicking outside of it
-      if (isTextSelectMenuOpen && !(e.target as Element).closest('.text-select-menu')) {
-        setIsTextSelectMenuOpen(false);
-      }
-    };
-
-    document.addEventListener('mouseup', handleSelection);
-    document.addEventListener('mousedown', handleMouseDown);
-
-    return () => {
-      document.removeEventListener('mouseup', handleSelection);
-      document.removeEventListener('mousedown', handleMouseDown);
-    };
-  }, [isTextSelectMenuOpen]);
 
   // Mock response function for when backend is not available
   const getMockResponse = (userMessage: string): string => {
@@ -139,6 +102,50 @@ const FloatingChat: React.FC<FloatingChatProps> = ({ backendUrl }) => {
     }
   };
 
+  // Function to check if backend is available
+  const checkBackendHealth = async (): Promise<boolean> => {
+    try {
+      // Ensure there's no trailing slash in the backend URL to prevent double slashes
+      const normalizedBackendUrl = currentBackendUrl.replace(/\/$/, '');
+      console.log('Checking backend health at:', `${normalizedBackendUrl}/health`);
+
+      const response = await fetch(`${normalizedBackendUrl}/health`, {
+        method: 'GET',
+        headers: {
+          'Accept': 'application/json',
+          'Cache-Control': 'no-cache',
+        },
+        mode: 'cors', // Explicitly set CORS mode
+      });
+
+      console.log('Health check response:', response.status, response.ok);
+      if (response.ok) {
+        const data = await response.json();
+        console.log('Health check data:', data);
+      }
+
+      return response.ok;
+    } catch (error) {
+      console.warn('Backend health check failed:', error);
+      // For debugging, also try without credentials mode restrictions
+      try {
+        const normalizedBackendUrl = currentBackendUrl.replace(/\/$/, '');
+        const response = await fetch(`${normalizedBackendUrl}/health`, {
+          method: 'GET',
+          headers: {
+            'Accept': 'application/json',
+          },
+          // Try with no-cors mode as a fallback for debugging
+        });
+        console.log('Health check with different mode response:', response.status);
+        return response.ok;
+      } catch (secondError) {
+        console.error('Second attempt also failed:', secondError);
+        return false;
+      }
+    }
+  };
+
   // Function to send a message to the backend
   const sendMessage = async (message: string) => {
     if (!message.trim() || isLoading) return;
@@ -156,12 +163,30 @@ const FloatingChat: React.FC<FloatingChatProps> = ({ backendUrl }) => {
     setIsLoading(true);
 
     try {
+      // Check if backend is available before making the request
+      const isBackendAvailable = await checkBackendHealth();
+
+      if (!isBackendAvailable) {
+        console.warn('Backend is not available, using mock response');
+        // Use mock response instead of making the API call
+        const mockResponse = getMockResponse(message);
+        const errorMessage: Message = {
+          id: (Date.now() + 1).toString(),
+          content: `${mockResponse}\n\n⚠️ Note: Backend service is not available, showing mock response.`,
+          role: 'assistant',
+          timestamp: new Date(),
+        };
+        setMessages(prev => [...prev, errorMessage]);
+        return;
+      }
+
       // Ensure there's no trailing slash in the backend URL to prevent double slashes
       const normalizedBackendUrl = currentBackendUrl.replace(/\/$/, '');
       console.log('Attempting to connect to backend:', `${normalizedBackendUrl}/chat`);
       console.log('Sending message:', message);
 
       // Try the configured backend URL
+      console.log('Making chat request to:', `${normalizedBackendUrl}/chat`);
       const response = await fetch(`${normalizedBackendUrl}/chat`, {
         method: 'POST',
         headers: {
@@ -175,6 +200,7 @@ const FloatingChat: React.FC<FloatingChatProps> = ({ backendUrl }) => {
             .map(msg => ({ role: msg.role, content: msg.content }))
         }),
       });
+      console.log('Chat response received:', response.status, response.ok);
 
       console.log('Response received:', response.status, response.ok);
 
@@ -229,93 +255,31 @@ const FloatingChat: React.FC<FloatingChatProps> = ({ backendUrl }) => {
     }
   };
 
-  // Function to send selected text to the backend
-  const sendSelectedText = async () => {
-    if (!selectedText.trim() || isLoading) return;
 
-    // Add user message (selected text) to the chat
-    const userMessage: Message = {
-      id: Date.now().toString(),
-      content: `About this text: "${selectedText.substring(0, 100)}${selectedText.length > 100 ? '...' : ''}"`,
-      role: 'user',
-      timestamp: new Date(),
+  // Handle messages from the text selection JavaScript functionality
+  useEffect(() => {
+    const handleMessage = (event: MessageEvent) => {
+      console.log('Received message from selection chatbot:', event.data);
+      if (event.data && event.data.type === 'SELECTED_TEXT') {
+        console.log('Processing selected text:', event.data.text);
+        // Add the selected text as a user message and send it to the backend
+        const selectedText = event.data.text;
+        if (selectedText && typeof selectedText === 'string' && selectedText.trim()) {
+          // Open the chat if it's not already open
+          setIsOpen(true);
+          // Send the selected text to the backend using the now-defined sendMessage function
+          sendMessage(selectedText);
+        }
+      }
     };
 
-    setMessages(prev => [...prev, userMessage]);
-    setIsLoading(true);
-    setIsTextSelectMenuOpen(false); // Close the context menu
+    window.addEventListener('message', handleMessage);
 
-    try {
-      // Ensure there's no trailing slash in the backend URL to prevent double slashes
-      const normalizedBackendUrl = currentBackendUrl.replace(/\/$/, '');
-      console.log('Attempting to connect to backend:', `${normalizedBackendUrl}/selected_text`);
-      console.log('Sending selected text:', selectedText);
-
-      // Try the configured backend URL with the selected_text endpoint
-      const response = await fetch(`${normalizedBackendUrl}/selected_text`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json',
-        },
-        body: JSON.stringify({
-          text: selectedText,
-          context: `User selected this text: "${selectedText}" and asked for more information.`
-        }),
-      });
-
-      console.log('Response received:', response.status, response.ok);
-
-      if (!response.ok) {
-        // If backend returns an error, use mock response instead
-        console.warn('Backend error for selected text, using mock response');
-        console.warn('Response status:', response.status);
-        console.warn('Response status text:', response.statusText);
-        const errorText = await response.text();
-        console.warn('Error details:', errorText);
-        throw new Error(`HTTP error! status: ${response.status}, details: ${errorText}`);
-      }
-
-      const data = await response.json();
-      console.log('Backend response data for selected text:', data);
-
-      // Add assistant response to the chat
-      // Check if response has the expected structure
-      let responseContent = '';
-      if (data && typeof data === 'object') {
-        responseContent = data.response || data.text || data.message || '';
-      } else {
-        responseContent = String(data || '');
-      }
-
-      // Ensure content is a proper string
-      responseContent = typeof responseContent === 'string' ? responseContent : JSON.stringify(responseContent) || '';
-
-      const assistantMessage: Message = {
-        id: (Date.now() + 1).toString(),
-        content: responseContent,
-        role: 'assistant',
-        timestamp: new Date(),
-      };
-
-      setMessages(prev => [...prev, assistantMessage]);
-    } catch (error) {
-      console.error('Full error object for selected text:', error);
-      console.warn('Selected text backend not available, using mock response:', error);
-
-      // Provide a more informative error message to the user
-      const errorMessage: Message = {
-        id: (Date.now() + 1).toString(),
-        content: `I'm sorry, I'm having trouble processing the selected text. Using mock response. Error: ${error instanceof Error ? error.message : 'Unknown error'}`,
-        role: 'assistant',
-        timestamp: new Date(),
-      };
-
-      setMessages(prev => [...prev, errorMessage]);
-    } finally {
-      setIsLoading(false);
-    }
-  };
+    // Clean up the event listener
+    return () => {
+      window.removeEventListener('message', handleMessage);
+    };
+  }, [sendMessage, setIsOpen]); // Now sendMessage is properly defined
 
   // Handle form submission
   const handleSubmit = (e: React.FormEvent) => {
@@ -339,19 +303,6 @@ const FloatingChat: React.FC<FloatingChatProps> = ({ backendUrl }) => {
         />
       </button>
 
-      {/* Text Selection Context Menu */}
-      {isTextSelectMenuOpen && (
-        <div
-          className={styles['text-select-menu']}
-          style={{
-            left: textSelectPosition.x,
-            top: textSelectPosition.y,
-          }}
-          onClick={sendSelectedText}
-        >
-          Ask Chatbot
-        </div>
-      )}
 
       {/* Chat Popup */}
       <div className={`${styles['chat-popup']} ${isOpen ? styles.open : ''}`}>
