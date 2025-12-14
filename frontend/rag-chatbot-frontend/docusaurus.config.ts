@@ -109,14 +109,6 @@ const config: Config = {
   themes: [],
   stylesheets: [],
 
-  // Add custom JavaScript for text selection chatbot functionality
-  scripts: [
-    {
-      src: '/js/selection-chatbot.js',
-      async: true,
-      defer: true,
-    },
-  ],
 };
 
 export default config;
