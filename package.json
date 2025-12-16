@@ -5,6 +5,7 @@
   "scripts": {
     "start-backend": "cd backend && python app.py",
     "start-frontend": "cd frontend/rag-chatbot-frontend && npm start",
+    "build": "cd frontend/rag-chatbot-frontend && npm run build",
     "build-frontend": "cd frontend/rag-chatbot-frontend && npm run build",
     "auth-server": "node server/index.js",
     "dev": "nodemon server/index.js",

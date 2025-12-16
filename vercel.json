@@ -1,0 +1,20 @@
+{
+  "builds": [
+    {
+      "src": "frontend/rag-chatbot-frontend/**",
+      "use": "@vercel/static-build",
+      "config": {
+        "distDir": "build"
+      }
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "/index.html",
+      "headers": {
+        "Cache-Control": "public, max-age=0"
+      }
+    }
+  ]
+}
