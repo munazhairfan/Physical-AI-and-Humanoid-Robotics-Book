@@ -107,14 +107,34 @@
         if (floatingChatButton) {
             // Click the button to open the chat if it's closed
             floatingChatButton.click();
-        }
 
-        // Send the selected text via postMessage to the window
-        // The React FloatingChat component is listening for these messages
-        window.postMessage({
-            type: 'SELECTED_TEXT',
-            text: text
-        }, '*');
+            // Small delay to ensure the chat is open before sending the message
+            setTimeout(() => {
+                // Send the selected text via postMessage to the window
+                // The React FloatingChat component is listening for these messages
+                window.postMessage({
+                    type: 'SELECTED_TEXT',
+                    text: text
+                }, '*');
+            }, 300);
+        } else {
+            // If no floating chat button exists, try to find the chat popup and open it
+            let chatPopup = document.querySelector('.chat-popup');
+            if (!chatPopup || !chatPopup.classList.contains('open')) {
+                // If we can't find the button, try to simulate clicking somewhere that might open it
+                // Send the selected text via postMessage to the window
+                window.postMessage({
+                    type: 'SELECTED_TEXT',
+                    text: text
+                }, '*');
+            } else {
+                // Chat is already open, just send the message
+                window.postMessage({
+                    type: 'SELECTED_TEXT',
+                    text: text
+                }, '*');
+            }
+        }
 
         isChatbotVisible = true;
 
@@ -122,9 +142,9 @@
         hideSelectionButton();
     }
 
-    // Create chatbot iframe as a last resort (fallback if React component doesn't exist)
-    function createChatbotIframe(selectedText = '') {
-        // Try to find the floating chat button first and use it instead of creating an iframe
+    // Function to ensure we only interact with the existing React component
+    function ensureReactChatbot(selectedText = '') {
+        // Try to find the floating chat button and use it
         let floatingChatButton = document.querySelector('.floating-chat-button') ||
                                  document.querySelector('[aria-label="Open chat"]');
 
@@ -132,72 +152,32 @@
             // Click the button to open the chat if it's closed
             floatingChatButton.click();
 
-            // Send the selected text via postMessage to the window
+            // Small delay to ensure the chat is open before sending the message
+            setTimeout(() => {
+                // Send the selected text via postMessage to the window
+                window.postMessage({
+                    type: 'SELECTED_TEXT',
+                    text: selectedText
+                }, '*');
+            }, 300);
+
+            isChatbotVisible = true;
+            return true; // Successfully used existing React component
+        }
+
+        // If no button found, try to find if the chat is already open
+        let chatPopup = document.querySelector('.chat-popup');
+        if (chatPopup && chatPopup.classList.contains('open')) {
+            // Chat is already open, just send the message
             window.postMessage({
                 type: 'SELECTED_TEXT',
                 text: selectedText
             }, '*');
-
             isChatbotVisible = true;
-            return; // Exit early since we're using the existing React component
+            return true;
         }
 
-        // If no floating chat button exists, create the iframe as a fallback
-        // Remove existing iframe if any
-        const existingIframe = document.getElementById(CHATBOT_IFRAME_ID);
-        if (existingIframe) {
-            existingIframe.remove();
-        }
-
-        // Create iframe container
-        const iframeContainer = document.createElement('div');
-        iframeContainer.id = 'chatbot-container';
-        iframeContainer.style.cssText = `
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            width: 400px;
-            height: 500px;
-            z-index: 10001;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-            border-radius: 12px;
-            overflow: hidden;
-        `;
-
-        // Create iframe
-        chatbotIframe = document.createElement('iframe');
-        chatbotIframe.id = CHATBOT_IFRAME_ID;
-        chatbotIframe.className = 'chatbot-iframe';
-
-        // Get the backend URL from environment or default
-        const backendUrl = window.REACT_APP_BACKEND_URL ||
-                          window.env?.REACT_APP_BACKEND_URL ||
-                          'https://physical-ai-and-humanoid-robotics-book-production.up.railway.app/';
-
-        // Load the main page, not the API endpoint
-        chatbotIframe.src = backendUrl;
-        chatbotIframe.style.cssText = `
-            width: 100%;
-            height: 100%;
-            border: none;
-        `;
-
-        iframeContainer.appendChild(chatbotIframe);
-        document.body.appendChild(iframeContainer);
-
-        // Wait for iframe to load, then send the selected text
-        chatbotIframe.onload = function() {
-            // Small delay to ensure the page is fully loaded before sending the message
-            setTimeout(() => {
-                // Send to the iframe's content window if needed as a last resort
-                chatbotIframe.contentWindow.postMessage({
-                    type: 'SELECTED_TEXT',
-                    text: selectedText
-                }, '*');
-            }, 500);
-        };
-
-        isChatbotVisible = true;
+        return false; // No React component found
     }
 
     // Show the selection button near the selected text

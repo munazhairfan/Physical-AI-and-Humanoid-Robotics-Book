@@ -1,6 +1,15 @@
 import React, { useState, useEffect, useRef } from 'react';
 import styles from './FloatingChat.module.css';
 
+declare global {
+  interface Window {
+    REACT_APP_BACKEND_URL?: string;
+    env?: {
+      REACT_APP_BACKEND_URL?: string;
+    };
+  }
+}
+
 interface Message {
   id: string;
   content: string;
@@ -51,9 +60,6 @@ const FloatingChat: React.FC<FloatingChatProps> = ({ backendUrl }) => {
   ]);
   const [inputValue, setInputValue] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const [isTextSelectMenuOpen, setIsTextSelectMenuOpen] = useState(false);
-  const [textSelectPosition, setTextSelectPosition] = useState({ x: 0, y: 0 });
-  const [selectedText, setSelectedText] = useState('');
   const messagesEndRef = useRef<null | HTMLDivElement>(null);
 
   // Function to scroll to the bottom of the chat
@@ -77,41 +83,34 @@ const FloatingChat: React.FC<FloatingChatProps> = ({ backendUrl }) => {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  // Text selection functionality
+  // Listen for postMessage events from the JavaScript file
   useEffect(() => {
-    const handleSelection = () => {
-      const selection = window.getSelection();
-      if (selection && selection.toString().trim() !== '') {
-        const range = selection.getRangeAt(0);
-        const rect = range.getBoundingClientRect();
+    const handleMessage = (event: MessageEvent) => {
+      if (event.data && event.data.type === 'SELECTED_TEXT' && event.data.text) {
+        // Add the selected text as a user message and send it to the backend
+        const userMessage: Message = {
+          id: Date.now().toString(),
+          content: event.data.text,
+          role: 'user',
+          timestamp: new Date(),
+        };
 
-        // Show the context menu near the selected text
-        setTextSelectPosition({
-          x: rect.left + window.scrollX,
-          y: rect.top + window.scrollY - 40 // Position above the selection
-        });
-        setSelectedText(selection.toString().trim());
-        setIsTextSelectMenuOpen(true);
-      } else {
-        setIsTextSelectMenuOpen(false);
+        setMessages(prev => [...prev, userMessage]);
+        setInputValue(event.data.text); // Set the input value to the selected text
+
+        // Use the callback version to avoid stale closure issues
+        setTimeout(() => {
+          sendMessage(event.data.text); // Send the selected text to the backend
+        }, 0);
       }
     };
 
-    const handleMouseDown = (e: MouseEvent) => {
-      // Close the context menu if clicking outside of it
-      if (isTextSelectMenuOpen && !(e.target as Element).closest('.text-select-menu')) {
-        setIsTextSelectMenuOpen(false);
-      }
-    };
+    window.addEventListener('message', handleMessage);
+    return () => window.removeEventListener('message', handleMessage);
+  }, []);
 
-    document.addEventListener('mouseup', handleSelection);
-    document.addEventListener('mousedown', handleMouseDown);
-
-    return () => {
-      document.removeEventListener('mouseup', handleSelection);
-      document.removeEventListener('mousedown', handleMouseDown);
-    };
-  }, [isTextSelectMenuOpen]);
+  // Text selection functionality is handled by the JavaScript file in static/js/selection-chatbot.js
+  // This React component will only handle the chat interface and respond to postMessage events
 
   // Function to check if backend is available
   const checkBackendHealth = async (): Promise<boolean> => {
@@ -273,125 +272,6 @@ const FloatingChat: React.FC<FloatingChatProps> = ({ backendUrl }) => {
     }
   };
 
-  // Function to send selected text to the backend
-  const sendSelectedText = async () => {
-    if (!selectedText.trim() || isLoading) return;
-
-    try {
-      // Check if backend is available before making the request
-      const isBackendAvailable = await checkBackendHealth();
-
-      if (!isBackendAvailable) {
-        console.warn('Backend is not available, using mock response for selected text');
-        // Use mock response instead of making the API call
-        const mockResponse = getMockResponse(selectedText);
-        const userMessage: Message = {
-          id: Date.now().toString(),
-          content: `About this text: "${selectedText.substring(0, 100)}${selectedText.length > 100 ? '...' : ''}"`,
-          role: 'user',
-          timestamp: new Date(),
-        };
-        const errorMessage: Message = {
-          id: (Date.now() + 1).toString(),
-          content: `${mockResponse}\n\n⚠️ Note: Backend service is not available, showing mock response.`,
-          role: 'assistant',
-          timestamp: new Date(),
-        };
-        setMessages(prev => [...prev, userMessage, errorMessage]);
-        setIsTextSelectMenuOpen(false); // Close the context menu
-        return;
-      }
-
-      // Add user message (selected text) to the chat
-      const userMessage: Message = {
-        id: Date.now().toString(),
-        content: `About this text: "${selectedText.substring(0, 100)}${selectedText.length > 100 ? '...' : ''}"`,
-        role: 'user',
-        timestamp: new Date(),
-      };
-
-      setMessages(prev => [...prev, userMessage]);
-      setIsLoading(true);
-      setIsTextSelectMenuOpen(false); // Close the context menu
-
-      // Ensure there's no trailing slash in the backend URL to prevent double slashes
-      const normalizedBackendUrl = currentBackendUrl.replace(/\/$/, '');
-      console.log('Making selected text request to:', `${normalizedBackendUrl}/selected_text`);
-      console.log('Sending selected text:', selectedText);
-
-      // Try the configured backend URL with the selected_text endpoint
-      const response = await fetch(`${normalizedBackendUrl}/selected_text`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json',
-        },
-        body: JSON.stringify({
-          text: selectedText,
-          context: `User selected this text: "${selectedText}" and asked for more information.`
-        }),
-      });
-
-      console.log('Selected text response received:', response.status, response.ok);
-
-      if (!response.ok) {
-        // If backend returns an error, use mock response instead
-        console.warn('Backend error for selected text, using mock response');
-        console.warn('Response status:', response.status);
-        console.warn('Response status text:', response.statusText);
-        const errorText = await response.text();
-        console.warn('Error details:', errorText);
-        throw new Error(`HTTP error! status: ${response.status}, details: ${errorText}`);
-      }
-
-      const data = await response.json();
-      console.log('Backend response data for selected text:', data);
-
-      // Add assistant response to the chat
-      // Check if response has the expected structure
-      let responseContent = '';
-      if (data && typeof data === 'object') {
-        responseContent = data.response || data.text || data.message || '';
-      } else {
-        responseContent = String(data || '');
-      }
-
-      // Ensure content is a proper string
-      responseContent = typeof responseContent === 'string' ? responseContent : JSON.stringify(responseContent) || '';
-
-      const assistantMessage: Message = {
-        id: (Date.now() + 1).toString(),
-        content: responseContent,
-        role: 'assistant',
-        timestamp: new Date(),
-      };
-
-      setMessages(prev => [...prev, assistantMessage]);
-    } catch (error) {
-      console.error('Full error object for selected text:', error);
-      console.warn('Selected text backend not available, using mock response:', error);
-
-      // Add user message and error message to the chat
-      const userMessage: Message = {
-        id: Date.now().toString(),
-        content: `About this text: "${selectedText.substring(0, 100)}${selectedText.length > 100 ? '...' : ''}"`,
-        role: 'user',
-        timestamp: new Date(),
-      };
-
-      // Provide a more informative error message to the user
-      const errorMessage: Message = {
-        id: (Date.now() + 1).toString(),
-        content: `I'm sorry, I'm having trouble processing the selected text. Using mock response. Error: ${error instanceof Error ? error.message : 'Unknown error'}`,
-        role: 'assistant',
-        timestamp: new Date(),
-      };
-
-      setMessages(prev => [...prev, userMessage, errorMessage]);
-    } finally {
-      setIsLoading(false);
-    }
-  };
 
   // Handle form submission
   const handleSubmit = (e: React.FormEvent) => {
@@ -415,20 +295,6 @@ const FloatingChat: React.FC<FloatingChatProps> = ({ backendUrl }) => {
           style={{ width: '70%', height: '70%', objectFit: 'contain' }}
         />
       </button>
-
-      {/* Text Selection Context Menu */}
-      {isTextSelectMenuOpen && (
-        <div
-          className={styles['text-select-menu']}
-          style={{
-            left: textSelectPosition.x,
-            top: textSelectPosition.y,
-          }}
-          onClick={sendSelectedText}
-        >
-          Ask Chatbot
-        </div>
-      )}
 
       {/* Chat Popup */}
       <div className={`${styles['chat-popup']} ${isOpen ? styles.open : ''}`}>
