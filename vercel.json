@@ -1,7 +1,8 @@
 {
+  "root": "frontend/rag-chatbot-frontend",
   "builds": [
     {
-      "src": "frontend/rag-chatbot-frontend/**",
+      "src": "package.json",
       "use": "@vercel/static-build",
       "config": {
         "distDir": "build"
