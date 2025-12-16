@@ -398,7 +398,7 @@ html[data-theme='dark'] .chat-messages {
   }
 }
 
-/* Responsive styles */
+/* Responsive styles - maintain right positioning */
 @media (max-width: 768px) {
   .chat-popup {
     width: calc(100vw - 20px);
@@ -407,7 +407,7 @@ html[data-theme='dark'] .chat-messages {
     min-height: 300px;
     bottom: 80px;
     right: 10px;
-    left: 10px;
+    left: auto; /* Keep it positioned from the right, not left */
   }
 
   .message {
@@ -452,7 +452,7 @@ html[data-theme='dark'] .chat-messages {
     min-height: 250px;
     bottom: 70px;
     right: 10px;
-    left: 10px;
+    left: auto; /* Keep it positioned from the right, not left */
   }
 
   .floating-chat-button {
@@ -514,7 +514,7 @@ html[data-theme='dark'] .chat-messages {
     min-height: 200px;
     bottom: 60px;
     right: 8px;
-    left: 8px;
+    left: auto; /* Keep it positioned from the right, not left */
   }
 
   .floating-chat-button {
@@ -575,7 +575,7 @@ html[data-theme='dark'] .chat-messages {
     min-height: 180px;
     bottom: 50px;
     right: 5px;
-    left: 5px;
+    left: auto; /* Keep it positioned from the right, not left */
     border-radius: 16px;
   }
 
@@ -649,7 +649,7 @@ html[data-theme='dark'] .chat-messages {
     min-height: 160px;
     bottom: 45px;
     right: 4px;
-    left: 4px;
+    left: auto; /* Keep it positioned from the right, not left */
     border-radius: 14px;
   }
 
@@ -850,7 +850,7 @@ html[data-theme='dark'] .chat-messages {
     min-height: 170px;
     bottom: 55px;
     right: 6px;
-    left: 6px;
+    left: auto; /* Keep it positioned from the right, not left */
     border-radius: 15px;
   }
 

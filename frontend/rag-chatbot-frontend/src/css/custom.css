@@ -85,12 +85,12 @@ html[data-theme='dark'] .footer__title {
 
 /* Apply proper light/dark mode backgrounds */
 html[data-theme='light'] {
-  background-color: #ffffff;
+  background-color: var(--robot-bg-light);
   color: var(--robot-text-dark);
 }
 
 html[data-theme='dark'] {
-  background-color: #000000; /* Black background in dark mode */
+  background: linear-gradient(135deg, var(--robot-bg-dark), #0f172a); /* Gradient background in dark mode */
   color: var(--robot-text-light);
 }
 
@@ -101,7 +101,7 @@ body {
 }
 
 html[data-theme='dark'] body {
-  background-color: #000000; /* Black background in dark mode */
+  background: linear-gradient(135deg, var(--robot-bg-dark), #0f172a); /* Gradient background in dark mode */
   color: var(--robot-text-light);
 }
 
@@ -578,9 +578,26 @@ html[data-theme='dark'] {
   margin: 0 auto;
 }
 
-/* Properly center the main content */
+/* Properly center the main content and ensure full height */
 .main-wrapper {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+  background: inherit; /* Inherit the background from body/html */
+}
+
+/* Ensure the main content area expands to fill available space */
+.main-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0; /* Allow flex items to shrink below content height */
+}
+
+/* Ensure proper layout for doc pages */
+.doc-page {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
 }
