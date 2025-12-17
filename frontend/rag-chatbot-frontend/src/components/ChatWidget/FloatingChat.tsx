@@ -87,15 +87,7 @@ const FloatingChat: React.FC<FloatingChatProps> = ({ backendUrl }) => {
   useEffect(() => {
     const handleMessage = (event: MessageEvent) => {
       if (event.data && event.data.type === 'SELECTED_TEXT' && event.data.text) {
-        // Add the selected text as a user message and send it to the backend
-        const userMessage: Message = {
-          id: Date.now().toString(),
-          content: event.data.text,
-          role: 'user',
-          timestamp: new Date(),
-        };
-
-        setMessages(prev => [...prev, userMessage]);
+        // Send the selected text to the backend (this will add the message to state)
         setInputValue(event.data.text); // Set the input value to the selected text
 
         // Use the callback version to avoid stale closure issues
