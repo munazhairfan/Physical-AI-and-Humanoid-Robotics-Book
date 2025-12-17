@@ -9,78 +9,6 @@
 
 This document describes the data structures and configuration objects used in the UI fixes and improvements implementation. Since this is primarily a front-end UI enhancement project, the "data model" focuses on configuration objects, CSS custom properties, and UI state structures.
 
-## Theme Configuration Model
-
-### Anime Theme Variables
-
-```typescript
-interface AnimeTheme {
-  // Primary colors
-  primary: string;      // Vibrant red - #ff6b6b
-  secondary: string;    // Teal - #4ecdc4  
-  accent: string;       // Bright yellow - #ffbe0b
-  
-  // Background colors
-  bgLight: string;      // Light background - #f8f9fa
-  bgLightSecondary: string; // Secondary light bg - #ffffff
-  bgDark: string;       // Dark background - #1a1a2e
-  bgDarkSecondary: string;  // Secondary dark bg - #16213e
-  
-  // Text colors
-  textLight: string;    // Light text - #f1f5f9
-  textDark: string;     // Dark text - #1e293b
-  textSecondary: string; // Secondary text - #64748b
-  
-  // Border colors
-  borderLight: string;  // Light borders - #e2e8f0
-  borderDark: string;   // Dark borders - #334155
-  
-  // Transition durations
-  transitionFast: string;   // 0.2s
-  transitionMedium: string; // 0.3s
-  transitionSlow: string;   // 0.5s
-  
-  // Border radius styles
-  borderRadiusSharp: string;  // 0px for sharp corners
-  borderRadiusSoft: string;   // 8px for soft corners
-  borderRadiusRound: string;  // 50% for round elements
-  
-  // Shadow effects
-  shadowLight: string;    // Subtle shadow
-  shadowMedium: string;   // Medium shadow
-  shadowHeavy: string;    // Heavy shadow
-  shadowAnime: string;    // Anime glow effect
-}
-```
-
-### Robot Theme Fallback Variables
-
-```typescript
-interface RobotTheme {
-  // Robot-themed colors (fallback)
-  primary: string;      // Pink - #ec4899
-  secondary: string;    // Yellow/Orange - #f59e0b
-  accent: string;       // Red - #f43f5e
-  
-  // Background colors
-  bgLight: string;
-  bgLightSecondary: string;
-  bgDark: string;
-  bgDarkSecondary: string;
-  
-  // Text and border colors
-  textLight: string;
-  textDark: string;
-  textSecondary: string;
-  borderLight: string;
-  borderDark: string;
-  
-  // Standard transitions
-  transitionFast: string;
-  transitionMedium: string;
-  transitionSlow: string;
-}
-```
 
 ## UI Component State Models
 
@@ -178,29 +106,6 @@ interface AnimationConfig {
 }
 ```
 
-## Asset Configuration Model
-
-```typescript
-interface AssetConfig {
-  // SVG icons for homepage features
-  homepageIcons: {
-    robotBrain: string;      // Path to robot brain SVG
-    humanoidRobot: string;   // Path to humanoid robot SVG
-    robotLab: string;        // Path to robot lab SVG
-    // New anime-themed SVGs
-    advancedAI: string;      // Path to advanced AI SVG
-    humanoidDesign: string;  // Path to humanoid design SVG
-    controlSystems: string;  // Path to control systems SVG
-  };
-  
-  // Static images
-  staticImages: {
-    chatbot: string;         // Floating chat icon
-    favicon: string;         // Site favicon
-    logo: string;            // Site logo
-  };
-}
-```
 
 ## UI State Flow Model
 

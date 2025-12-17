@@ -7,7 +7,7 @@
 
 ## Summary
 
-Implementation of UI fixes and improvements for the Docusaurus-based educational website, including: adding a functional floating chatbot button on all pages, replacing SVG icons with anime-themed alternatives, applying an anime theme with improved fonts and colors, fixing text opacity issues, adding functional links to homepage buttons, and removing unwanted elements like keyboard emojis and Docusaurus dinosaur icons.
+Implementation of UI fixes and improvements for the Docusaurus-based educational website, including: adding a functional floating chatbot button on all pages, replacing SVG icons with cartoon-themed alternatives, applying an cartoon theme with improved fonts and colors, fixing text opacity issues, adding functional links to homepage buttons, and removing unwanted elements like keyboard emojis and Docusaurus dinosaur icons.
 
 ## Technical Context
 
@@ -32,7 +32,7 @@ The implementation aligns with the textbook constitution by:
 - Using clean, minimal diagrams and consistent style
 - Ensuring technical depth is maintained in implementation
 
-**Post-Design Constitution Check**: All UI improvements maintain the educational focus while enhancing visual appeal. The anime theme implementation preserves the academic content structure while making it more engaging for the target audience.
+**Post-Design Constitution Check**: All UI improvements maintain the educational focus while enhancing visual appeal. The cartoon theme implementation preserves the academic content structure while making it more engaging for the target audience.
 
 ## Project Structure
 
@@ -69,11 +69,11 @@ frontend/rag-chatbot-frontend/
 ├── package.json                  # Dependencies
 └── static/
     └── img/                      # Static images and SVGs
-ui/                               # New anime-themed SVGs and assets
-└── [anime-themed SVGs]           # Replacement SVGs for the project
+ui/                               # New cartoon-themed SVGs and assets
+└── [cartoon-themed SVGs]           # Replacement SVGs for the project
 ```
 
-**Structure Decision**: The project uses a Docusaurus-based web application structure with React components for UI elements. The implementation will modify existing components and add new anime-themed assets while maintaining compatibility with the Docusaurus framework.
+**Structure Decision**: The project uses a Docusaurus-based web application structure with React components for UI elements. The implementation will modify existing components and add new cartoon-themed assets while maintaining compatibility with the Docusaurus framework.
 
 ## Complexity Tracking
 
@@ -92,14 +92,14 @@ All planned implementation tasks have been completed successfully:
 - **Phase 1: Setup** - Complete
 - **Phase 2: Foundation** - Complete
 - **Phase 3: User Story 1 (Chatbot)** - Complete
-- **Phase 4: User Story 2 (Anime Theme)** - Complete
+- **Phase 4: User Story 2 (cartoon Theme)** - Complete
 - **Phase 5: User Story 3 (Navigation)** - Complete
 - **Phase 6: Polish** - Complete
 
 ## Verification Results
 
 - Floating chat button appears on all pages and functions properly
-- Anime theme consistently applied across all components
+- cartoon theme consistently applied across all components
 - Homepage buttons link to correct destinations
 - Text opacity and contrast fixed throughout site
 - Unwanted elements removed as specified

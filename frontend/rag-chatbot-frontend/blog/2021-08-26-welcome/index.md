@@ -1,27 +1,33 @@
 ---
-slug: welcome
-title: Welcome
+slug: welcome-to-physical-ai-blog
+title: Welcome to the Physical AI & Humanoid Robotics Blog
 authors: [slorber, yangshun]
-tags: [facebook, hello, robotics]
+tags: [introduction, physical-ai, humanoid-robotics]
 ---
 
-[Docusaurus blogging features](https://docusaurus.io/docs/blog) are powered by the [blog plugin](https://docusaurus.io/docs/api/plugins/@docusaurus/plugin-content-blog).
-
-Here are a few tips you might find useful.
+Welcome to our blog dedicated to exploring the fascinating intersection of artificial intelligence and robotics. Here, we'll dive deep into the latest developments, research breakthroughs, and practical applications in Physical AI and Humanoid Robotics.
 
 <!-- truncate -->
 
-Simply add Markdown files (or folders) to the `blog` directory.
+## What is Physical AI?
 
-Regular blog authors can be added to `authors.yml`.
+Physical AI represents the next frontier in artificial intelligence, where intelligent systems are no longer confined to digital environments but can interact with and learn from the physical world. This field combines traditional AI techniques with robotics, control theory, and mechanical engineering to create systems that can perceive, reason about, and manipulate objects in three-dimensional space.
 
-The blog post date can be extracted from filenames, such as:
+## Focus Areas
 
-- `2019-05-30-welcome.md`
-- `2019-05-30-welcome/index.md`
+Our blog will cover several key areas:
 
-A blog post folder can be convenient to co-locate blog post images:
+- **Humanoid Robotics**: Exploring the challenges and breakthroughs in creating human-like robots
+- **Embodied AI**: How intelligence emerges through physical interaction with the environment
+- **Control Systems**: Advanced algorithms for robot movement and manipulation
+- **Sensing and Perception**: Technologies that enable robots to understand their environment
+- **Human-Robot Interaction**: How robots can communicate and work effectively with humans
+- **Applications**: Real-world use cases and implementations of Physical AI systems
 
-The blog supports tags as well!
+## Our Mission
 
-**And if you don't want a blog**: just delete this directory, and use `blog: false` in your Docusaurus config.
+This blog aims to bridge the gap between cutting-edge research and practical implementation in Physical AI. We'll feature technical deep-dives, practical tutorials, industry insights, and discussions about the future of human-robot collaboration.
+
+Whether you're a researcher, engineer, student, or simply curious about the future of robotics, we hope you'll find valuable insights and thought-provoking content in our posts.
+
+Join us on this journey as we explore how Physical AI is transforming our world and what it means for the future of human-robot collaboration.

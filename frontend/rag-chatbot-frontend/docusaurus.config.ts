@@ -7,7 +7,7 @@ import type * as Preset from '@docusaurus/preset-classic';
 const config: Config = {
   title: 'Physical AI & Humanoid Robotics',
   tagline: 'Educational Book on Robotics and AI Concepts',
-  favicon: 'img/chatbot.svg',
+  favicon: 'img/master-light-switch-svgrepo-com.svg',
 
 
   // Set the production url of your site here (will be assigned by Vercel after first deployment)
@@ -64,7 +64,7 @@ const config: Config = {
 
   themeConfig: {
     // Replace with your project's social card
-    image: 'img/chatbot.svg', // Use the logo as social card
+    image: 'img/master-light-switch-svgrepo-com.svg', // Use the logo as social card
     colorMode: {
       respectPrefersColorScheme: true,
     },
@@ -72,7 +72,7 @@ const config: Config = {
       title: 'Physical AI & Robotics',
       logo: {
         alt: 'Robotics Educational Book Logo',
-        src: 'img/chatbot.svg',
+        src: 'img/master-light-switch-svgrepo-com.svg',
       },
       items: [
         {

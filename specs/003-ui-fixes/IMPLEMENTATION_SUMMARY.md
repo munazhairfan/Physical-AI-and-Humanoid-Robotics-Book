@@ -7,7 +7,7 @@
 
 ## Executive Summary
 
-The UI Fixes and Improvements feature has been successfully implemented, delivering all specified requirements while maintaining the educational focus of the website. The implementation included fixing the floating chat visibility, applying an anime theme, updating navigation links, and resolving text visibility issues.
+The UI Fixes and Improvements feature has been successfully implemented, delivering all specified requirements while maintaining the educational focus of the website. The implementation included fixing the floating chat visibility, applying an cartoon theme, updating navigation links, and resolving text visibility issues.
 
 ## Completed Work Overview
 
@@ -43,7 +43,7 @@ The UI Fixes and Improvements feature has been successfully implemented, deliver
 #### src/pages/index.module.css
 - Added `margin-bottom: 0;` to `.heroBanner` class
 - Maintained responsive design for all screen sizes
-- Preserved anime theme styling
+- Preserved cartoon theme styling
 
 #### src/components/ChatWidget/FloatingChat.module.css
 - Updated `.chat-popup` to use responsive width: `calc(100vw - 50px)`
@@ -54,7 +54,7 @@ The UI Fixes and Improvements feature has been successfully implemented, deliver
 #### src/css/custom.css
 - Optimized footer spacing with `padding: 1rem 2rem 2rem`
 - Set footer margin-top to 0 to eliminate extra space
-- Preserved all anime theme styling
+- Preserved all cartoon theme styling
 
 ## Quality Assurance Results
 
@@ -63,7 +63,7 @@ The UI Fixes and Improvements feature has been successfully implemented, deliver
 - [x] Both homepage buttons navigate to correct pages
 - [x] No extra space between hero banner and footer
 - [x] Chat input area usable on mobile devices
-- [x] Anime theme consistently applied
+- [x] cartoon theme consistently applied
 - [x] Text visibility improved throughout site
 
 ### Cross-Browser Compatibility
@@ -102,7 +102,7 @@ The UI Fixes and Improvements feature has been successfully implemented, deliver
 - [x] **SC-001**: Chatbot accessible via floating button on 100% of pages
 - [x] **SC-002**: All text has proper contrast and visibility
 - [x] **SC-003**: 100% of homepage buttons have functional links
-- [x] **SC-004**: Visual appeal significantly improved with anime theme
+- [x] **SC-004**: Visual appeal significantly improved with cartoon theme
 - [x] **SC-005**: Theme consistently applied throughout website
 - [x] **SC-006**: Unwanted elements removed from website
 - [x] **SC-007**: Text readability scores improved

@@ -3,41 +3,46 @@
  * and scoped locally.
  */
 
-/* Base styles for light/dark themes */
+/* Base styles for light/dark themes - using the new modern theme */
 html[data-theme='light'] {
-  --background-primary: #ffffff;
-  --background-secondary: #f8fafc;
-  --text-primary: #1e293b;
-  --text-secondary: #64748b;
-  --accent-primary: #8b5cf6;
-  --accent-secondary: #06b6d4;
-  --border-color: #e2e8f0;
+  --background-primary: var(--bg-light);
+  --background-secondary: var(--bg-light-secondary);
+  --text-primary: var(--text-dark);
+  --text-secondary: var(--text-secondary);
+  --accent-primary: var(--primary-500);
+  --accent-secondary: var(--secondary-500);
+  --border-color: var(--border-light);
 }
 
 html[data-theme='dark'] {
-  --background-primary: #0f172a;
-  --background-secondary: #1e293b;
-  --text-primary: #f1f5f9;
-  --text-secondary: #cbd5e1;
-  --accent-primary: #a78bfa;
-  --accent-secondary: #22d3ee;
-  --border-color: #334155;
+  --background-primary: var(--bg-dark);
+  --background-secondary: var(--bg-dark-secondary);
+  --text-primary: var(--text-light);
+  --text-secondary: var(--text-secondary);
+  --accent-primary: var(--primary-400);
+  --accent-secondary: var(--secondary-400);
+  --border-color: var(--border-dark);
 }
 
 .heroBanner {
-  padding: 2rem 0;
-  background: var(--background-primary);
   color: var(--text-primary);
   min-height: 60vh;
   display: flex;
   align-items: center;
   justify-content: center;
   margin-bottom: 0;
-}
-
+  background: repeating-linear-gradient(90deg, #dcdaf4 0, #dcdaf4 5%, transparent 0, transparent 50%), repeating-linear-gradient(180deg, #dcdaf4 0, #dcdaf4 5%, transparent 0, transparent 50%);
+  background-size: 3em 3em;
+  background-color: #ffffff;
+  opacity: 1
+  }
+      
 html[data-theme='dark'] .heroBanner {
-  background: var(--background-primary);
+  background-color: var(--background-primary);
   color: var(--text-primary);
+  background: repeating-linear-gradient(90deg, #4646477e 0, #4646477e 5%, transparent 0, transparent 50%), repeating-linear-gradient(180deg, #4646477e 0, #4646477e 5%, transparent 0, transparent 50%);
+  background-size: 3em 3em;
+  opacity: 1
 }
 
 /* Simplified centering using text-align on container */
@@ -68,18 +73,10 @@ html[data-theme='dark'] .heroBanner {
 .heroImage {
   width: 150px;
   height: 150px;
-  border-radius: 50%;
-  object-fit: contain;
   transition: transform 0.3s ease;
-  border: 3px solid black;
-  /* background: var(--background-secondary); */
-  background-color: white;
-  padding: 10px;
+  padding: 5px;
 }
 
-.heroImage:hover {
-  transform: scale(1.1);
-}
 
 .titleContainer {
   position: relative;
@@ -104,16 +101,18 @@ html[data-theme='dark'] .heroBanner {
 
 .headerContent {
   position: relative;
-  /* z-index: 1; */
   background: var(--background-secondary);
   padding: 2rem;
-  border-radius: 20px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  border-radius: var(--border-radius-2xl);
+  box-shadow: var(--shadow-lg);
+  border: 2px solid black;
+  
 }
 
 html[data-theme='dark'] .headerContent {
   background: var(--background-secondary);
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  box-shadow: var(--shadow-2xl);
+  border: 2px solid rgba(255, 255, 255, 0.404);
 }
 
 .hero__title {
@@ -149,19 +148,18 @@ html[data-theme='dark'] .hero__subtitle {
 }
 
 .primaryButton {
-  background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+  background: linear-gradient(135deg, var(--primary-300), var(--secondary-300));
   color: white;
   border: none;
   padding: 0.875rem 2rem;
-  border-radius: 50px;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
-  box-shadow: 0 6px 15px rgba(139, 92, 246, 0.4);
+  box-shadow: var(--shadow-md);
   font-size: 1.1rem;
   position: relative;
   overflow: hidden;
-  border: 2px solid rgba(255, 255, 255, 0.2);
+  border: 2px solid black;
 }
 
 .primaryButton::before {
@@ -181,7 +179,7 @@ html[data-theme='dark'] .hero__subtitle {
 
 .primaryButton:hover {
   transform: translateY(-3px);
-  box-shadow: 0 10px 25px rgba(139, 92, 246, 0.6);
+  box-shadow: var(--shadow-lg);
 }
 
 /* Style for Link components using button classes */
@@ -200,9 +198,10 @@ a.primaryButton:hover, a.secondaryButton:hover {
 .secondaryButton {
   background-color: transparent;
   color: var(--text-primary);
-  border: 2px solid var(--accent-primary);
+  /* border: 2px solid var(--accent-primary); */
+  border: 2px solid black;
   padding: 0.875rem 2rem;
-  border-radius: 50px;
+  /* border-radius: var(--border-radius-full); */
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
@@ -210,14 +209,14 @@ a.primaryButton:hover, a.secondaryButton:hover {
 }
 
 .secondaryButton:hover {
-  background-color: rgba(139, 92, 246, 0.1);
+  background-color: rgba(14, 165, 233, 0.1);
   transform: translateY(-3px);
-  box-shadow: 0 6px 15px rgba(139, 92, 246, 0.3);
+  box-shadow: var(--shadow-md);
 }
 
 .infoCard {
   background: var(--background-secondary);
-  border-radius: 1.5rem;
+  border-radius: var(--border-radius-xl);
   padding: 2rem;
   text-align: center;
   transition: transform 0.3s, box-shadow 0.3s;
@@ -226,7 +225,7 @@ a.primaryButton:hover, a.secondaryButton:hover {
   flex-direction: column;
   align-items: center;
   border: 1px solid var(--border-color);
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+  box-shadow: var(--shadow-md);
   position: relative;
   overflow: hidden;
 }
@@ -243,7 +242,7 @@ a.primaryButton:hover, a.secondaryButton:hover {
 
 .infoCard:hover {
   transform: translateY(-8px);
-  box-shadow: 0 20px 35px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--shadow-xl);
 }
 
 .cardIcon {
@@ -260,11 +259,11 @@ a.primaryButton:hover, a.secondaryButton:hover {
   transition: transform 0.3s ease;
   color: white;
   align-self: center;
-  box-shadow: 0 8px 20px rgba(139, 92, 246, 0.3);
+  box-shadow: var(--shadow-lg);
 }
 
 .infoCard:hover .cardIcon {
-  transform: scale(1.1) rotate(10deg);
+  transform: scale(1.1) rotate(5deg);
 }
 
 .robotIcon {
@@ -305,6 +304,7 @@ a.primaryButton:hover, a.secondaryButton:hover {
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 1rem;
+  
 }
 
 @media screen and (max-width: 996px) {

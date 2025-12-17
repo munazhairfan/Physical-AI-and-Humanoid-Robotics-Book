@@ -1,4 +1,4 @@
-/* White and Red Themed Floating Chat Styles */
+/* Modern Floating Chat Styles */
 .floating-chat-button {
   position: fixed !important;
   bottom: 25px !important;
@@ -6,18 +6,17 @@
   width: 70px !important;
   height: 70px !important;
   border-radius: 50% !important;
-  background: linear-gradient(135deg, #ffffff, #888787) !important;
-  color: #000000 !important;
-  border: none !important;
+  background: linear-gradient(135deg, var(--primary-300), var(--secondary-300));
+  color: white !important;
   cursor: pointer !important;
-  box-shadow: 0 8px 25px rgba(90, 89, 89, 0.4) !important;
+  box-shadow: 0 8px 25px rgba(14, 165, 233, 0.4) !important;
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
   font-size: 28px !important;
   transition: all 0.3s ease !important;
-  animation: robotPulse 2s infinite !important;
-  border: 2px solid rgba(255, 255, 255, 0.3) !important;
+  animation: modernPulse 2s infinite !important;
+  border: 2px solid black !important;
   pointer-events: auto !important; /* Ensure button is clickable */
   z-index: 2147483647 !important; /* Maximum possible z-index to ensure it's always on top */
   /* Force it to appear above everything */
@@ -25,18 +24,18 @@
 }
 
 .floating-chat-button:hover {
-  transform: scale(1.15) rotate(5deg);
-  box-shadow: 0 12px 30px rgba(90, 89, 89, 0.4);
-  filter: brightness(1.1);
+  transform: scale(1.15) !important;
+  box-shadow: 0 12px 30px rgba(14, 165, 233, 0.5) !important;
+  filter: brightness(1.1) !important;
 }
 
 .floating-chat-button:active {
-  transform: scale(0.95);
+  transform: scale(0.95) !important;
 }
 
 .floating-chat-button .icon {
   font-size: 32px;
-  animation: float 3s ease-in-out infinite;
+  animation: modernFloat 3s ease-in-out infinite;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -54,19 +53,19 @@
   height: 100%;
 }
 
-@keyframes robotPulse {
+@keyframes modernPulse {
   0% {
-    box-shadow: 0 8px 25px rgba(90, 89, 89, 0.4);
+    box-shadow: 0 8px 25px rgba(14, 165, 233, 0.4);
   }
   50% {
-    box-shadow: 0 0 0 15px rgba(90, 89, 89, 0.4);
+    box-shadow: 0 0 0 15px rgba(14, 165, 233, 0.3);
   }
   100% {
-    box-shadow: 0 8px 25px rgba(90, 89, 89, 0.4);
+    box-shadow: 0 8px 25px rgba(14, 165, 233, 0.4);
   }
 }
 
-@keyframes float {
+@keyframes modernFloat {
   0% {
     transform: translateY(0px);
   }
@@ -78,7 +77,7 @@
   }
 }
 
-/* Chat Popup Styles - White and Red Theme */
+/* Chat Popup Styles - Modern Theme */
 .chat-popup {
   position: fixed !important;
   bottom: 100px !important;
@@ -88,9 +87,9 @@
   height: 60vh !important; /* Use viewport height instead of fixed pixels */
   max-height: 600px !important; /* Maximum height */
   min-height: 400px !important; /* Minimum height */
-  background: #ffffff !important;
-  border-radius: 20px !important;
-  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5) !important;
+  background: var(--bg-light) !important;
+  border-radius: var(--border-radius-2xl) !important;
+  box-shadow: var(--shadow-2xl) !important;
   display: flex !important;
   flex-direction: column !important;
   overflow: hidden !important;
@@ -98,7 +97,8 @@
   opacity: 0 !important;
   visibility: hidden !important;
   transition: all 0.4s cubic-bezier(0.17, 0.67, 0.5, 1.2) !important;
-  border: 2px solid #000000 !important;
+  border: 2px solid black !important;
+  /* border: 1px solid var(--border-light) !important; */
   z-index: 2147483646 !important; /* Just below the button but still highest possible */
 }
 
@@ -109,13 +109,13 @@
 }
 
 .chat-popup-header {
-  background: linear-gradient(135deg, black, #ffffff);
-  color: #000000;
+  background: linear-gradient(135deg, var(--primary-300), var(--secondary-300));
+  color: white;
   padding: 20px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-bottom: 2px solid #000000;
+  border-bottom: 1px solid var(--border-light);
   position: relative;
 }
 
@@ -125,8 +125,8 @@
   bottom: 0;
   left: 0;
   right: 0;
-  height: 2px;
-  background: linear-gradient(90deg, black, #ffffff);
+  height: 1px;
+  background: linear-gradient(90deg, var(--primary-400), var(--secondary-400));
 }
 
 .chat-popup-header h3 {
@@ -140,12 +140,11 @@
 }
 
 .chat-popup-header h3::before {
-  content: '💬';
   font-size: 1.2em;
 }
 
 .chat-popup-header .close-btn {
-  background: rgba(0, 0, 0, 0.2);
+  background: rgba(255, 255, 255, 0.2);
   border: none;
   color: white;
   font-size: 22px;
@@ -161,7 +160,7 @@
 }
 
 .chat-popup-header .close-btn:hover {
-  background: rgba(0, 0, 0, 0.3);
+  background: rgba(255, 255, 255, 0.3);
   transform: rotate(90deg);
 }
 
@@ -172,20 +171,20 @@
   display: flex;
   flex-direction: column;
   gap: 18px;
-  background: #ffffff;
-  color: #000000;
+  background: var(--bg-light);
+  color: var(--text-dark);
 }
 
 .message {
   max-width: 85%;
   padding: 18px;
-  border-radius: 20px;
+  border-radius: var(--border-radius-lg);
   position: relative;
   animation: slideIn 0.3s ease-out;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  border: 1px solid #000000;
-  background: #ffffff;
-  color: #000000;
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--border-light);
+  background: var(--bg-light-secondary);
+  color: var(--text-dark);
 }
 
 @keyframes slideIn {
@@ -195,22 +194,16 @@
 
 .user-message {
   align-self: flex-end;
-  background: #000000;
+  background: linear-gradient(135deg, var(--primary-500), var(--primary-600));
   color: white;
-  border: 1px solid #000000;
-  border-bottom-right-radius: 4px;
-}
-
-.user-message::before {
-  background: #ffffff;
+  border: 1px solid var(--primary-400);
 }
 
 .assistant-message {
   align-self: flex-start;
-  background: #ffffff;
-  color: #000000;
-  border: 2px solid #000000;
-  border-bottom-left-radius: 4px;
+  background: var(--bg-light-secondary);
+  color: var(--text-dark);
+  border: 1px solid var(--border-light);
 }
 
 .message-content {
@@ -224,6 +217,7 @@
   margin-top: 8px;
   text-align: right;
   font-style: italic;
+  color: var(--text-secondary);
 }
 
 .typing-indicator {
@@ -236,10 +230,10 @@
 .typing-indicator span {
   width: 12px;
   height: 12px;
-  background-color: #000000;
+  background-color: var(--primary-500);
   border-radius: 50%;
   display: inline-block;
-  animation: typingRobot 1.4s infinite ease-in-out both;
+  animation: typingModern 1.4s infinite ease-in-out both;
 }
 
 .typing-indicator span:nth-child(1) {
@@ -250,7 +244,7 @@
   animation-delay: -0.16s;
 }
 
-@keyframes typingRobot {
+@keyframes typingModern {
   0%, 80%, 100% {
     transform: scale(0.8);
     opacity: 0.6;
@@ -264,34 +258,34 @@
 .chat-input-form {
   display: flex;
   padding: 18px 20px 22px;
-  background: #ffffff;
-  border-top: 2px solid #000000;
+  background: var(--bg-light-secondary);
+  border-top: 1px solid var(--border-light);
   gap: 10px;
 }
 
 .chat-input {
   flex: 1;
   padding: 16px;
-  border: 2px solid #000000;
-  border-radius: 16px;
+  border: 1px solid var(--border-light);
+  border-radius: var(--border-radius-lg);
   font-size: 15px;
   transition: all 0.3s;
-  background: #ffffff;
-  color: #000000;
+  background: var(--bg-light);
+  color: var(--text-dark);
 }
 
 .chat-input:focus {
   outline: none;
-  border-color: #000000;
-  box-shadow: 0 0 0 3px rgba(90, 89, 89, 0.4);
+  border-color: var(--primary-500);
+  box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.2);
 }
 
 .send-button {
   padding: 16px 22px;
-  background: #000000;
+  background: linear-gradient(135deg, var(--primary-500), var(--secondary-500));
   color: white;
   border: none;
-  border-radius: 16px;
+  border-radius: var(--border-radius-lg);
   cursor: pointer;
   font-size: 15px;
   font-weight: 600;
@@ -301,26 +295,25 @@
 
 .send-button:hover:not(:disabled) {
   transform: translateY(-2px);
-  box-shadow: 0 6px 15px rgba(90, 89, 89, 0.4);
-  filter: brightness(1.1);
+  box-shadow: var(--shadow-md);
 }
 
 .send-button:disabled {
-  background: #cccccc;
+  background: var(--neutral-300);
   cursor: not-allowed;
   transform: none;
   box-shadow: none;
 }
 
 .selected-text-notice {
-  background: #ffffff;
-  color: #000000;
+  background: var(--bg-light-secondary);
+  color: var(--text-dark);
   padding: 14px 18px;
-  border-radius: 16px;
+  border-radius: var(--border-radius-lg);
   margin-top: 10px;
   font-size: 13px;
   cursor: pointer;
-  border: 2px dashed #000000;
+  border: 1px dashed var(--border-light);
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -329,15 +322,15 @@
 
 .selected-text-notice:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 15px rgba(90, 89, 89, 0.4);
+  box-shadow: var(--shadow-md);
 }
 
 .text-select-menu {
-  background: #4f46e5;
+  background: var(--primary-600);
   color: white;
   padding: 8px 12px;
-  border-radius: 4px;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  border-radius: var(--border-radius-md);
+  box-shadow: var(--shadow-md);
   cursor: pointer;
   font-size: 14px;
   font-weight: 500;
@@ -347,11 +340,11 @@
 }
 
 .use-selected-btn {
-  background: #000000;
+  background: linear-gradient(135deg, var(--primary-500), var(--secondary-500));
   color: white;
   border: none;
   padding: 8px 16px;
-  border-radius: 12px;
+  border-radius: var(--border-radius-md);
   cursor: pointer;
   font-size: 12px;
   font-weight: 600;
@@ -360,26 +353,60 @@
 
 .use-selected-btn:hover {
   transform: translateY(-2px);
-  box-shadow: 0 4px 10px rgba(90, 89, 89, 0.4);
+  box-shadow: var(--shadow-sm);
 }
 
 .welcome-message {
   text-align: center;
   padding: 20px;
-  color: #666666;
+  color: var(--text-secondary);
   font-style: italic;
   font-size: 14px;
 }
 
-/* Dark mode specific - override to maintain white/red theme */
+/* Dark mode specific - modern theme */
 html[data-theme='dark'] .chat-popup {
-  background: #ffffff;
-  color: #000000;
+  background: var(--bg-dark-secondary);
+  color: var(--text-light);
 }
 
 html[data-theme='dark'] .chat-messages {
-  background: #ffffff;
-  color: #000000;
+  background: var(--bg-dark-secondary);
+  color: var(--text-light);
+}
+
+html[data-theme='dark'] .message {
+  background: var(--bg-dark);
+  color: var(--text-light);
+  border-color: var(--border-dark);
+}
+
+html[data-theme='dark'] .user-message {
+  background: linear-gradient(135deg, var(--primary-600), var(--primary-700));
+  border-color: var(--primary-500);
+}
+
+html[data-theme='dark'] .assistant-message {
+  background: var(--bg-dark);
+  color: var(--text-light);
+  border-color: var(--border-dark);
+}
+
+html[data-theme='dark'] .chat-input {
+  background: var(--bg-dark);
+  color: var(--text-light);
+  border-color: var(--border-dark);
+}
+
+html[data-theme='dark'] .chat-input-form {
+  background: var(--bg-dark);
+  border-top-color: var(--border-dark);
+}
+
+html[data-theme='dark'] .selected-text-notice {
+  background: var(--bg-dark);
+  color: var(--text-light);
+  border-color: var(--border-dark);
 }
 
 /* Additional responsive styles for better viewport handling - aligned with global CSS */
@@ -576,7 +603,7 @@ html[data-theme='dark'] .chat-messages {
     bottom: 50px;
     right: 5px;
     left: auto; /* Keep it positioned from the right, not left */
-    border-radius: 16px;
+    border-radius: var(--border-radius-2xl);
   }
 
   .floating-chat-button {
@@ -650,7 +677,7 @@ html[data-theme='dark'] .chat-messages {
     bottom: 45px;
     right: 4px;
     left: auto; /* Keep it positioned from the right, not left */
-    border-radius: 14px;
+    border-radius: var(--border-radius-xl);
   }
 
   .floating-chat-button {
@@ -851,7 +878,7 @@ html[data-theme='dark'] .chat-messages {
     bottom: 55px;
     right: 6px;
     left: auto; /* Keep it positioned from the right, not left */
-    border-radius: 15px;
+    border-radius: var(--border-radius-2xl);
   }
 
   .floating-chat-button {

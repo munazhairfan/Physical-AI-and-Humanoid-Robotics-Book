@@ -36,7 +36,7 @@ Created comprehensive task breakdown for UI fixes and improvements with 45 speci
 - Phase 1: Setup (5 tasks)
 - Phase 2: Foundational (5 tasks)
 - Phase 3: User Story 1 - Chatbot functionality (5 tasks)
-- Phase 4: User Story 2 - Anime theme implementation (15 tasks)
+- Phase 4: User Story 2 - cartoon theme implementation (15 tasks)
 - Phase 5: User Story 3 - Homepage navigation (5 tasks)
 - Phase 6: Polish and cross-cutting concerns (6 tasks)
 

@@ -7,7 +7,7 @@
 
 ## Overview
 
-This research document outlines the investigation of the current UI issues and the implementation approach for fixing them. The research phase identified the current state of the Docusaurus-based educational website, analyzed the problems, and determined the best approach to implement the anime-themed UI improvements.
+This research document outlines the investigation of the current UI issues and the implementation approach for fixing them. The research phase identified the current state of the Docusaurus-based educational website, analyzed the problems, and determined the best approach to implement the cartoon-themed UI improvements.
 
 ## Current State Analysis
 
@@ -15,7 +15,7 @@ This research document outlines the investigation of the current UI issues and t
 
 1. **Chatbot visibility**: The floating chatbot button was not appearing on all pages as expected
 2. **SVG icons**: Homepage cards and tabs contained outdated SVG icons that needed replacement
-3. **Theme consistency**: The website did not have a consistent anime theme applied
+3. **Theme consistency**: The website did not have a consistent cartoon theme applied
 4. **Text visibility**: Text elements had low opacity or poor contrast against backgrounds
 5. **Navigation links**: Homepage buttons lacked functional links
 6. **Unwanted elements**: Keyboard emojis and Docusaurus dinosaur icons were present throughout
@@ -29,10 +29,10 @@ This research document outlines the investigation of the current UI issues and t
 
 ## Market Research & Best Practices
 
-### Anime Theme Implementation
+### cartoon Theme Implementation
 
 - **Color palettes**: Vibrant colors like #ff6b6b (pink), #4ecdc4 (teal), #ffbe0b (yellow)
-- **Typography**: Clean, readable fonts with anime-inspired styling
+- **Typography**: Clean, readable fonts with cartoon-inspired styling
 - **Shapes**: Sharp, angular shapes with gradient effects
 - **Animations**: Subtle hover effects and transitions for interactive elements
 
@@ -47,9 +47,9 @@ This research document outlines the investigation of the current UI issues and t
 
 ### Implementation Strategy
 
-1. **Theme configuration**: Create CSS custom properties for consistent anime theme
+1. **Theme configuration**: Create CSS custom properties for consistent cartoon theme
 2. **Component updates**: Modify existing components to use new styling
-3. **Asset replacement**: Replace SVG icons with anime-themed alternatives
+3. **Asset replacement**: Replace SVG icons with cartoon-themed alternatives
 4. **Functionality fixes**: Add proper links and interactions
 5. **Visual improvements**: Update colors, fonts, and contrast
 
@@ -68,11 +68,11 @@ This research document outlines the investigation of the current UI issues and t
 - **Coursera**: Professional appearance with thematic consistency
 - **Khan Academy**: Clear text hierarchy and intuitive navigation
 
-### Anime-Themed UI Examples
+### cartoon-Themed UI Examples
 
-- **MyAnimeList**: Vibrant colors with sharp contrasts
-- **Anime News Network**: Clean layout with anime aesthetic
-- **Crunchyroll**: Modern UI with anime-inspired elements
+- **MycartoonList**: Vibrant colors with sharp contrasts
+- **cartoon News Network**: Clean layout with cartoon aesthetic
+- **Crunchyroll**: Modern UI with cartoon-inspired elements
 
 ## Risk Assessment
 
@@ -97,7 +97,7 @@ This research document outlines the investigation of the current UI issues and t
 - Set up CSS custom properties for theme management
 
 ### Phase 2: Visual Updates
-- Replace SVG icons with anime-themed alternatives
+- Replace SVG icons with cartoon-themed alternatives
 - Apply consistent styling across all components
 
 ### Phase 3: Functionality Fixes
@@ -112,9 +112,9 @@ This research document outlines the investigation of the current UI issues and t
 
 - **Time**: 3-5 days for complete implementation
 - **Tools**: Text editor with Docusaurus support, browser dev tools
-- **Assets**: Anime-themed SVGs and design guidelines
+- **Assets**: cartoon-themed SVGs and design guidelines
 - **Testing**: Multiple browsers and devices for verification
 
 ## Conclusion
 
-The research phase has identified clear approaches to fix the UI issues while maintaining the educational focus of the website. The anime theme implementation will enhance user engagement while preserving content accessibility and educational value.
+The research phase has identified clear approaches to fix the UI issues while maintaining the educational focus of the website. The cartoon theme implementation will enhance user engagement while preserving content accessibility and educational value.

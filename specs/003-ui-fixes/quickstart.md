@@ -7,7 +7,7 @@
 
 ## Overview
 
-This quickstart guide provides immediate setup and implementation instructions for the anime-themed UI fixes and improvements. Follow these steps to quickly implement the visual enhancements and functionality fixes.
+This quickstart guide provides immediate setup and implementation instructions for the cartoon-themed UI fixes and improvements. Follow these steps to quickly implement the visual enhancements and functionality fixes.
 
 ## Prerequisites
 
@@ -42,12 +42,12 @@ npm start
 
 ## Implementation Commands
 
-### Apply Anime Theme
+### Apply cartoon Theme
 
 ```bash
 # Step 1: Update the main CSS file
 # Edit: src/css/custom.css
-# Add: Anime theme variables and styling
+# Add: cartoon theme variables and styling
 
 # Step 2: Update homepage styles
 # Edit: src/pages/index.module.css
@@ -79,9 +79,9 @@ npm start
 ### 1. CSS Custom Properties (src/css/custom.css)
 ```css
 :root {
-  --anime-primary: #ff6b6b;
-  --anime-secondary: #4ecdc4;
-  --anime-accent: #ffbe0b;
+  --cartoon-primary: #ff6b6b;
+  --cartoon-secondary: #4ecdc4;
+  --cartoon-accent: #ffbe0b;
 }
 ```
 
@@ -107,7 +107,7 @@ npm start
 ```bash
 # Open browser to localhost:3000
 # Verify: Floating chat button appears on all pages
-# Verify: Anime theme colors are applied
+# Verify: cartoon theme colors are applied
 # Verify: Text has proper opacity
 # Verify: Buttons have working links
 ```
@@ -164,19 +164,19 @@ npm run serve
 After implementation, verify these key features:
 
 - [ ] Floating chat button appears on all pages
-- [ ] Anime theme is consistently applied throughout
+- [ ] cartoon theme is consistently applied throughout
 - [ ] Homepage buttons navigate to correct pages
 - [ ] Text has proper visibility and contrast
-- [ ] SVG icons are replaced with anime-themed alternatives
+- [ ] SVG icons are replaced with cartoon-themed alternatives
 - [ ] Unwanted emojis and dinosaur icons are removed
 - [ ] Site is responsive on mobile devices
 - [ ] Chat widget functions properly on all screen sizes
 
 ## Next Steps
 
-1. **Customize theme** - Adjust color palette to match specific anime style preferences
+1. **Customize theme** - Adjust color palette to match specific cartoon style preferences
 2. **Add animations** - Implement additional hover effects and transitions
-3. **Content updates** - Add more anime-themed content after UI is stable
+3. **Content updates** - Add more cartoon-themed content after UI is stable
 4. **Performance optimization** - Optimize CSS and images for faster loading
 5. **Accessibility audit** - Ensure all UI changes maintain accessibility standards
 

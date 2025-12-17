@@ -44,7 +44,7 @@ Created comprehensive implementation plan for UI fixes and improvements includin
 
 The plan addresses all requirements from the feature specification:
 - Floating chatbot button implementation
-- Anime theme application with SVG replacements
+- cartoon theme application with SVG replacements
 - Text opacity fixes
 - Homepage button linking
 - Removal of unwanted elements

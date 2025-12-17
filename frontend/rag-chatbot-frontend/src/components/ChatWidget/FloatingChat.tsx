@@ -289,7 +289,8 @@ const FloatingChat: React.FC<FloatingChatProps> = ({ backendUrl }) => {
         aria-label="Open chat"
       >
         <img
-          src="/img/chatbot.svg"
+          src="/img/herorobo.png"
+          
           alt="Chat"
           className={styles.chatIcon}
           style={{ width: '70%', height: '70%', objectFit: 'contain' }}
@@ -305,7 +306,7 @@ const FloatingChat: React.FC<FloatingChatProps> = ({ backendUrl }) => {
             onClick={() => setIsOpen(false)}
             aria-label="Close chat"
           >
-            ×
+            <img src="/img/cancel-2.svg" alt="Robotics Educational Book Logo"></img>
           </button>
         </div>
 

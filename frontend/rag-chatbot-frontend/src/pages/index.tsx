@@ -19,7 +19,7 @@ function HomepageHeader() {
       <div className="container">
         <div className={styles.headerContent}>
           <div className={styles.heroLogo}>
-            <img src="/img/chatbot.svg" alt="Robotics Educational Book Logo" className={styles.heroImage} />
+            <img src="/img/herorobo.png" alt="Robotics Educational Book Logo" className={styles.heroImage} />
           </div>
           <div className={styles.titleContainer}>
             <Heading as="h1" className={styles.hero__title}>
@@ -29,7 +29,7 @@ function HomepageHeader() {
           </div>
           <div className={styles.heroButtons}>
             <Link to="/docs/intro" className={styles.primaryButton}>Start Learning</Link>
-            <Link to="/docs/intro" className={styles.secondaryButton}>Explore Topics</Link>
+            <Link to="/blog" className={styles.secondaryButton}>Explore Blog</Link>
           </div>
         </div>
       </div>

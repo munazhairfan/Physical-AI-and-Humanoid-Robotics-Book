@@ -7,7 +7,7 @@
 
 ## Overview
 
-This contract details the specific component-level contracts for the UI fixes and improvements that were implemented. It covers the actual changes made to implement the anime theme, fix the floating chat, update homepage navigation, and resolve text visibility issues.
+This contract details the specific component-level contracts for the UI fixes and improvements that were implemented. It covers the actual changes made to implement the cartoon theme, fix the floating chat, update homepage navigation, and resolve text visibility issues.
 
 ## Homepage Component Contracts
 
@@ -203,17 +203,6 @@ interface FloatingChatContract {
   font-size: 0.875rem;
 }
 
-/* Theme consistency contract */
-:root {
-  /* Contract: Must define anime theme variables */
-  --anime-primary: #ff6b6b;     /* Vibrant red */
-  --anime-secondary: #4ecdc4;   /* Teal */
-  --anime-accent: #ffbe0b;      /* Bright yellow */
-  --anime-bg-light: #f8f9fa;    /* Light background */
-  --anime-bg-light-secondary: #ffffff; /* Secondary light bg */
-  /* ... additional theme variables */
-}
-
 /* Text visibility contract */
 html[data-theme='dark'] .markdown-content h1,
 html[data-theme='dark'] .markdown-content h2,
@@ -258,30 +247,30 @@ interface FloatingChatLoaderContract {
 
 ## Animation and Styling Contracts
 
-### Anime-themed Animation Contract
+### cartoon-themed Animation Contract
 
 ```css
 /* Animation keyframes contract */
-@keyframes animePulse {
+@keyframes cartoonPulse {
   /* Contract: Must provide subtle animation effect */
   0% { box-shadow: 0 0 0 0 rgba(255, 107, 107, 0.4); }
   70% { box-shadow: 0 0 0 12px rgba(255, 107, 107, 0); }
   100% { box-shadow: 0 0 0 0 rgba(255, 107, 107, 0); }
 }
 
-@keyframes animeFloat {
+@keyframes cartoonFloat {
   /* Contract: Must provide gentle floating effect */
   0% { transform: translateY(0px); }
   50% { transform: translateY(-10px); }
   100% { transform: translateY(0px); }
 }
 
-.anime-pulse {
-  animation: animePulse 2s infinite;
+.cartoon-pulse {
+  animation: cartoonPulse 2s infinite;
 }
 
-.anime-float {
-  animation: animeFloat 3s ease-in-out infinite;
+.cartoon-float {
+  animation: cartoonFloat 3s ease-in-out infinite;
 }
 ```
 
@@ -326,7 +315,7 @@ const verificationChecks = {
   chatButtonVisibility: true,       // Floating button appears on all pages
   buttonLinksFunctionality: true,   // Both buttons link to correct pages  
   responsiveLayout: true,          // Layout works on all screen sizes
-  themeConsistency: true,          // Anime theme applied consistently
+  themeConsistency: true,          // cartoon theme applied consistently
   textVisibility: true,            // Text has proper opacity/contrast
   noExcessSpacing: true,           // No extra space between sections
   mobileInputUsability: true,      // Chat input usable on mobile
@@ -348,4 +337,4 @@ const verificationChecks = {
 };
 ```
 
-These specific contracts document the exact implementation details and behavioral agreements that were established when implementing the UI fixes and improvements. The changes ensure the floating chat is visible and functional, the anime theme is properly applied, the navigation buttons work correctly, and the spacing issues have been resolved.
+These specific contracts document the exact implementation details and behavioral agreements that were established when implementing the UI fixes and improvements. The changes ensure the floating chat is visible and functional, the cartoon theme is properly applied, the navigation buttons work correctly, and the spacing issues have been resolved.

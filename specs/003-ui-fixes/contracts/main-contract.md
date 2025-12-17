@@ -39,27 +39,6 @@ interface Message {
 // - Component must handle both mock and real backend responses
 ```
 
-### Theme Provider Contract
-
-```typescript
-interface ThemeContract {
-  // CSS Custom Properties must be defined
-  animePrimary: string;     // --anime-primary
-  animeSecondary: string;   // --anime-secondary
-  animeAccent: string;      // --anime-accent
-  textPrimary: string;      // --text-primary
-  textSecondary: string;    // --text-secondary
-  backgroundPrimary: string; // --background-primary
-  backgroundSecondary: string; // --background-secondary
-}
-
-// Expected behavior:
-// - CSS variables must adapt to light/dark mode
-// - All theme colors must maintain accessibility contrast
-// - Theme must be consistent across all components
-// - Custom properties must cascade properly
-```
-
 ## API Contracts
 
 ### Docusaurus Plugin Contract
@@ -97,43 +76,6 @@ interface LinkContract {
 // - Links must maintain styling consistency
 // - Links must work in both dev and production builds
 // - Links must preserve browser history functionality
-```
-
-## CSS Module Contracts
-
-### Homepage Module Contract
-
-```css
-/* Required CSS classes: */
-.heroBanner {           /* Main banner container */
-  /* Must support both light/dark themes */
-  /* Must be responsive across all device sizes */
-  /* Must have proper spacing with adjacent elements */
-}
-
-.headerContent {        /* Content wrapper */
-  /* Must maintain proper padding and margins */
-  /* Must support theme background colors */
-  /* Must be centered in container */
-}
-
-.heroButtons {          /* Buttons container */
-  /* Must properly space primary and secondary buttons */
-  /* Must be responsive on mobile devices */
-  /* Must maintain button functionality */
-}
-
-.primaryButton {        /* Primary action button */
-  /* Must have proper hover and active states */
-  /* Must maintain accessibility focus */
-  /* Must follow anime theme styling */
-}
-
-.secondaryButton {      /* Secondary action button */
-  /* Must have proper hover and active states */
-  /* Must maintain accessibility focus */
-  /* Must follow anime theme styling */
-}
 ```
 
 ## State Management Contracts
@@ -266,4 +208,4 @@ useContext expectations (if applicable):
 - [ ] Browser compatibility verified
 - [ ] Docusaurus integration working properly
 
-These contracts ensure that all UI improvements maintain consistency, accessibility, and proper functionality while implementing the anime theme as specified in the feature requirements.
+These contracts ensure that all UI improvements maintain consistency, accessibility, and proper functionality while implementing the cartoon theme as specified in the feature requirements.
