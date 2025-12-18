@@ -1,0 +1,1 @@
+"use strict";(globalThis.webpackChunkfrontend_rag_chatbot_frontend=globalThis.webpackChunkfrontend_rag_chatbot_frontend||[]).push([[1903],{1912:t=>{t.exports=JSON.parse('{"blogBasePath":"/ur/blog","blogTitle":"Blog","authorsListPath":"/ur/blog/authors"}')}}]);

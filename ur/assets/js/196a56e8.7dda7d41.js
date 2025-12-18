@@ -1,0 +1,1 @@
+"use strict";(globalThis.webpackChunkfrontend_rag_chatbot_frontend=globalThis.webpackChunkfrontend_rag_chatbot_frontend||[]).push([[2952],{4059:t=>{t.exports=JSON.parse('{"metadata":{"permalink":"/ur/blog","page":1,"postsPerPage":10,"totalPages":1,"totalCount":5,"blogDescription":"Blog","blogTitle":"Blog"}}')}}]);
