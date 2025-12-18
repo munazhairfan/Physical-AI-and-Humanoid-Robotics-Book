@@ -1,0 +1,34 @@
+{
+  "version.label": {
+    "message": "Next",
+    "description": "The label for version current"
+  },
+  "sidebar.tutorialSidebar.category.Introduction": {
+    "message": "Introduction",
+    "description": "The label for category 'Introduction' in sidebar 'tutorialSidebar'"
+  },
+  "sidebar.tutorialSidebar.category.Foundations of Physical AI": {
+    "message": "Foundations of Physical AI",
+    "description": "The label for category 'Foundations of Physical AI' in sidebar 'tutorialSidebar'"
+  },
+  "sidebar.tutorialSidebar.category.Humanoid Robotics": {
+    "message": "Humanoid Robotics",
+    "description": "The label for category 'Humanoid Robotics' in sidebar 'tutorialSidebar'"
+  },
+  "sidebar.tutorialSidebar.category.Sensing and Perception": {
+    "message": "Sensing and Perception",
+    "description": "The label for category 'Sensing and Perception' in sidebar 'tutorialSidebar'"
+  },
+  "sidebar.tutorialSidebar.category.AI and Control Systems": {
+    "message": "AI and Control Systems",
+    "description": "The label for category 'AI and Control Systems' in sidebar 'tutorialSidebar'"
+  },
+  "sidebar.tutorialSidebar.category.Applications and Use Cases": {
+    "message": "Applications and Use Cases",
+    "description": "The label for category 'Applications and Use Cases' in sidebar 'tutorialSidebar'"
+  },
+  "sidebar.tutorialSidebar.category.Future Directions & Ethics": {
+    "message": "Future Directions & Ethics",
+    "description": "The label for category 'Future Directions & Ethics' in sidebar 'tutorialSidebar'"
+  }
+}
