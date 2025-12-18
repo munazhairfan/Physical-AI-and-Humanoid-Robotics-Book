@@ -1,4 +1,5 @@
 ---
+id: chapter5-applications-humanoid-robots
 sidebar_position: 9
 ---
 

@@ -1,4 +1,5 @@
 ---
+id: chapter3-sensor-integration-perception
 sidebar_position: 7
 ---
 

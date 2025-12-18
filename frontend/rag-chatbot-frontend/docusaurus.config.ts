@@ -11,7 +11,7 @@ const config: Config = {
 
 
   // Set the production url of your site here (will be assigned by Vercel after first deployment)
-  url: 'https://your-vercel-project-name.vercel.app',
+  url: 'http://localhost:3000', // Use localhost for development
   // Set the /<baseUrl>/ pathname under which your site is served
   // For Vercel deployment, using root path ('/') is typically best for first deployment
   baseUrl: '/',
@@ -30,7 +30,16 @@ const config: Config = {
   // may want to replace "en" with "zh-Hans".
   i18n: {
     defaultLocale: 'en',
-    locales: ['en'],
+    locales: ['en', 'ur'],
+    localeConfigs: {
+      en: {
+        label: 'English',
+      },
+      ur: {
+        label: 'اردو',
+        htmlLang: 'ur'
+      }
+    },
   },
 
   presets: [
@@ -39,6 +48,8 @@ const config: Config = {
       {
         docs: {
           sidebarPath: './sidebars.ts',
+          // Set routeBasePath to 'docs' to ensure proper routing for both English and Urdu versions
+          routeBasePath: 'docs',
           // Please change this to your repo.
           // Remove this to remove the "edit this page" links.
         },
@@ -82,6 +93,10 @@ const config: Config = {
           label: 'Contents',
         },
         {
+          type: 'localeDropdown',
+          position: 'right',
+        },
+        {
           href: 'https://github.com/munazhairfan/Physical-AI-and-Humanoid-Robotics-Book',
           label: 'GitHub',
           position: 'right',
@@ -108,13 +123,7 @@ const config: Config = {
   // Environment variables for deployment
   themes: [],
   stylesheets: [],
-  scripts: [
-    {
-      src: '/js/selection-chatbot.js',
-      async: true,
-      defer: true,
-    },
-  ],
+  scripts: [],
 
 
 

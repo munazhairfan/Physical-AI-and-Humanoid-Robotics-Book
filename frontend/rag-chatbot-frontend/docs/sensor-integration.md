@@ -1,4 +1,5 @@
 ---
+id: sensor-integration
 sidebar_position: 4
 ---
 
@@ -212,8 +213,8 @@ After studying this section, you should be able to:
 ## Next Steps
 
 To deepen your understanding:
-- Study **[AI in Humanoid Robotics](./chapter4-ai-in-humanoid-robotics.md)** for AI integration aspects
-- Explore **[Applications & Future Directions](./chapter5-applications-humanoid-robots.md)** for real-world applications
+- Study **[AI in Humanoid Robotics](./chapter4-ai-in-humanoid-robotics)** for AI integration aspects
+- Explore **[Applications & Future Directions](./chapter5-applications-humanoid-robots)** for real-world applications
 - Look into advanced topics like SLAM, computer vision, and machine learning for perception
 
 ## Interactive Learning

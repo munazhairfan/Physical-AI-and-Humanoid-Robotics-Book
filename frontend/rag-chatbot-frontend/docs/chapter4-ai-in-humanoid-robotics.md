@@ -1,4 +1,5 @@
 ---
+id: chapter4-ai-in-humanoid-robotics
 sidebar_position: 8
 ---
 

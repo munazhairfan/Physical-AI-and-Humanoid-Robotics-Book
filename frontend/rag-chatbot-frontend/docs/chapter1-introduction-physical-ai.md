@@ -1,4 +1,5 @@
 ---
+id: chapter1-introduction-physical-ai
 sidebar_position: 5
 ---
 
@@ -119,7 +120,7 @@ After studying this chapter, you should be able to:
 ## Next Steps
 
 To deepen your understanding:
-- Explore the **[Humanoid Robotics Fundamentals](./humanoid-robotics.md)** section
+- Explore the **[Humanoid Robotics Fundamentals](./humanoid-robotics)** section
 - Try implementing basic perception or control algorithms
 - Experiment with simulation environments like Gazebo
 - Review real-world applications and case studies

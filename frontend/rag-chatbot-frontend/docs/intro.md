@@ -1,4 +1,5 @@
 ---
+id: intro
 sidebar_position: 1
 ---
 
@@ -33,12 +34,12 @@ This textbook combines theoretical knowledge with practical examples and hands-o
 
 This resource is organized into progressive modules that build upon each other:
 
-1. **[Foundations of Physical AI](./physical-ai-intro.md)** - Core concepts and architectural principles
-2. **[Humanoid Robotics Fundamentals](./humanoid-robotics.md)** - Design, kinematics, and control principles
-3. **[Sensing and Perception](./sensor-integration.md)** - Sensor fusion and environmental understanding
-4. **[AI and Control Systems](./chapter4-ai-in-humanoid-robotics.md)** - Algorithms and decision-making
-5. **[Applications and Use Cases](./chapter5-applications-humanoid-robots.md)** - Real-world implementations
-6. **[Challenges and Future Directions](./chapter6-challenges-future-directions.md)** - Emerging trends and ethics
+1. **[Foundations of Physical AI](./physical-ai-intro)** - Core concepts and architectural principles
+2. **[Humanoid Robotics Fundamentals](./humanoid-robotics)** - Design, kinematics, and control principles
+3. **[Sensing and Perception](./sensor-integration)** - Sensor fusion and environmental understanding
+4. **[AI and Control Systems](./chapter4-ai-in-humanoid-robotics)** - Algorithms and decision-making
+5. **[Applications and Use Cases](./chapter5-applications-humanoid-robots)** - Real-world implementations
+6. **[Challenges and Future Directions](./chapter6-challenges-future-directions)** - Emerging trends and ethics
 
 ## Learning Objectives
 
@@ -161,4 +162,4 @@ The integrated AI assistant enhances your learning by:
 4. Complete the exercises and reflection questions
 5. Explore the practical examples and tutorials
 
-Ready to begin your journey into Physical AI and Humanoid Robotics? Start with the **[Introduction to Physical AI](./physical-ai-intro.md)** module.
+Ready to begin your journey into Physical AI and Humanoid Robotics? Start with the **[Introduction to Physical AI](./physical-ai-intro)** module.

@@ -1,4 +1,5 @@
 ---
+id: chapter6-challenges-future-directions
 sidebar_position: 10
 ---
 

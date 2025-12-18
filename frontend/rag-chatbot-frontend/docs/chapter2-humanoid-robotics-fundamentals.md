@@ -1,4 +1,5 @@
 ---
+id: chapter2-humanoid-robotics-fundamentals
 sidebar_position: 6
 ---
 
@@ -198,8 +199,8 @@ After studying this chapter, you should be able to:
 ## Next Steps
 
 To deepen your understanding:
-- Study **[Sensor Integration & Perception](./sensor-integration.md)** for understanding how robots perceive their environment
-- Explore **[AI in Humanoid Robotics](./chapter4-ai-in-humanoid-robotics.md)** for AI integration aspects
+- Study **[Sensor Integration & Perception](./sensor-integration)** for understanding how robots perceive their environment
+- Explore **[AI in Humanoid Robotics](./chapter4-ai-in-humanoid-robotics)** for AI integration aspects
 - Review real-world humanoid platforms like ASIMO, Atlas, and Sophia
 
 ## Interactive Learning
