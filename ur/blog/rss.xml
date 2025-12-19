@@ -2,86 +2,21 @@
 <rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/">
     <channel>
         <title>Physical AI &amp; Humanoid Robotics Blog</title>
-        <link>http://localhost:3000/ur/blog</link>
+        <link>https://your-vercel-project-name.vercel.app/ur/blog</link>
         <description>Physical AI &amp; Humanoid Robotics Blog</description>
-        <lastBuildDate>Wed, 17 Dec 2025 00:00:00 GMT</lastBuildDate>
+        <lastBuildDate>Fri, 19 Dec 2025 20:50:39 GMT</lastBuildDate>
         <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
         <generator>https://github.com/jpmonette/feed</generator>
         <language>ur</language>
         <item>
-            <title><![CDATA[Introducing Physical AI & Humanoid Robotics - An Educational Journey]]></title>
-            <link>http://localhost:3000/ur/blog/physical-ai-and-humanoid-robotics-intro</link>
-            <guid>http://localhost:3000/ur/blog/physical-ai-and-humanoid-robotics-intro</guid>
-            <pubDate>Wed, 17 Dec 2025 00:00:00 GMT</pubDate>
-            <description><![CDATA[Welcome to the Physical AI & Humanoid Robotics educational project, a comprehensive resource designed to bridge the gap between artificial intelligence and physical systems. This interactive learning platform combines theoretical knowledge with practical applications to provide deep insights into the fascinating world of embodied intelligence.]]></description>
-            <content:encoded><![CDATA[<p>Welcome to the <strong>Physical AI &amp; Humanoid Robotics</strong> educational project, a comprehensive resource designed to bridge the gap between artificial intelligence and physical systems. This interactive learning platform combines theoretical knowledge with practical applications to provide deep insights into the fascinating world of embodied intelligence.</p>
-<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="what-is-physical-ai">What is Physical AI?<a href="http://localhost:3000/ur/blog/physical-ai-and-humanoid-robotics-intro#what-is-physical-ai" class="hash-link" aria-label="Direct link to What is Physical AI?" title="Direct link to What is Physical AI?" translate="no">​</a></h2>
-<p>Physical AI represents a paradigm shift from traditional digital-only AI systems to embodied intelligence that interacts with the real world. Unlike conventional AI that operates primarily in virtual environments, Physical AI systems must handle the complexities, uncertainties, and real-time constraints of the physical environment.</p>
-<p>Key distinctions include:</p>
-<ul>
-<li class="">Operating in the real physical world rather than virtual environments</li>
-<li class="">Processing multi-modal sensory inputs from various sensors</li>
-<li class="">Managing real-world consequences and safety implications</li>
-<li class="">Responding in real-time with strict latency requirements</li>
-<li class="">Handling environmental variations and uncertainty</li>
-</ul>
-<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="humanoid-robotics-the-human-like-approach">Humanoid Robotics: The Human-Like Approach<a href="http://localhost:3000/ur/blog/physical-ai-and-humanoid-robotics-intro#humanoid-robotics-the-human-like-approach" class="hash-link" aria-label="Direct link to Humanoid Robotics: The Human-Like Approach" title="Direct link to Humanoid Robotics: The Human-Like Approach" translate="no">​</a></h2>
-<p>Humanoid robots are designed with human-like form and behavior, featuring a head, torso, two arms, and two legs. This design allows them to operate effectively in human-designed environments and interact naturally with people.</p>
-<p>The project explores the fundamental challenges of humanoid robotics:</p>
-<ul>
-<li class=""><strong>Kinematics and Dynamics</strong>: Understanding forward and inverse kinematics, dynamics modeling, and complex multi-body systems</li>
-<li class=""><strong>Balance and Locomotion</strong>: Techniques like Zero Moment Point (ZMP) control, Capture Point methods, and whole-body control for stable movement</li>
-<li class=""><strong>Control Systems Architecture</strong>: Hierarchical control with high-level planning, mid-level trajectory generation, and low-level motor control</li>
-<li class=""><strong>Hardware Design</strong>: Actuator selection, sensor integration, and mechanical considerations</li>
-</ul>
-<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="interactive-learning-experience">Interactive Learning Experience<a href="http://localhost:3000/ur/blog/physical-ai-and-humanoid-robotics-intro#interactive-learning-experience" class="hash-link" aria-label="Direct link to Interactive Learning Experience" title="Direct link to Interactive Learning Experience" translate="no">​</a></h2>
-<p>One of the standout features of this educational platform is the integrated AI assistant. The floating chatbot provides instant help and explanations, allowing learners to:</p>
-<ul>
-<li class="">Ask questions about any concept covered in the textbook</li>
-<li class="">Get real-time feedback and personalized explanations</li>
-<li class="">Explore related concepts based on their interests</li>
-<li class="">Receive guidance through complex topics</li>
-</ul>
-<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="core-learning-modules">Core Learning Modules<a href="http://localhost:3000/ur/blog/physical-ai-and-humanoid-robotics-intro#core-learning-modules" class="hash-link" aria-label="Direct link to Core Learning Modules" title="Direct link to Core Learning Modules" translate="no">​</a></h2>
-<p>The curriculum is structured into progressive modules that build upon each other:</p>
-<ol>
-<li class=""><strong>Foundations of Physical AI</strong>: Core concepts and architectural principles</li>
-<li class=""><strong>Humanoid Robotics Fundamentals</strong>: Design, kinematics, and control principles</li>
-<li class=""><strong>Sensing and Perception</strong>: Sensor fusion and environmental understanding</li>
-<li class=""><strong>AI and Control Systems</strong>: Algorithms and decision-making processes</li>
-<li class=""><strong>Applications and Use Cases</strong>: Real-world implementations and industry examples</li>
-<li class=""><strong>Challenges and Future Directions</strong>: Emerging trends and ethical considerations</li>
-</ol>
-<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="technical-applications-and-real-world-impact">Technical Applications and Real-World Impact<a href="http://localhost:3000/ur/blog/physical-ai-and-humanoid-robotics-intro#technical-applications-and-real-world-impact" class="hash-link" aria-label="Direct link to Technical Applications and Real-World Impact" title="Direct link to Technical Applications and Real-World Impact" translate="no">​</a></h2>
-<p>Physical AI has applications across numerous domains:</p>
-<ul>
-<li class=""><strong>Industrial Robotics</strong>: Manufacturing, assembly, and automation</li>
-<li class=""><strong>Service Robotics</strong>: Cleaning, delivery, and assistance</li>
-<li class=""><strong>Medical Robotics</strong>: Surgical procedures and rehabilitation</li>
-<li class=""><strong>Autonomous Systems</strong>: Self-driving vehicles and UAVs</li>
-<li class=""><strong>Human-Robot Interaction</strong>: Social robots and collaborative systems</li>
-</ul>
-<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="unique-educational-approach">Unique Educational Approach<a href="http://localhost:3000/ur/blog/physical-ai-and-humanoid-robotics-intro#unique-educational-approach" class="hash-link" aria-label="Direct link to Unique Educational Approach" title="Direct link to Unique Educational Approach" translate="no">​</a></h2>
-<p>This project stands out by combining:</p>
-<ul>
-<li class=""><strong>Theoretical Foundations</strong>: Core concepts and principles</li>
-<li class=""><strong>Technical Implementation</strong>: Code examples and practical applications</li>
-<li class=""><strong>Interactive Learning</strong>: Real-time AI assistant for personalized help</li>
-<li class=""><strong>Real-world Applications</strong>: Industry examples and case studies</li>
-</ul>
-<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="why-this-matters">Why This Matters<a href="http://localhost:3000/ur/blog/physical-ai-and-humanoid-robotics-intro#why-this-matters" class="hash-link" aria-label="Direct link to Why This Matters" title="Direct link to Why This Matters" translate="no">​</a></h2>
-<p>As robotics technology continues to advance, understanding the intersection of AI and physical systems becomes increasingly important. This educational resource prepares learners to:</p>
-<ul>
-<li class="">Analyze the fundamental differences between digital and physical AI systems</li>
-<li class="">Design and implement control algorithms for humanoid robots</li>
-<li class="">Integrate multiple sensor modalities for environmental perception</li>
-<li class="">Apply AI algorithms to solve complex robotic challenges</li>
-<li class="">Evaluate the safety, ethical, and social implications of humanoid robotics</li>
-</ul>
-<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="getting-started">Getting Started<a href="http://localhost:3000/ur/blog/physical-ai-and-humanoid-robotics-intro#getting-started" class="hash-link" aria-label="Direct link to Getting Started" title="Direct link to Getting Started" translate="no">​</a></h2>
-<p>The platform is designed for learners with basic programming knowledge and mathematical foundations. No prior robotics experience is required, making it accessible to a wide audience interested in this cutting-edge field.</p>
-<p>Ready to begin your journey into Physical AI and Humanoid Robotics? Explore the comprehensive documentation and engage with the interactive AI assistant to deepen your understanding of this exciting field.</p>
-<p>The future of robotics lies at the intersection of artificial intelligence and physical interaction. This educational platform provides the knowledge and tools needed to be part of that future.</p>]]></content:encoded>
+            <title><![CDATA[جسمانی مصنوعی ذہانت اور ہیومنوڈ روبوٹکس کا تعارف]]></title>
+            <link>https://your-vercel-project-name.vercel.app/ur/blog/physical-ai-humanoid-robotics-intro</link>
+            <guid>https://your-vercel-project-name.vercel.app/ur/blog/physical-ai-humanoid-robotics-intro</guid>
+            <pubDate>Fri, 19 Dec 2025 20:50:39 GMT</pubDate>
+            <description><![CDATA[جسمانی مصنوعی ذہانت (Physical AI) ایک نظریہ ہے جو مصنوعی ذہانت اور روبوٹکس کے درمیان رابطہ قائم کرتا ہے، جہاں ذہین نظام جسمانی دنیا کے ساتھ براہ راست تعامل کر سکتے ہیں۔ یہ روایتی مصنوعی ذہانت سے مختلف ہے جو ڈیٹا اور شبیہ سازی پر مبنی ہے۔]]></description>
+            <content:encoded><![CDATA[<p>جسمانی مصنوعی ذہانت (Physical AI) ایک نظریہ ہے جو مصنوعی ذہانت اور روبوٹکس کے درمیان رابطہ قائم کرتا ہے، جہاں ذہین نظام جسمانی دنیا کے ساتھ براہ راست تعامل کر سکتے ہیں۔ یہ روایتی مصنوعی ذہانت سے مختلف ہے جو ڈیٹا اور شبیہ سازی پر مبنی ہے۔</p>
+<p>ہیومنوڈ روبوٹکس کا مقصد انسانوں کی طرح شکل و صورت والے روبوٹس تیار کرنا ہے جو انسانوں کے ماحول میں کام کر سکیں۔ یہ ایک جامع میدان ہے جو کنٹرول تھیوری، میکانکات، مصنوعی ذہانت، اور سینسر ٹیکنالوجی کو جوڑتا ہے۔</p>
+<p>جسمانی مصنوعی ذہانت کے ذریعے، روبوٹس کو ایڈاپٹیو اور ری ایکٹیو سسٹم بنانے کے لیے تیار کیا جاتا ہے جو حقیقی دنیا کے ساتھ سیکھنے اور تعامل کر سکتے ہیں۔ یہ ایک اہم قدم ہے جہاں مصنوعی ذہانت کو صرف ڈیجیٹل دنیا سے باہر جسمانی دنیا میں لاگو کیا جا سکے۔</p>]]></content:encoded>
             <category>robotics</category>
             <category>ai</category>
             <category>education</category>
@@ -89,118 +24,57 @@
             <category>physical-ai</category>
         </item>
         <item>
-            <title><![CDATA[Welcome to the Physical AI & Humanoid Robotics Blog]]></title>
-            <link>http://localhost:3000/ur/blog/welcome-to-physical-ai-blog</link>
-            <guid>http://localhost:3000/ur/blog/welcome-to-physical-ai-blog</guid>
+            <title><![CDATA[جسمانی مصنوعی ذہانت اور ہیومنوڈ روبوٹکس میں خوش آمدید]]></title>
+            <link>https://your-vercel-project-name.vercel.app/ur/blog/welcome</link>
+            <guid>https://your-vercel-project-name.vercel.app/ur/blog/welcome</guid>
             <pubDate>Thu, 26 Aug 2021 00:00:00 GMT</pubDate>
-            <description><![CDATA[Welcome to our blog dedicated to exploring the fascinating intersection of artificial intelligence and robotics. Here, we'll dive deep into the latest developments, research breakthroughs, and practical applications in Physical AI and Humanoid Robotics.]]></description>
-            <content:encoded><![CDATA[<p>Welcome to our blog dedicated to exploring the fascinating intersection of artificial intelligence and robotics. Here, we'll dive deep into the latest developments, research breakthroughs, and practical applications in Physical AI and Humanoid Robotics.</p>
-<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="what-is-physical-ai">What is Physical AI?<a href="http://localhost:3000/ur/blog/welcome-to-physical-ai-blog#what-is-physical-ai" class="hash-link" aria-label="Direct link to What is Physical AI?" title="Direct link to What is Physical AI?" translate="no">​</a></h2>
-<p>Physical AI represents the next frontier in artificial intelligence, where intelligent systems are no longer confined to digital environments but can interact with and learn from the physical world. This field combines traditional AI techniques with robotics, control theory, and mechanical engineering to create systems that can perceive, reason about, and manipulate objects in three-dimensional space.</p>
-<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="focus-areas">Focus Areas<a href="http://localhost:3000/ur/blog/welcome-to-physical-ai-blog#focus-areas" class="hash-link" aria-label="Direct link to Focus Areas" title="Direct link to Focus Areas" translate="no">​</a></h2>
-<p>Our blog will cover several key areas:</p>
-<ul>
-<li class=""><strong>Humanoid Robotics</strong>: Exploring the challenges and breakthroughs in creating human-like robots</li>
-<li class=""><strong>Embodied AI</strong>: How intelligence emerges through physical interaction with the environment</li>
-<li class=""><strong>Control Systems</strong>: Advanced algorithms for robot movement and manipulation</li>
-<li class=""><strong>Sensing and Perception</strong>: Technologies that enable robots to understand their environment</li>
-<li class=""><strong>Human-Robot Interaction</strong>: How robots can communicate and work effectively with humans</li>
-<li class=""><strong>Applications</strong>: Real-world use cases and implementations of Physical AI systems</li>
-</ul>
-<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="our-mission">Our Mission<a href="http://localhost:3000/ur/blog/welcome-to-physical-ai-blog#our-mission" class="hash-link" aria-label="Direct link to Our Mission" title="Direct link to Our Mission" translate="no">​</a></h2>
-<p>This blog aims to bridge the gap between cutting-edge research and practical implementation in Physical AI. We'll feature technical deep-dives, practical tutorials, industry insights, and discussions about the future of human-robot collaboration.</p>
-<p>Whether you're a researcher, engineer, student, or simply curious about the future of robotics, we hope you'll find valuable insights and thought-provoking content in our posts.</p>
-<p>Join us on this journey as we explore how Physical AI is transforming our world and what it means for the future of human-robot collaboration.</p>]]></content:encoded>
+            <description><![CDATA[ہمارے جسمانی مصنوعی ذہانت اور ہیومنوڈ روبوٹکس کے بلاگ میں خوش آمدید! یہ ایک تعلیمی پلیٹ فارم ہے جہاں آپ جدید روبوٹکس، مصنوعی ذہانت، اور انٹیگریٹڈ سسٹمز کے بارے میں سیکھ سکتے ہیں۔]]></description>
+            <content:encoded><![CDATA[<p>ہمارے جسمانی مصنوعی ذہانت اور ہیومنوڈ روبوٹکس کے بلاگ میں خوش آمدید! یہ ایک تعلیمی پلیٹ فارم ہے جہاں آپ جدید روبوٹکس، مصنوعی ذہانت، اور انٹیگریٹڈ سسٹمز کے بارے میں سیکھ سکتے ہیں۔</p>
+<p>ہم آپ کو ایسے مضامین، ٹیوٹوریلز، اور تحقیقی تجزیات تک لے جانے کا ارادہ رکھتے ہیں جو جسمانی مصنوعی ذہانت کے میدان میں تازہ ترین پیشرفت کو ظاہر کرتے ہیں۔ چاہے آپ ایک طالب علم، تحقیق کار، یا صرف ٹیکنالوجی میں دلچسپی رکھنے والے ہوں، ہمیں امید ہے کہ یہاں کچھ ایسا ہے جو آپ کے لیے قیمتی ہو گا۔</p>]]></content:encoded>
             <category>introduction</category>
             <category>physical-ai</category>
             <category>humanoid-robotics</category>
         </item>
         <item>
-            <title><![CDATA[Advanced Control Systems for Humanoid Robots - A Technical Deep Dive]]></title>
-            <link>http://localhost:3000/ur/blog/advanced-control-systems-for-humanoid-robots</link>
-            <guid>http://localhost:3000/ur/blog/advanced-control-systems-for-humanoid-robots</guid>
+            <title><![CDATA[ہیومنوڈ روبوٹ کے لیے اعلی کنٹرول سسٹم - تکنیکی گہرائی]]></title>
+            <link>https://your-vercel-project-name.vercel.app/ur/blog/advanced-control-systems-for-humanoid-robots</link>
+            <guid>https://your-vercel-project-name.vercel.app/ur/blog/advanced-control-systems-for-humanoid-robots</guid>
             <pubDate>Sun, 01 Aug 2021 00:00:00 GMT</pubDate>
-            <description><![CDATA[Humanoid robots require sophisticated control systems to achieve stable locomotion and precise manipulation. These systems must coordinate multiple actuators in real-time while maintaining balance and responding to environmental disturbances.]]></description>
-            <content:encoded><![CDATA[<p>Humanoid robots require sophisticated control systems to achieve stable locomotion and precise manipulation. These systems must coordinate multiple actuators in real-time while maintaining balance and responding to environmental disturbances.</p>
+            <description><![CDATA[ہیومنوڈ روبوٹ کو مستحکم چال اور درست مینیپولیشن حاصل کرنے کے لیے ترقی یافتہ کنٹرول سسٹم کی ضرورت ہوتی ہے۔ یہ نظام اصل وقت میں متعدد ایکٹو ایٹرز کو مربوط کرنا چاہیے جبکہ توازن برقرار رکھنا اور ماحولیاتی干扰 کا جواب دینا بھی ضروری ہے۔]]></description>
+            <content:encoded><![CDATA[<p>ہیومنوڈ روبوٹ کو مستحکم چال اور درست مینیپولیشن حاصل کرنے کے لیے ترقی یافتہ کنٹرول سسٹم کی ضرورت ہوتی ہے۔ یہ نظام اصل وقت میں متعدد ایکٹو ایٹرز کو مربوط کرنا چاہیے جبکہ توازن برقرار رکھنا اور ماحولیاتی干扰 کا جواب دینا بھی ضروری ہے۔</p>
 <!-- -->
-<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="understanding-the-control-hierarchy">Understanding the Control Hierarchy<a href="http://localhost:3000/ur/blog/advanced-control-systems-for-humanoid-robots#understanding-the-control-hierarchy" class="hash-link" aria-label="Direct link to Understanding the Control Hierarchy" title="Direct link to Understanding the Control Hierarchy" translate="no">​</a></h2>
-<p>Humanoid robot control systems typically operate at multiple levels:</p>
-<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="high-level-planning">High-Level Planning<a href="http://localhost:3000/ur/blog/advanced-control-systems-for-humanoid-robots#high-level-planning" class="hash-link" aria-label="Direct link to High-Level Planning" title="Direct link to High-Level Planning" translate="no">​</a></h3>
-<p>This layer determines the overall goals and trajectories for the robot. It plans walking patterns, manipulation sequences, and whole-body motions based on the task requirements and environmental constraints.</p>
-<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="central-pattern-generators-cpgs">Central Pattern Generators (CPGs)<a href="http://localhost:3000/ur/blog/advanced-control-systems-for-humanoid-robots#central-pattern-generators-cpgs" class="hash-link" aria-label="Direct link to Central Pattern Generators (CPGs)" title="Direct link to Central Pattern Generators (CPGs)" translate="no">​</a></h3>
-<p>For locomotion tasks, many humanoid robots employ CPGs that generate rhythmic patterns for walking, running, or other periodic movements. These systems can be tuned to produce stable gaits across various terrains.</p>
-<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="balance-control">Balance Control<a href="http://localhost:3000/ur/blog/advanced-control-systems-for-humanoid-robots#balance-control" class="hash-link" aria-label="Direct link to Balance Control" title="Direct link to Balance Control" translate="no">​</a></h3>
-<p>The balance control layer continuously adjusts the robot's center of mass and foot placement to maintain stability. This often involves inverted pendulum models and Zero Moment Point (ZMP) control techniques.</p>
-<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="joint-level-control">Joint-Level Control<a href="http://localhost:3000/ur/blog/advanced-control-systems-for-humanoid-robots#joint-level-control" class="hash-link" aria-label="Direct link to Joint-Level Control" title="Direct link to Joint-Level Control" translate="no">​</a></h3>
-<p>At the lowest level, individual joint controllers execute the high-level commands by precisely controlling motor torques, positions, and velocities.</p>
-<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="real-time-implementation-challenges">Real-Time Implementation Challenges<a href="http://localhost:3000/ur/blog/advanced-control-systems-for-humanoid-robots#real-time-implementation-challenges" class="hash-link" aria-label="Direct link to Real-Time Implementation Challenges" title="Direct link to Real-Time Implementation Challenges" translate="no">​</a></h2>
-<p>Implementing these control systems in real-time presents several challenges:</p>
-<ul>
-<li class=""><strong>Computational Constraints</strong>: Control algorithms must execute within strict timing requirements (often at 1kHz or higher)</li>
-<li class=""><strong>Sensor Fusion</strong>: Combining data from multiple sensors (IMUs, encoders, force sensors) to create accurate state estimates</li>
-<li class=""><strong>Disturbance Rejection</strong>: Handling unexpected forces, slips, or environmental changes while maintaining stability</li>
-<li class=""><strong>Energy Efficiency</strong>: Optimizing control strategies to maximize operational time while minimizing power consumption</li>
-</ul>
-<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="practical-example-walking-control">Practical Example: Walking Control<a href="http://localhost:3000/ur/blog/advanced-control-systems-for-humanoid-robots#practical-example-walking-control" class="hash-link" aria-label="Direct link to Practical Example: Walking Control" title="Direct link to Practical Example: Walking Control" translate="no">​</a></h2>
-<p>Here's a conceptual representation of how a walking controller might work:</p>
-<div class="language-js codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-js codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#393A34"><span class="token keyword" style="color:#00009f">function</span><span class="token plain"> </span><span class="token function" style="color:#d73a49">updateWalkingController</span><span class="token punctuation" style="color:#393A34">(</span><span class="token parameter">robotState</span><span class="token parameter punctuation" style="color:#393A34">,</span><span class="token parameter"> targetVelocity</span><span class="token punctuation" style="color:#393A34">)</span><span class="token plain"> </span><span class="token punctuation" style="color:#393A34">{</span><span class="token plain"></span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">  </span><span class="token comment" style="color:#999988;font-style:italic">// Calculate desired foot placement based on current velocity</span><span class="token plain"></span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">  </span><span class="token keyword" style="color:#00009f">const</span><span class="token plain"> desiredFootPosition </span><span class="token operator" style="color:#393A34">=</span><span class="token plain"> </span><span class="token function" style="color:#d73a49">calculateFootPlacement</span><span class="token punctuation" style="color:#393A34">(</span><span class="token plain"></span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">    robotState</span><span class="token punctuation" style="color:#393A34">.</span><span class="token property-access">velocity</span><span class="token punctuation" style="color:#393A34">,</span><span class="token plain"></span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">    targetVelocity</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">  </span><span class="token punctuation" style="color:#393A34">)</span><span class="token punctuation" style="color:#393A34">;</span><span class="token plain"></span><br></span><span class="token-line" style="color:#393A34"><span class="token plain" style="display:inline-block"></span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">  </span><span class="token comment" style="color:#999988;font-style:italic">// Adjust center of mass position for stability</span><span class="token plain"></span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">  </span><span class="token keyword" style="color:#00009f">const</span><span class="token plain"> comAdjustment </span><span class="token operator" style="color:#393A34">=</span><span class="token plain"> </span><span class="token function" style="color:#d73a49">calculateComAdjustment</span><span class="token punctuation" style="color:#393A34">(</span><span class="token plain"></span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">    robotState</span><span class="token punctuation" style="color:#393A34">.</span><span class="token property-access">comPosition</span><span class="token punctuation" style="color:#393A34">,</span><span class="token plain"></span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">    desiredFootPosition</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">  </span><span class="token punctuation" style="color:#393A34">)</span><span class="token punctuation" style="color:#393A34">;</span><span class="token plain"></span><br></span><span class="token-line" style="color:#393A34"><span class="token plain" style="display:inline-block"></span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">  </span><span class="token comment" style="color:#999988;font-style:italic">// Generate joint commands</span><span class="token plain"></span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">  </span><span class="token keyword control-flow" style="color:#00009f">return</span><span class="token plain"> </span><span class="token function" style="color:#d73a49">generateJointTrajectories</span><span class="token punctuation" style="color:#393A34">(</span><span class="token plain"></span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">    robotState</span><span class="token punctuation" style="color:#393A34">.</span><span class="token property-access">jointPositions</span><span class="token punctuation" style="color:#393A34">,</span><span class="token plain"></span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">    comAdjustment</span><span class="token punctuation" style="color:#393A34">,</span><span class="token plain"></span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">    desiredFootPosition</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">  </span><span class="token punctuation" style="color:#393A34">)</span><span class="token punctuation" style="color:#393A34">;</span><span class="token plain"></span><br></span><span class="token-line" style="color:#393A34"><span class="token plain"></span><span class="token punctuation" style="color:#393A34">}</span><br></span></code></pre></div></div>
-<p>Modern humanoid robots like those developed by Boston Dynamics, Honda, and other research institutions employ increasingly sophisticated control algorithms that combine classical control theory with machine learning approaches. As these systems continue to evolve, we're seeing robots that can navigate increasingly complex environments with human-like agility and adaptability.</p>]]></content:encoded>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="کنٹرول-سلسلہ-کو-سمجھنا">کنٹرول سلسلہ کو سمجھنا<a href="https://your-vercel-project-name.vercel.app/ur/blog/advanced-control-systems-for-humanoid-robots#%DA%A9%D9%86%D9%B9%D8%B1%D9%88%D9%84-%D8%B3%D9%84%D8%B3%D9%84%DB%81-%DA%A9%D9%88-%D8%B3%D9%85%D8%AC%DA%BE%D9%86%D8%A7" class="hash-link" aria-label="Direct link to کنٹرول سلسلہ کو سمجھنا" title="Direct link to کنٹرول سلسلہ کو سمجھنا" translate="no">​</a></h2>
+<p>ہیومنوڈ روبوٹ کے کنٹرول سسٹم عام طور پر متعدد درجوں میں کام کرتے ہیں:</p>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="اعلی-درجے-کی-منصوبہ-بندی">اعلی درجے کی منصوبہ بندی<a href="https://your-vercel-project-name.vercel.app/ur/blog/advanced-control-systems-for-humanoid-robots#%D8%A7%D8%B9%D9%84%DB%8C-%D8%AF%D8%B1%D8%AC%DB%92-%DA%A9%DB%8C-%D9%85%D9%86%D8%B5%D9%88%D8%A8%DB%81-%D8%A8%D9%86%D8%AF%DB%8C" class="hash-link" aria-label="Direct link to اعلی درجے کی منصوبہ بندی" title="Direct link to اعلی درجے کی منصوبہ بندی" translate="no">​</a></h3>
+<p>یہ پرت روبوٹ کے کل مقاصد اور ٹریجیکٹریز کا تعین کرتی ہے۔ یہ چلنے کے نمونے، مینیپولیشن کی ترتیبات، اور وہول بอดی موشن کو اہداف اور ماحولیاتی رکاوٹوں کے مطابق تیار کرتی ہے۔</p>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="سینٹرل-پیٹرن-جنریٹرز-cpgs">سینٹرل پیٹرن جنریٹرز (CPGs)<a href="https://your-vercel-project-name.vercel.app/ur/blog/advanced-control-systems-for-humanoid-robots#%D8%B3%DB%8C%D9%86%D9%B9%D8%B1%D9%84-%D9%BE%DB%8C%D9%B9%D8%B1%D9%86-%D8%AC%D9%86%D8%B1%DB%8C%D9%B9%D8%B1%D8%B2-cpgs" class="hash-link" aria-label="Direct link to سینٹرل پیٹرن جنریٹرز (CPGs)" title="Direct link to سینٹرل پیٹرن جنریٹرز (CPGs)" translate="no">​</a></h3>
+<p>چلنے کے کاموں کے لیے، بہت سے ہیومنوڈ روبوٹ سی ڈی جیز کا استعمال کرتے ہیں جو چلنے، دوڑنے، یا دیگر متواتر حرکات کے لیے موزون نمونے پیدا کرتے ہیں۔ یہ نظام مختلف زمینوں پر مستحکم چال پیدا کرنے کے لیے ٹیون کیے جا سکتے ہیں۔</p>]]></content:encoded>
             <category>control-systems</category>
             <category>robotics</category>
             <category>technical</category>
         </item>
         <item>
-            <title><![CDATA[The Future of Humanoid Robotics - Challenges and Opportunities]]></title>
-            <link>http://localhost:3000/ur/blog/the-future-of-humanoid-robotics</link>
-            <guid>http://localhost:3000/ur/blog/the-future-of-humanoid-robotics</guid>
+            <title><![CDATA[ہیومنوڈ روبوٹکس کے بنیادی اصول - تکنیکی وضاحت]]></title>
+            <link>https://your-vercel-project-name.vercel.app/ur/blog/humanoid-robotics-fundamentals</link>
+            <guid>https://your-vercel-project-name.vercel.app/ur/blog/humanoid-robotics-fundamentals</guid>
             <pubDate>Wed, 29 May 2019 00:00:00 GMT</pubDate>
-            <description><![CDATA[Humanoid robotics represents one of the most ambitious and challenging areas in robotics research. These robots, designed to mimic human form and behavior, hold the potential to revolutionize industries, assist in daily life, and provide new insights into human intelligence and movement.]]></description>
-            <content:encoded><![CDATA[<p>Humanoid robotics represents one of the most ambitious and challenging areas in robotics research. These robots, designed to mimic human form and behavior, hold the potential to revolutionize industries, assist in daily life, and provide new insights into human intelligence and movement.</p>
-<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="the-evolution-of-humanoid-robotics">The Evolution of Humanoid Robotics<a href="http://localhost:3000/ur/blog/the-future-of-humanoid-robotics#the-evolution-of-humanoid-robotics" class="hash-link" aria-label="Direct link to The Evolution of Humanoid Robotics" title="Direct link to The Evolution of Humanoid Robotics" translate="no">​</a></h2>
-<p>Humanoid robots have evolved significantly since the early prototypes of the 1960s. Today's advanced humanoid robots like Honda's ASIMO, Boston Dynamics' Atlas, and SoftBank's Pepper demonstrate remarkable capabilities in locomotion, manipulation, and human interaction. However, despite these advances, humanoid robots have not yet achieved widespread deployment in everyday environments.</p>
-<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="key-challenges-in-humanoid-robotics">Key Challenges in Humanoid Robotics<a href="http://localhost:3000/ur/blog/the-future-of-humanoid-robotics#key-challenges-in-humanoid-robotics" class="hash-link" aria-label="Direct link to Key Challenges in Humanoid Robotics" title="Direct link to Key Challenges in Humanoid Robotics" translate="no">​</a></h2>
-<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="balance-and-locomotion">Balance and Locomotion<a href="http://localhost:3000/ur/blog/the-future-of-humanoid-robotics#balance-and-locomotion" class="hash-link" aria-label="Direct link to Balance and Locomotion" title="Direct link to Balance and Locomotion" translate="no">​</a></h3>
-<p>Maintaining balance while walking, running, or navigating complex terrain remains one of the most significant challenges. Unlike wheeled robots, humanoid robots must manage complex dynamics involving multiple degrees of freedom, center of mass control, and reactive responses to external disturbances.</p>
-<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="manipulation-and-dexterity">Manipulation and Dexterity<a href="http://localhost:3000/ur/blog/the-future-of-humanoid-robotics#manipulation-and-dexterity" class="hash-link" aria-label="Direct link to Manipulation and Dexterity" title="Direct link to Manipulation and Dexterity" translate="no">​</a></h3>
-<p>Human hands are incredibly sophisticated tools with 27 degrees of freedom in each hand. Replicating this dexterity in robotic systems while maintaining strength, precision, and tactile sensitivity remains a significant engineering challenge.</p>
-<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="human-robot-interaction">Human-Robot Interaction<a href="http://localhost:3000/ur/blog/the-future-of-humanoid-robotics#human-robot-interaction" class="hash-link" aria-label="Direct link to Human-Robot Interaction" title="Direct link to Human-Robot Interaction" translate="no">​</a></h3>
-<p>Humanoid robots must effectively communicate with humans using natural modalities such as speech, gestures, and facial expressions. This requires sophisticated AI systems capable of understanding context, emotions, and social cues.</p>
-<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="power-and-efficiency">Power and Efficiency<a href="http://localhost:3000/ur/blog/the-future-of-humanoid-robotics#power-and-efficiency" class="hash-link" aria-label="Direct link to Power and Efficiency" title="Direct link to Power and Efficiency" translate="no">​</a></h3>
-<p>Humanoid robots typically consume significant power to operate multiple actuators simultaneously. Achieving human-like efficiency while maintaining the power needed for complex movements remains an ongoing challenge.</p>
-<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="applications-and-potential-impact">Applications and Potential Impact<a href="http://localhost:3000/ur/blog/the-future-of-humanoid-robotics#applications-and-potential-impact" class="hash-link" aria-label="Direct link to Applications and Potential Impact" title="Direct link to Applications and Potential Impact" translate="no">​</a></h2>
-<p>Humanoid robots show promise in several key areas:</p>
-<p><strong>Healthcare and Elderly Care</strong>: Assisting with daily activities, monitoring health, and providing companionship for elderly populations.</p>
-<p><strong>Industrial Applications</strong>: Working alongside humans in manufacturing environments, performing tasks that require human-level dexterity and decision-making.</p>
-<p><strong>Education and Research</strong>: Serving as platforms for studying human-robot interaction and testing theories of human cognition and movement.</p>
-<p><strong>Disaster Response</strong>: Operating in environments too dangerous for humans, using human-like form factors to navigate spaces designed for humans.</p>
-<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="the-path-forward">The Path Forward<a href="http://localhost:3000/ur/blog/the-future-of-humanoid-robotics#the-path-forward" class="hash-link" aria-label="Direct link to The Path Forward" title="Direct link to The Path Forward" translate="no">​</a></h2>
-<p>The future of humanoid robotics will likely involve advances in several key areas: improved actuator technology for more efficient and powerful movement, better AI systems for real-time decision making, enhanced sensors for better environmental awareness, and more sophisticated control algorithms for stable and adaptive behavior.</p>
-<p>Recent developments in AI, particularly in machine learning and neural networks, are accelerating progress in humanoid robotics. Techniques like reinforcement learning are enabling robots to learn complex behaviors through trial and error, much like humans do.</p>
-<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="conclusion">Conclusion<a href="http://localhost:3000/ur/blog/the-future-of-humanoid-robotics#conclusion" class="hash-link" aria-label="Direct link to Conclusion" title="Direct link to Conclusion" translate="no">​</a></h2>
-<p>While humanoid robots are not yet ubiquitous, continued research and development are bringing us closer to a future where these machines can work alongside humans in various environments. The challenges are significant, but the potential benefits to society make humanoid robotics one of the most compelling areas of technological development in the 21st century.</p>
-<p>As we continue to push the boundaries of what's possible, humanoid robots may eventually become as common as smartphones are today, fundamentally changing how we interact with technology and each other.</p>]]></content:encoded>
+            <description><![CDATA[ہیومنوڈ روبوٹ انسانی شکل و صورت کی تقلید کرتے ہوئے روبوٹ ہیں جو انسانوں کے ساتھ مطابقت رکھنے والے ماحول میں کام کرنے کے لیے ڈیزائن کیے گئے ہیں۔ یہ روبوٹ اعلی درجے کی ٹیکنالوجی کے مجموعہ کو جمع کرتے ہیں جس میں مصنوعی ذہانت، کنٹرول تھیوری، میکانکات، اور سینسر ٹیکنالوجی شامل ہے۔]]></description>
+            <content:encoded><![CDATA[<p>ہیومنوڈ روبوٹ انسانی شکل و صورت کی تقلید کرتے ہوئے روبوٹ ہیں جو انسانوں کے ساتھ مطابقت رکھنے والے ماحول میں کام کرنے کے لیے ڈیزائن کیے گئے ہیں۔ یہ روبوٹ اعلی درجے کی ٹیکنالوجی کے مجموعہ کو جمع کرتے ہیں جس میں مصنوعی ذہانت، کنٹرول تھیوری، میکانکات، اور سینسر ٹیکنالوجی شامل ہے۔</p>
+<p>ہیومنوڈ روبوٹکس کے ڈیزائن کے اہم عناصر میں انسانوں کی طرح ڈھانچہ، دو ٹانگوں والی چال، دو بازوں کے ساتھ مینیپولیشن، اور انسانوں کے ساتھ تعامل کے لیے مطابقت شامل ہیں۔ یہ نظام اکثر متعدد ایکٹو ایٹرز، اعلی درجے کے کنٹرول الگورتھم، اور جدید سینسرز کا استعمال کرتے ہیں تاکہ مستحکم حرکت اور ماحول کے مطابق رد عمل دینا ممکن ہو سکے۔</p>
+<p>چال کے نظام کو ہیومنوڈ روبوٹکس کا ایک اہم پہلو سمجھا جاتا ہے۔ انسانوں کی طرح چلنے کے لیے، روبوٹ کو اسٹیٹس کو برقرار رکھنے کے لیے ایک چلنے کا الگورتھم کی ضرورت ہوتی ہے جو جسم کے مرکز کے م coordination اور پاؤں کے مقامات کو مربوط کرتا ہے۔ یہ کام اکثر ہیومنوڈ روبوٹکس میں استعمال ہونے والے کنٹرول تھیوری کے اعلی ترین اصولوں کو دکھاتا ہے۔</p>]]></content:encoded>
             <category>humanoid-robotics</category>
             <category>ai</category>
             <category>machine-learning</category>
         </item>
         <item>
-            <title><![CDATA[Introduction to Physical AI - Bridging the Gap Between Digital and Physical Worlds]]></title>
-            <link>http://localhost:3000/ur/blog/introduction-to-physical-ai</link>
-            <guid>http://localhost:3000/ur/blog/introduction-to-physical-ai</guid>
+            <title><![CDATA[جسمانی مصنوعی ذہانت کا تعارف - ڈیجیٹل اور جسمانی دنیا کے درمیان پُل]]></title>
+            <link>https://your-vercel-project-name.vercel.app/ur/blog/introduction-to-physical-ai</link>
+            <guid>https://your-vercel-project-name.vercel.app/ur/blog/introduction-to-physical-ai</guid>
             <pubDate>Tue, 28 May 2019 00:00:00 GMT</pubDate>
-            <description><![CDATA[The field of Physical AI represents a revolutionary convergence of artificial intelligence and robotics, where intelligent systems are no longer confined to digital environments but can interact with and learn from the physical world.]]></description>
-            <content:encoded><![CDATA[<p>The field of Physical AI represents a revolutionary convergence of artificial intelligence and robotics, where intelligent systems are no longer confined to digital environments but can interact with and learn from the physical world.</p>
-<p>Physical AI is fundamentally different from traditional AI systems that operate in virtual environments. While digital AI systems can learn from vast datasets and simulations, Physical AI must navigate the complexities of real-world physics, sensor limitations, and the unpredictability of physical interactions. This creates unique challenges and opportunities in robotics research and development.</p>
-<p>The core principle of Physical AI is that intelligence emerges not just from processing information, but from the interaction between an agent and its physical environment. This means that robots must be equipped with sophisticated sensors, actuators, and control systems that allow them to perceive, reason about, and manipulate objects in three-dimensional space.</p>
-<p>Key components of Physical AI systems include:</p>
-<ul>
-<li class=""><strong>Perception Systems</strong>: Advanced sensors including cameras, LiDAR, tactile sensors, and proprioceptive systems that provide rich information about the physical environment</li>
-<li class=""><strong>Reasoning Engines</strong>: AI systems that can process sensory information and make decisions based on physical laws and constraints</li>
-<li class=""><strong>Control Systems</strong>: Real-time systems that translate high-level decisions into precise motor commands</li>
-<li class=""><strong>Learning Mechanisms</strong>: Systems that can adapt and improve their performance through physical interaction with the environment</li>
-</ul>
-<p>The applications of Physical AI are vast, ranging from autonomous vehicles and industrial robots to assistive devices for elderly care and educational robots. As we continue to develop more sophisticated Physical AI systems, we're creating machines that can truly understand and interact with the physical world in ways that were previously impossible.</p>
-<p>This blog series will explore the latest developments in Physical AI, practical implementations, and the challenges that researchers and engineers face in bringing these systems to real-world applications.</p>]]></content:encoded>
+            <description><![CDATA[مصنوعی ذہانت کا یہ شعبہ جسمانی مصنوعی ذہانت (Physical AI) ایک انقلابی امتزاج کی نمائندگی کرتا ہے جس میں مصنوعی ذہانت اور روبوٹکس کا اتحاد ہوتا ہے، جہاں ذہین نظام صرف ڈیجیٹل ماحول تک محدود نہیں رہتے بلکہ جسمانی دنیا کے ساتھ بات چیت کر سکتے ہیں اور اس سے سیکھ سکتے ہیں۔]]></description>
+            <content:encoded><![CDATA[<p>مصنوعی ذہانت کا یہ شعبہ جسمانی مصنوعی ذہانت (Physical AI) ایک انقلابی امتزاج کی نمائندگی کرتا ہے جس میں مصنوعی ذہانت اور روبوٹکس کا اتحاد ہوتا ہے، جہاں ذہین نظام صرف ڈیجیٹل ماحول تک محدود نہیں رہتے بلکہ جسمانی دنیا کے ساتھ بات چیت کر سکتے ہیں اور اس سے سیکھ سکتے ہیں۔</p>
+<p>جسمانی مصنوعی ذہانت روایتی مصنوعی ذہانت کے نظاموں سے بنیادی طور پر مختلف ہے جو مجازی ماحول میں کام کرتے ہیں۔ جبکہ ڈیجیٹل مصنوعی ذہانت کے نظام وسیع ڈیٹا سیٹس اور شبیہ سازی سے سیکھ سکتے ہیں، جسمانی مصنوعی ذہانت کو حقیقی دنیا کی طاقت، سینسر کی حدود، اور جسمانی تعاملات کی غیر یقینی نوعیت کو سنبھالنا ہوتا ہے۔ یہ روبوٹکس کی تحقیق اور ترقی میں منفرد چیلنجز اور مواقع پیدا کرتا ہے۔</p>
+<p>جسمانی مصنوعی ذہانت کا بنیادی اصول یہ ہے کہ ذہانت صرف معلومات کو پروسیس کرنے سے نہیں بلکہ ایجنٹ اور اس کے جسمانی ماحول کے درمیان تعامل سے پیدا ہوتی ہے۔ اس کا مطلب ہے کہ روبوٹس کو جدید سینسرز، ایکٹو ایٹرز، اور کنٹرول سسٹمز سے لیس ہونا چاہیے جو انہیں تین جہتی خلا میں اشیاء کو سمجھنے، ان کے بارے میں سوچنے اور ان کو ہاتھ سے چلانے کی اجازت دیتے ہیں۔</p>]]></content:encoded>
             <category>physical-ai</category>
             <category>robotics</category>
             <category>artificial-intelligence</category>
