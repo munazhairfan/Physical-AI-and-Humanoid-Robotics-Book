@@ -3,7 +3,7 @@
  *
  * This script prevents 404 errors when switching locale from docs pages
  * by detecting locale switch events from /docs/* paths and redirecting
- * to appropriate locale-specific documentation paths.
+ * to appropriate locale-specific documentation paths with proper fallback.
  */
 
 (function() {
@@ -11,7 +11,11 @@
 
   // Check if we're on a docs page
   function isDocsPage() {
-    return window.location.pathname.startsWith('/docs/');
+    const pathname = window.location.pathname;
+    // Check if path starts with /docs/ or /{locale}/docs/
+    return pathname.startsWith('/docs/') ||
+           pathname.match(/^\/[a-zA-Z]{2}\/docs\//) ||
+           pathname.match(/^\/[a-zA-Z]{2}-[a-zA-Z]{2}\/docs\//);
   }
 
   // Get the current locale based on URL
@@ -21,9 +25,10 @@
     if (pathParts.length > 1 && pathParts[1] !== 'docs') {
       // It might be a locale prefix like /en/docs/, /es/docs/, etc.
       const potentialLocale = pathParts[1];
-      // For now, we'll assume any non-docs first segment is a locale
-      // In a real implementation, you might want to check against a known list
-      return potentialLocale;
+      // Basic check for locale format (2-3 letters)
+      if (potentialLocale.match(/^[a-zA-Z]{2,3}$/)) {
+        return potentialLocale;
+      }
     }
     return null; // Default locale (no prefix)
   }
@@ -55,15 +60,6 @@
     }
   }
 
-  // Enhanced version with better locale detection
-  function isDocsPage() {
-    const pathname = window.location.pathname;
-    // Check if path starts with /docs/ or /{locale}/docs/
-    return pathname.startsWith('/docs/') ||
-           pathname.match(/^\/[a-zA-Z]{2}\/docs\//) ||
-           pathname.match(/^\/[a-zA-Z]{2}-[a-zA-Z]{2}\/docs\//);
-  }
-
   // Wait for the page to load
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', initializeLocaleGuard);
@@ -77,7 +73,7 @@
     // We'll intercept clicks on locale switching elements
 
     // Look for locale switcher elements (usually in navbar or footer)
-    const localeSwitchers = document.querySelectorAll('[href*="/"][href*="/locale/"], [href*="/"][href^="/en"], [href*="/"][href^="/es"], [href*="/"][href^="/fr"], [href*="/"][href^="/de"], [href*="/"][href^="/ja"], [href*="/"][href^="/ko"], [href*="/"][href^="/zh"], .navbar__link[href^="/"]');
+    const localeSwitchers = document.querySelectorAll('[href*="/"][href^="/en"], [href*="/"][href^="/es"], [href*="/"][href^="/fr"], [href*="/"][href^="/de"], [href*="/"][href^="/ja"], [href*="/"][href^="/ko"], [href*="/"][href^="/zh"], [href*="/"][href^="/ur"], .navbar__link[href^="/"], .navbar__item[role="button"]');
 
     localeSwitchers.forEach(switcher => {
       switcher.addEventListener('click', handleLocaleSwitch);
@@ -103,18 +99,30 @@
       return; // Let Docusaurus handle normally
     }
 
-    // Prevent default behavior to handle it ourselves
-    event.preventDefault();
-
     // Get the target locale from the clicked element
     const targetUrl = event.currentTarget.getAttribute('href');
     if (!targetUrl) return;
+
+    // Check if it's an internal locale switch
+    const isInternalLink = targetUrl.startsWith('/') && !targetUrl.startsWith('//');
+    if (!isInternalLink) {
+      return; // External link, let it work normally
+    }
+
+    // Prevent default behavior to handle it ourselves
+    event.preventDefault();
 
     const targetPathname = new URL(targetUrl, window.location.origin).pathname;
     const targetLocale = extractLocaleFromPath(targetPathname);
 
     // Generate the correct docs path for the target locale
     const targetDocsPath = getTargetDocsPath(targetLocale);
+
+    // First, try to navigate to the locale-specific docs path
+    // If that results in a 404, we'll need to handle the fallback
+
+    // Store the current path for potential fallback
+    const currentPath = window.location.pathname;
 
     // Redirect to the locale-specific docs path
     window.location.href = targetDocsPath;
@@ -126,7 +134,7 @@
     if (pathParts.length > 1) {
       const potentialLocale = pathParts[1];
       // Check if it looks like a locale (2-3 letters, possibly with region)
-      if (potentialLocale.match(/^[a-zA-Z]{2}(-[a-zA-Z]{2})?$/)) {
+      if (potentialLocale.match(/^[a-zA-Z]{2,3}(-[a-zA-Z]{2,3})?$/)) {
         return potentialLocale;
       }
     }
@@ -165,7 +173,7 @@
 
       // Also check for existing locale switchers immediately
       const existingSwitchers = document.querySelectorAll(
-        '.navbar__link, .dropdown__menu a, [data-locale], [href^="/en"], [href^="/es"], [href^="/fr"], [href^="/de"], [href^="/ja"], [href^="/ko"], [href^="/zh"]'
+        '.navbar__link, .dropdown__menu a, [data-locale], [href^="/en"], [href^="/es"], [href^="/fr"], [href^="/de"], [href^="/ja"], [href^="/ko"], [href^="/zh"], [href^="/ur"]'
       );
       existingSwitchers.forEach(attachLocaleSwitchHandler);
     }, 1000);
@@ -184,9 +192,13 @@
            href?.startsWith('/ja/') ||
            href?.startsWith('/ko/') ||
            href?.startsWith('/zh/') ||
+           href?.startsWith('/ur/') ||
            className.includes('locale') ||
+           className.includes('dropdown') || // Often locale dropdowns have 'dropdown' class
            textContent.toLowerCase().includes('locale') ||
-           textContent.toLowerCase().includes('language');
+           textContent.toLowerCase().includes('language') ||
+           textContent.toLowerCase().includes('english') ||
+           textContent.toLowerCase().includes('اردو');
   }
 
   function attachLocaleSwitchHandler(element) {
@@ -200,6 +212,8 @@
         if (targetHref) {
           const targetLocale = extractLocaleFromPath(targetHref);
           const targetDocsPath = getTargetDocsPath(targetLocale);
+
+          // Redirect to the locale-specific docs path
           window.location.href = targetDocsPath;
         }
       }
