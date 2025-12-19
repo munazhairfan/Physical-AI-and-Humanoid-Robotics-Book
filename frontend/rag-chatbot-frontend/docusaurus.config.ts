@@ -123,7 +123,13 @@ const config: Config = {
   // Environment variables for deployment
   themes: [],
   stylesheets: [],
-  scripts: [],
+  scripts: [
+    {
+      src: '/js/selection-chatbot.js',
+      async: true,
+      defer: true,
+    },
+  ],
 
 
 
