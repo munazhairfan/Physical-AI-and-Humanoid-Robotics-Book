@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { useLocation } from '@docusaurus/router';
 import styles from './FloatingChat.module.css';
 
 declare global {
@@ -60,7 +61,29 @@ const FloatingChat: React.FC<FloatingChatProps> = ({ backendUrl }) => {
   ]);
   const [inputValue, setInputValue] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [isRTL, setIsRTL] = useState(false);
   const messagesEndRef = useRef<null | HTMLDivElement>(null);
+
+  // Detect if we're in RTL mode based on the current locale
+  useEffect(() => {
+    const currentPath = window.location.pathname;
+    const isRTLMode = currentPath.startsWith('/ur/'); // Urdu locale path
+    setIsRTL(isRTLMode);
+  }, []);
+
+  // Function to determine if text is English (Latin characters)
+  const isEnglishText = (text: string): boolean => {
+    if (!text) return true; // Default to LTR for empty text
+    // Check if the text contains more Latin characters than non-Latin
+    const latinChars = text.match(/[a-zA-Z0-9\s\.,\?!\-:;'"()[\]{}]/g);
+    const nonLatinChars = text.match(/[^\w\s\.,\?!\-:;'"()[\]{}a-zA-Z0-9]/g);
+
+    if (!latinChars) return false; // No Latin characters found
+    if (!nonLatinChars) return true; // Only Latin characters found
+
+    // Return true if Latin characters are more than non-Latin
+    return latinChars.length >= (nonLatinChars.length || 0);
+  };
 
   // Function to scroll to the bottom of the chat
   const scrollToBottom = () => {
@@ -302,13 +325,20 @@ const FloatingChat: React.FC<FloatingChatProps> = ({ backendUrl }) => {
           </button>
         </div>
 
-        <div className={styles['chat-messages']}>
+        <div
+          className={styles['chat-messages']}
+          dir={isRTL ? 'ltr' : 'auto'}  // Force chat area to LTR to maintain message positions
+          style={isRTL ? { direction: 'ltr' } : {}}
+        >
           {messages.map((message) => (
             <div
               key={message.id}
               className={`${styles.message} ${message.role === 'user' ? styles['user-message'] : message.role === 'assistant' ? styles['assistant-message'] : styles['assistant-message']}`}
             >
-              <div className={styles['message-content']}>
+              <div
+                className={styles['message-content']}
+                dir={isEnglishText(message.content) ? 'ltr' : 'auto'}
+              >
                 {String(message.content || '')}
               </div>
               <div className={styles['message-timestamp']}>
@@ -317,8 +347,13 @@ const FloatingChat: React.FC<FloatingChatProps> = ({ backendUrl }) => {
             </div>
           ))}
           {isLoading && (
-            <div className={`${styles.message} ${styles['assistant-message']}`}>
-              <div className={styles['message-content']}>
+            <div
+              className={`${styles.message} ${styles['assistant-message']}`}
+            >
+              <div
+                className={styles['message-content']}
+                dir="ltr"  // Typing indicator is always LTR
+              >
                 <div className={styles['typing-indicator']}>
                   <span></span>
                   <span></span>

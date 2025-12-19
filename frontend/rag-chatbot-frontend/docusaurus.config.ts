@@ -11,7 +11,7 @@ const config: Config = {
 
 
   // Set the production url of your site here (will be assigned by Vercel after first deployment)
-  url: 'http://localhost:3000', // Use localhost for development
+  url: 'https://your-vercel-project-name.vercel.app',
   // Set the /<baseUrl>/ pathname under which your site is served
   // For Vercel deployment, using root path ('/') is typically best for first deployment
   baseUrl: '/',
@@ -48,8 +48,6 @@ const config: Config = {
       {
         docs: {
           sidebarPath: './sidebars.ts',
-          // Set routeBasePath to 'docs' to ensure proper routing for both English and Urdu versions
-          routeBasePath: 'docs',
           // Please change this to your repo.
           // Remove this to remove the "edit this page" links.
         },
@@ -129,10 +127,11 @@ const config: Config = {
       async: true,
       defer: true,
     },
+    {
+      src: '/js/locale-docs-guard.js',
+      defer: true,
+    },
   ],
-
-
-
 };
 
 export default config;
