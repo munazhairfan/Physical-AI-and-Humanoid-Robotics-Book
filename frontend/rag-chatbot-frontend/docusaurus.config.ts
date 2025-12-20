@@ -91,6 +91,11 @@ const config: Config = {
           label: 'Contents',
         },
         {
+          to: '/login',
+          label: 'Login',
+          position: 'right',
+        },
+        {
           type: 'localeDropdown',
           position: 'right',
         },
@@ -131,6 +136,11 @@ const config: Config = {
       src: '/js/locale-docs-guard.js',
       defer: true,
     },
+  ],
+
+  // Environment variables to be passed to the client bundle
+  clientModules: [
+    require.resolve('./src/clientModules/env.js'),
   ],
 };
 

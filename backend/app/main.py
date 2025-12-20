@@ -1,4 +1,4 @@
-from fastapi import FastAPI, HTTPException, UploadFile, File
+from fastapi import FastAPI, HTTPException, UploadFile, File, Depends, HTTPException, status
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.middleware.trustedhost import TrustedHostMiddleware
 from pydantic import BaseModel
@@ -6,8 +6,33 @@ from typing import List, Optional
 import logging
 import asyncio
 import os
+from datetime import timedelta
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
+from auth_service import (
+    authenticate_user,
+    register_user,
+    get_current_user_from_token,
+    generate_oauth_state,
+    validate_oauth_state,
+    create_access_token as auth_create_access_token,
+    get_user_by_email
+)
+from fastapi.security import OAuth2PasswordBearer
+from fastapi.responses import RedirectResponse
+
+# Define Token model
+class Token(BaseModel):
+    access_token: str
+    token_type: str
+    user: dict
 
 app = FastAPI(title="RAG Chatbot API - Optimized for Railway Deployment")
+
+# OAuth2 scheme for token authentication
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
 # Add CORS middleware to allow requests from the frontend
 app.add_middleware(
@@ -42,7 +67,7 @@ def get_embedding_service():
     global embedding_service
     if embedding_service is None:
         try:
-            from app.embedding_service import get_embedding_service as _get_embedding_service
+            from embedding_service import get_embedding_service as _get_embedding_service
             embedding_service = _get_embedding_service()
         except ValueError as e:
             logger.error(f"Failed to initialize embedding service: {str(e)}")
@@ -64,7 +89,7 @@ def get_llm_service():
     global llm_service
     if llm_service is None:
         try:
-            from app.llm_service import get_llm_service as _get_llm_service
+            from llm_service import get_llm_service as _get_llm_service
             llm_service = _get_llm_service()
         except ValueError as e:
             logger.error(f"Failed to initialize LLM service: {str(e)}")
@@ -81,7 +106,7 @@ def get_vectorstore_service():
     global vectorstore_service
     if vectorstore_service is None:
         try:
-            from app.vectorstore_service import get_vectorstore_service as _get_vectorstore_service
+            from vectorstore_service import get_vectorstore_service as _get_vectorstore_service
             vectorstore_service = _get_vectorstore_service()
         except Exception as e:
             logger.error(f"Failed to initialize vectorstore service: {str(e)}")
@@ -109,12 +134,12 @@ def get_openai_assistant_service():
     global openai_assistant_service
     if openai_assistant_service is None:
         try:
-            from app.openai_assistant_service import get_openai_assistant_service as _get_openai_assistant_service
+            from openai_assistant_service import get_openai_assistant_service as _get_openai_assistant_service
             openai_assistant_service = _get_openai_assistant_service()
         except Exception as e:
             logger.error(f"Failed to initialize OpenAI assistant service: {str(e)}")
             # Return the mock service that's already implemented
-            from app.openai_assistant_service import MockGeminiAssistantService
+            from openai_assistant_service import MockGeminiAssistantService
             openai_assistant_service = MockGeminiAssistantService()
     return openai_assistant_service
 
@@ -223,7 +248,7 @@ async def query_documents(request: QueryRequest):
         raise HTTPException(status_code=500, detail=f"Query failed: {str(e)}")
 
 # Import database service at the top level
-from app.database_service import get_database_service
+from database_service import get_database_service
 
 @app.post("/chat", response_model=ChatResponse)
 async def chat(request: ChatRequest):
@@ -532,6 +557,155 @@ async def health_check():
     Health check endpoint to verify the API is running.
     """
     return {"status": "healthy", "service": "rag-chatbot-api"}
+
+# Authentication routes
+class RegisterRequest(BaseModel):
+    email: str
+    password: str
+    name: str
+
+@app.post("/register", response_model=Token)
+async def register_user_endpoint(request: RegisterRequest):
+    """
+    Register a new user.
+    """
+    from database_models import get_db
+    from sqlalchemy.orm import Session
+
+    db: Session = next(get_db())
+    try:
+        from auth_service import register_user
+        user = register_user(db=db, email=request.email, password=request.password, name=request.name)
+
+        # Create access token
+        from datetime import timedelta
+        from auth_service import create_access_token
+        access_token_expires = timedelta(minutes=30)  # 30 minutes expiry
+        access_token = create_access_token(
+            data={"sub": user.email}, expires_delta=access_token_expires
+        )
+
+        return Token(
+            access_token=access_token,
+            token_type="bearer",
+            user={"id": user.id, "email": user.email, "name": user.name}
+        )
+    except Exception as e:
+        logger.error(f"Registration error: {str(e)}")
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=str(e)
+        )
+    finally:
+        db.close()
+
+class LoginRequest(BaseModel):
+    email: str
+    password: str
+
+@app.post("/login", response_model=Token)
+async def login_user_endpoint(request: LoginRequest):
+    """
+    Login a user and return an access token.
+    """
+    from database_models import get_db
+    from sqlalchemy.orm import Session
+
+    db: Session = next(get_db())
+    try:
+        from auth_service import authenticate_user
+        user = authenticate_user(db=db, email=request.email, password=request.password)
+
+        if not user:
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="Incorrect email or password",
+                headers={"WWW-Authenticate": "Bearer"},
+            )
+
+        # Create access token
+        from datetime import timedelta
+        from auth_service import create_access_token
+        access_token_expires = timedelta(minutes=30)  # 30 minutes expiry
+        access_token = create_access_token(
+            data={"sub": user.email}, expires_delta=access_token_expires
+        )
+
+        return Token(
+            access_token=access_token,
+            token_type="bearer",
+            user={"id": user.id, "email": user.email, "name": user.name}
+        )
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Login error: {str(e)}")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Login failed"
+        )
+    finally:
+        db.close()
+
+@app.post("/logout")
+async def logout_user_endpoint(token: str = Depends(oauth2_scheme)):
+    """
+    Logout a user (invalidate token in a real implementation).
+    """
+    # In a real implementation, you would add the token to a blacklist
+    return {"message": "Successfully logged out"}
+
+@app.get("/me")
+async def get_current_user_endpoint(token: str = Depends(oauth2_scheme)):
+    """
+    Get the current user's information.
+    """
+    from auth_service import get_current_user_from_token
+    user = get_current_user_from_token(token)
+    if user is None:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Invalid authentication credentials",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
+    return {"user": {"id": user.id, "email": user.email, "name": user.name}}
+
+# OAuth routes (redirect to external providers)
+@app.get("/auth/google")
+async def login_with_google():
+    """
+    Redirect to Google OAuth login.
+    """
+    from auth_service import generate_oauth_state
+    state = generate_oauth_state()
+    # In a real implementation, redirect to Google OAuth
+    # This is a placeholder - you'd need to implement the full OAuth flow
+    google_client_id = os.getenv('GOOGLE_CLIENT_ID')
+    if not google_client_id:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Google OAuth is not configured. Please set GOOGLE_CLIENT_ID environment variable."
+        )
+    redirect_url = f"https://accounts.google.com/o/oauth2/auth?response_type=code&client_id={google_client_id}&redirect_uri=http://localhost:8000/auth/google/callback&scope=openid email profile&state={state}"
+    return RedirectResponse(url=redirect_url)
+
+@app.get("/auth/github")
+async def login_with_github():
+    """
+    Redirect to GitHub OAuth login.
+    """
+    from auth_service import generate_oauth_state
+    state = generate_oauth_state()
+    # In a real implementation, redirect to GitHub OAuth
+    # This is a placeholder - you'd need to implement the full OAuth flow
+    github_client_id = os.getenv('GITHUB_CLIENT_ID')
+    if not github_client_id:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="GitHub OAuth is not configured. Please set GITHUB_CLIENT_ID environment variable."
+        )
+    redirect_url = f"https://github.com/login/oauth/authorize?client_id={github_client_id}&redirect_uri=http://localhost:8000/auth/github/callback&scope=user:email&state={state}"
+    return RedirectResponse(url=redirect_url)
 
 
 if __name__ == "__main__":

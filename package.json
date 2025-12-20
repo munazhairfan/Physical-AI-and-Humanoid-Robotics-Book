@@ -6,23 +6,16 @@
     "start-backend": "cd backend && python app.py",
     "start-frontend": "cd frontend/rag-chatbot-frontend && npm start",
     "build": "cd frontend/rag-chatbot-frontend && npm run build",
-    "build-frontend": "cd frontend/rag-chatbot-frontend && npm run build",
-    "auth-server": "node server/index.js",
-    "dev": "nodemon server/index.js",
-    "test-auth": "node test/auth-test.js"
+    "build-frontend": "cd frontend/rag-chatbot-frontend && npm run build"
   },
   "dependencies": {
     "@neondatabase/serverless": "^0.9.5",
     "axios": "^1.13.2",
-    "better-auth": "^1.4.6",
-    "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",
     "dotenv": "^16.6.1",
-    "express": "^4.22.1",
     "pg": "^8.16.3"
   },
   "devDependencies": {
-    "@better-auth/cli": "^1.4.6",
     "nodemon": "^3.1.11",
     "ts-node": "^10.9.2",
     "typescript": "^5.9.3"

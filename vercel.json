@@ -17,5 +17,8 @@
         "Cache-Control": "public, max-age=0"
       }
     }
-  ]
+  ],
+  "github": {
+    "silent": true
+  }
 }
