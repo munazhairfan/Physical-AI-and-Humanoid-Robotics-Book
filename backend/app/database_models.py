@@ -4,7 +4,7 @@ from sqlalchemy.orm import sessionmaker
 from datetime import datetime
 import os
 
-# Database setup - Using SQLite for local development
+# Database setup - Uses environment variable, defaults to SQLite for local development
 DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///./users.db")
 
 engine = create_engine(DATABASE_URL)

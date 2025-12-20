@@ -686,7 +686,10 @@ async def login_with_google():
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail="Google OAuth is not configured. Please set GOOGLE_CLIENT_ID environment variable."
         )
-    redirect_url = f"https://accounts.google.com/o/oauth2/auth?response_type=code&client_id={google_client_id}&redirect_uri=http://localhost:8000/auth/google/callback&scope=openid email profile&state={state}"
+    # Use the correct redirect URI based on environment
+    base_url = os.getenv('OAUTH_REDIRECT_URI', 'http://localhost:8000')
+    redirect_uri = f"{base_url}/auth/google/callback"
+    redirect_url = f"https://accounts.google.com/o/oauth2/auth?response_type=code&client_id={google_client_id}&redirect_uri={redirect_uri}&scope=openid email profile&state={state}"
     return RedirectResponse(url=redirect_url)
 
 @app.get("/auth/github")
@@ -704,8 +707,54 @@ async def login_with_github():
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail="GitHub OAuth is not configured. Please set GITHUB_CLIENT_ID environment variable."
         )
-    redirect_url = f"https://github.com/login/oauth/authorize?client_id={github_client_id}&redirect_uri=http://localhost:8000/auth/github/callback&scope=user:email&state={state}"
+    # Use the correct redirect URI based on environment
+    base_url = os.getenv('OAUTH_REDIRECT_URI', 'http://localhost:8000')
+    redirect_uri = f"{base_url}/auth/github/callback"
+    redirect_url = f"https://github.com/login/oauth/authorize?client_id={github_client_id}&redirect_uri={redirect_uri}&scope=user:email&state={state}"
     return RedirectResponse(url=redirect_url)
+
+
+# OAuth callback routes to handle responses from providers
+@app.get("/auth/google/callback")
+async def google_callback(code: str = None, state: str = None):
+    """
+    Handle Google OAuth callback.
+    """
+    if not code:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Missing authorization code from Google"
+        )
+
+    # In a real implementation, you would:
+    # 1. Exchange the authorization code for an access token
+    # 2. Get user info from Google
+    # 3. Create or update user in your database
+    # 4. Generate JWT token and redirect to frontend
+
+    # For now, return a simple response
+    return {"status": "Google OAuth callback received", "code": code, "state": state}
+
+
+@app.get("/auth/github/callback")
+async def github_callback(code: str = None, state: str = None):
+    """
+    Handle GitHub OAuth callback.
+    """
+    if not code:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Missing authorization code from GitHub"
+        )
+
+    # In a real implementation, you would:
+    # 1. Exchange the authorization code for an access token
+    # 2. Get user info from GitHub
+    # 3. Create or update user in your database
+    # 4. Generate JWT token and redirect to frontend
+
+    # For now, return a simple response
+    return {"status": "GitHub OAuth callback received", "code": code, "state": state}
 
 
 if __name__ == "__main__":
