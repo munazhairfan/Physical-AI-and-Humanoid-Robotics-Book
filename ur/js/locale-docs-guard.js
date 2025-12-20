@@ -149,26 +149,6 @@
     }
   };
 
-  // Additionally, monitor for URL changes that might indicate locale switching
-  let lastPathname = window.location.pathname;
-  setInterval(() => {
-    if (window.location.pathname !== lastPathname) {
-      // Check if we just switched from a docs page context
-      if (isDocsPage() && (lastPathname.includes('/docs/') || window.location.pathname.includes('/docs/'))) {
-        // If we're now on a docs page but the path seems incorrect for the locale, fix it
-        const currentLocale = getCurrentLocale();
-        if (currentLocale) {
-          const expectedPath = getTargetDocsPath(currentLocale);
-          if (window.location.pathname !== expectedPath && window.location.pathname.startsWith('/docs/')) {
-            // Redirect to the proper locale-specific docs path
-            window.location.replace(expectedPath);
-          }
-        }
-      }
-      lastPathname = window.location.pathname;
-    }
-  }, 500);
-
   // Listen for popstate events (browser back/forward buttons)
   window.addEventListener('popstate', function(event) {
     if (isDocsPage()) {
@@ -183,35 +163,5 @@
       }
     }
   });
-
-  // DOMContentLoaded event handler to ensure everything is set up
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', function() {
-      // Ensure handlers are properly attached after DOM is loaded
-      if (isDocsPage()) {
-        // Check if we landed on a docs page that should have a locale prefix
-        const currentLocale = getCurrentLocale();
-        if (currentLocale) {
-          const expectedPath = getTargetDocsPath(currentLocale);
-          if (window.location.pathname !== expectedPath && window.location.pathname.startsWith('/docs/')) {
-            // Redirect to the proper locale-specific docs path
-            window.location.replace(expectedPath);
-          }
-        }
-      }
-    });
-  } else {
-    // If already loaded, check immediately
-    if (isDocsPage()) {
-      const currentLocale = getCurrentLocale();
-      if (currentLocale) {
-        const expectedPath = getTargetDocsPath(currentLocale);
-        if (window.location.pathname !== expectedPath && window.location.pathname.startsWith('/docs/')) {
-          // Redirect to the proper locale-specific docs path
-          window.location.replace(expectedPath);
-        }
-      }
-    }
-  }
 
 })();
