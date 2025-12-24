@@ -38,8 +38,15 @@ class TokenData(BaseModel):
 def hash_password(password: str) -> str:
     """Hash a password"""
     # Truncate password to 72 bytes to comply with bcrypt limitations
-    if len(password.encode('utf-8')) > 72:
-        password = password.encode('utf-8')[:72].decode('utf-8', errors='ignore')
+    password_bytes = password.encode('utf-8')
+    if len(password_bytes) > 72:
+        # Truncate at byte level and decode to ensure final byte length <= 72
+        password = password_bytes[:72].decode('utf-8', errors='ignore')
+        # Double-check the byte length after decoding to ensure compliance
+        if len(password.encode('utf-8')) > 72:
+            # If decoded string is still > 72 bytes, truncate by characters instead
+            # This is a fallback for edge cases
+            password = password[:72]  # Character-based truncation
     return pwd_context.hash(password)
 
 def verify_password(plain_password: str, hashed_password: str) -> bool:
