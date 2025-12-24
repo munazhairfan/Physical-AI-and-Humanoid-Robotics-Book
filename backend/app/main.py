@@ -1,4 +1,6 @@
 from fastapi import FastAPI, HTTPException, UploadFile, File, Depends, HTTPException, status
+import re
+import html
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.middleware.trustedhost import TrustedHostMiddleware
 from pydantic import BaseModel
@@ -8,6 +10,56 @@ import asyncio
 import os
 from datetime import timedelta
 from dotenv import load_dotenv
+
+def markdown_to_text(markdown_content: str) -> str:
+    """
+    Convert markdown content to plain text by removing markdown formatting.
+
+    Args:
+        markdown_content: Raw markdown content
+
+    Returns:
+        Plain text content with markdown formatting removed
+    """
+    if not markdown_content:
+        return ""
+
+    # Remove HTML tags if any
+    text = html.unescape(markdown_content)
+
+    # Remove markdown headers (### Header -> Header)
+    text = re.sub(r'^#{1,6}\s*', '', text, flags=re.MULTILINE)
+
+    # Remove bold and italic formatting (**text**, *text*, __text__, _text_)
+    text = re.sub(r'\*{2}([^*]+)\*{2}', r'\1', text)  # **bold**
+    text = re.sub(r'\*([^*]+)\*', r'\1', text)       # *italic*
+    text = re.sub(r'_{2}([^_]+)_{2}', r'\1', text)   # __bold__
+    text = re.sub(r'_([^_]+)_', r'\1', text)         # _italic_
+
+    # Remove code blocks (```code```)
+    text = re.sub(r'```.*?```', '', text, flags=re.DOTALL)
+
+    # Remove inline code (`code`)
+    text = re.sub(r'`([^`]+)`', r'\1', text)
+
+    # Remove links [text](url) -> text
+    text = re.sub(r'\[([^\]]+)\]\([^)]+\)', r'\1', text)
+
+    # Remove images ![alt](url) -> alt
+    text = re.sub(r'!\[([^\]]*)\]\([^)]+\)', r'\1', text)
+
+    # Remove blockquotes
+    text = re.sub(r'^>\s*', '', text, flags=re.MULTILINE)
+
+    # Remove horizontal rules
+    text = re.sub(r'^\s*[-*_]{3,}\s*$', '', text, flags=re.MULTILINE)
+
+    # Remove extra whitespace and normalize
+    text = re.sub(r'\n\s*\n', '\n\n', text)  # Replace multiple blank lines with single
+    text = re.sub(r'[ \t]+', ' ', text)      # Multiple spaces to single space
+    text = text.strip()
+
+    return text
 
 # Load environment variables from .env file
 load_dotenv()
@@ -361,22 +413,25 @@ async def ingest_document(request: DocumentIngestRequest):
         # Get the database service
         db_service = await get_database_service()
 
+        # Convert markdown to plain text before indexing
+        plain_text_content = markdown_to_text(request.content)
+
         # Store the raw document in the database
         doc_id = await db_service.store_document(
-            content=request.content,
+            content=plain_text_content,  # Store the cleaned content
             metadata={**(request.metadata or {}), "title": request.title or "Untitled"}
         )
 
         # Index the document in the vector store
         indexed_doc_id = vectorstore_service.index_document(
-            text=request.content,
+            text=plain_text_content,
             doc_id=doc_id,
             metadata={**(request.metadata or {}), "title": request.title or "Untitled"}
         )
 
         # For now, we're using a simple approach where we just embed the entire content
         # In a real implementation, we would chunk the document appropriately
-        chunks = [request.content[i:i+512] for i in range(0, len(request.content), 512)]
+        chunks = [plain_text_content[i:i+512] for i in range(0, len(plain_text_content), 512)]
 
         logger.info(f"Successfully ingested document {indexed_doc_id} with {len(chunks)} chunks")
 
@@ -408,21 +463,24 @@ async def ingest_file(file: UploadFile = File(...)):
         # Get the database service
         db_service = await get_database_service()
 
+        # Convert markdown to plain text before indexing (if it's a text/markdown file)
+        plain_text_content = markdown_to_text(content_str)
+
         # Store the raw document in the database
         doc_id = await db_service.store_document(
-            content=content_str,
+            content=plain_text_content,
             metadata={"filename": file.filename, "file_type": file.content_type}
         )
 
         # Index the document in the vector store
         indexed_doc_id = vectorstore_service.index_document(
-            text=content_str,
+            text=plain_text_content,
             doc_id=doc_id,
             metadata={"filename": file.filename, "file_type": file.content_type}
         )
 
         # Simple chunking approach
-        chunks = [content_str[i:i+512] for i in range(0, len(content_str), 512)]
+        chunks = [plain_text_content[i:i+512] for i in range(0, len(plain_text_content), 512)]
 
         logger.info(f"Successfully ingested file {file.filename} with {len(chunks)} chunks")
 
