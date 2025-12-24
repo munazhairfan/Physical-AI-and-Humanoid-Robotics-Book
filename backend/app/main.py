@@ -886,7 +886,7 @@ async def google_callback(code: str = None, state: str = None, db: Session = Dep
 
         user = get_user_by_email(db, email)
         if not user:
-            user = register_user(db, email, "oauth_temp_password", name)
+            user = register_user(db, email, "temp", name)
 
         # Create JWT token
         token_data = {
@@ -988,7 +988,7 @@ async def github_callback(code: str = None, state: str = None, db: Session = Dep
 
         user = get_user_by_email(db, email)
         if not user:
-            user = register_user(db, email, "oauth_temp_password", name)
+            user = register_user(db, email, "temp", name)
 
         # Create JWT token
         token_data = {
