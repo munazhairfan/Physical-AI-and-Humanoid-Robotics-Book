@@ -23,8 +23,8 @@ if app_dir not in sys.path:
 # Import and handle any potential startup issues gracefully
 startup_error = None
 try:
-    # Import the main FastAPI application
-    from main import app  # Import from the main module inside the app directory
+    # Import the main FastAPI application - use absolute import to avoid relative import issues
+    from app.main import app  # Import from the main module inside the app directory
     logger.info("Successfully imported main app")
 except Exception as e:
     startup_error = str(e)
