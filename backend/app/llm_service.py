@@ -137,7 +137,11 @@ class LLMService:
 
                 result = response.text
                 logger.info("Response generated successfully with Gemini")
-                return result
+                # Clean up the result to ensure proper formatting
+                clean_result = ' '.join(result.split())  # Normalize whitespace
+                # Remove any remaining markdown artifacts that might have slipped through
+                clean_result = markdown_to_text(clean_result)
+                return clean_result
             except Exception as e:
                 logger.error(f"Error generating response with Gemini: {str(e)}")
         else:
@@ -158,18 +162,38 @@ class LLMService:
                         # Try to extract complete sentences if possible
                         snippet = clean_content[:500]  # Limit to 500 chars
                         # Try to find the last sentence ending to avoid cut-off sentences
-                        for end_marker in ['.', '!', '?', ' - ', ' ##']:
+                        for end_marker in ['.', '!', '?']:
                             last_pos = snippet.rfind(end_marker)
-                            if last_pos > len(snippet) * 0.7:  # Only if the marker is not too early
-                                snippet = snippet[:last_pos + len(end_marker)]
+                            if last_pos != -1:  # If we found an end marker
+                                snippet = snippet[:last_pos + 1]  # Include the end marker
                                 break
-                        context_snippets.append(snippet)
+                        # If no sentence ending found, try to find word boundaries to avoid cutting words
+                        if end_marker not in snippet and len(snippet) == 500:
+                            # Find the last space to avoid cutting in the middle of a word
+                            last_space = snippet.rfind(' ')
+                            if last_space > len(snippet) * 0.8:  # Only if the space is not too early
+                                snippet = snippet[:last_space]
+
+                        # Clean up any remaining artifacts like "rob - siderations" -> "considerations"
+                        snippet = snippet.replace(' - ', ' ')
+                        snippet = ' '.join(snippet.split())  # Normalize spaces again after cleaning
+                        context_snippets.append(snippet.strip())
 
             if context_snippets:
-                # Combine the context snippets into a more readable format
-                combined_context = "\n\n".join([f"- {snippet.strip()}" for snippet in context_snippets[:3]])  # Show first 3 snippets
-                # Generate a more meaningful response based on context
-                return f"Based on the robotics textbook:\n{combined_context}\n\nHow can I help you understand this better?"
+                # Combine the context snippets into a more natural, flowing response
+                combined_content = ". ".join([snippet for snippet in context_snippets if snippet])  # Join with proper sentence breaks
+                if combined_content and not combined_content.endswith('.'):
+                    combined_content += '.'
+
+                # Create a more natural response that addresses the user's query
+                query_lower = query.lower()
+                if 'control' in query_lower or 'balance' in query_lower or 'walking' in query_lower or 'gait' in query_lower:
+                    return f"Based on the robotics textbook: {combined_content} Humanoid robot control involves sophisticated techniques for maintaining balance and executing stable walking patterns. The control system must coordinate multiple joints and sensors to achieve stable locomotion. How can I help you understand this better?"
+                elif 'challenges' in query_lower or 'future' in query_lower or 'directions' in query_lower:
+                    return f"Based on the robotics textbook: {combined_content} The field of humanoid robotics faces several challenges including computational requirements, safety, and robustness. Future directions involve improved autonomy and better human-robot collaboration. How can I help you understand this better?"
+                else:
+                    # General response for other queries
+                    return f"Based on the robotics textbook: {combined_content} Humanoid robotics is a complex field that combines mechanics, electronics, control systems, and AI. How can I help you understand this better?"
 
         # Generate a more helpful response based on the query content
         lower_query = query.lower()
@@ -213,8 +237,10 @@ class LLMService:
 
         # Add context if available
         if context:
-            prompt_parts.append("\nHere are relevant excerpts from the robotics textbook:")
-            for i, ctx in enumerate(context):
+            prompt_parts.append("\nHere is relevant information from the robotics textbook:")
+            # Combine all context snippets into a coherent body of text
+            context_texts = []
+            for ctx in context:
                 content = ctx.get('content', '')
                 if content.strip():
                     # Convert markdown to plain text and clean up the content
@@ -225,12 +251,28 @@ class LLMService:
                         # Try to extract complete sentences if possible
                         snippet = clean_content[:1000]  # Limit context length
                         # Try to find the last sentence ending to avoid cut-off sentences
-                        for end_marker in ['.', '!', '?', ' - ', ' ##']:
+                        for end_marker in ['.', '!', '?']:
                             last_pos = snippet.rfind(end_marker)
-                            if last_pos > len(snippet) * 0.7:  # Only if the marker is not too early
-                                snippet = snippet[:last_pos + len(end_marker)]
+                            if last_pos != -1:  # If we found an end marker
+                                snippet = snippet[:last_pos + 1]  # Include the end marker
                                 break
-                        prompt_parts.append(f"\n{i+1}. {snippet}")
+                        # If no sentence ending found, try to find word boundaries to avoid cutting words
+                        if end_marker not in snippet and len(snippet) == 1000:
+                            # Find the last space to avoid cutting in the middle of a word
+                            last_space = snippet.rfind(' ')
+                            if last_space > len(snippet) * 0.8:  # Only if the space is not too early
+                                snippet = snippet[:last_space]
+
+                        # Clean up any remaining artifacts like "rob - siderations" -> "considerations"
+                        snippet = snippet.replace(' - ', ' ')
+                        snippet = snippet.strip()
+                        if snippet:
+                            context_texts.append(snippet)
+
+            # Combine all context into a single coherent paragraph
+            if context_texts:
+                combined_context = ". ".join(context_texts) + "."
+                prompt_parts.append(f"\n{combined_context}")
 
         # Add conversation history if available
         if history:
