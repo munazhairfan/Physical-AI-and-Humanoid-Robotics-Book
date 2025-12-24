@@ -25,38 +25,65 @@ class VectorStoreService:
         """
         logger.info("Initializing Vector Store Service")
 
-        # Check if we're in Hugging Face Spaces environment
+        # Check for Railway-specific Qdrant configuration first (no external service detection)
         import os
-        is_hf_space = os.getenv("HF_SPACE_ID") is not None
+        qdrant_host = os.getenv("QDRANT_HOST")
+        qdrant_port = os.getenv("QDRANT_PORT", "6333")
+        qdrant_api_key = os.getenv("QDRANT_API_KEY")
 
-        try:
-            from qdrant_client import QdrantClient
-            from qdrant_client.http import models
-            from qdrant_client.http.models import Distance, VectorParams, PointStruct
+        # Check if we're in Railway environment with external Qdrant configured
+        if qdrant_host:
+            # Use external Qdrant for Railway (persistence required)
+            qdrant_url = f"https://{qdrant_host}:{qdrant_port}"
+            try:
+                from qdrant_client import QdrantClient
+                from qdrant_client.http import models
+                from qdrant_client.http.models import Distance, VectorParams, PointStruct
 
-            # Use in-memory mode for Hugging Face Spaces to avoid external dependencies
-            if is_hf_space or url is None:
-                # Use in-memory mode for development without requiring a running server
-                self.client = QdrantClient(":memory:")
-                logger.info("Using in-memory Qdrant for Hugging Face Spaces")
-            else:
                 self.client = QdrantClient(
-                    url=url,
-                    api_key=api_key,
-                    prefer_grpc=False  # Use REST for free tier
+                    url=qdrant_url,
+                    api_key=qdrant_api_key,
+                    prefer_grpc=False  # Use REST for compatibility
                 )
-                logger.info(f"Using external Qdrant at {url}")
+                logger.info(f"Using external Qdrant for Railway: {qdrant_url}")
 
-            self.collection_name = collection_name
+                # Set collection name and initialize collection
+                self.collection_name = collection_name
+                self._ensure_collection_exists()
+            except Exception as e:
+                logger.error(f"Failed to connect to external Qdrant: {str(e)}")
+                logger.info("Falling back to in-memory mode")
+                self.client = QdrantClient(":memory:")
+                self.collection_name = collection_name
+                self._ensure_collection_exists()
+        else:
+            # Fallback to provided URL or in-memory for local development
+            try:
+                from qdrant_client import QdrantClient
+                from qdrant_client.http import models
+                from qdrant_client.http.models import Distance, VectorParams, PointStruct
 
-            # Initialize the collection if it doesn't exist
-            self._ensure_collection_exists()
+                if url is None:
+                    # Use in-memory mode for development without requiring a running server
+                    self.client = QdrantClient(":memory:")
+                    logger.info("Using in-memory Qdrant for local development")
+                else:
+                    self.client = QdrantClient(
+                        url=url,
+                        api_key=api_key,
+                        prefer_grpc=False  # Use REST for free tier
+                    )
+                    logger.info(f"Using external Qdrant at {url}")
 
-        except ImportError:
-            logger.warning("Qdrant client not available - using mock vector store service")
-            self.client = None
-            self.collection_name = collection_name
-            logger.info("Mock vector store service initialized")
+                # Set collection name and initialize collection
+                self.collection_name = collection_name
+                self._ensure_collection_exists()
+
+            except ImportError:
+                logger.warning("Qdrant client not available - using mock vector store service")
+                self.client = None
+                self.collection_name = collection_name
+                logger.info("Mock vector store service initialized")
 
     def _ensure_collection_exists(self):
         """
@@ -145,6 +172,8 @@ class VectorStoreService:
             logger.warning("Qdrant client not available - skipping document index")
         except Exception as e:
             logger.error(f"Error indexing document: {str(e)}")
+            # If there's an error with embedding, we can still try to index using a fallback
+            # For now, we'll log the error but continue with the return
 
         return doc_id
 

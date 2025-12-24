@@ -6,8 +6,8 @@
 
 const API_BASE_URL =
   typeof window !== 'undefined'
-    ? (window.process?.env?.REACT_APP_API_URL || process?.env?.REACT_APP_API_URL || 'http://localhost:8000')
-    : 'http://localhost:8000';
+    ? (window.process?.env?.REACT_APP_API_URL || process?.env?.REACT_APP_API_URL || 'https://physical-ai-and-humanoid-robotics-book-production.up.railway.app')
+    : 'https://physical-ai-and-humanoid-robotics-book-production.up.railway.app';
 
 // Helper function to get auth token from localStorage (with SSR check)
 const getAuthToken = () => {

@@ -12,5 +12,5 @@ if (typeof window !== 'undefined') {
   }
 
   // Set default environment variables for the client
-  window.process.env.REACT_APP_API_URL = window.process.env.REACT_APP_API_URL || 'http://localhost:8000';
+  window.process.env.REACT_APP_API_URL = window.process.env.REACT_APP_API_URL || 'https://physical-ai-and-humanoid-robotics-book-production.up.railway.app';
 }

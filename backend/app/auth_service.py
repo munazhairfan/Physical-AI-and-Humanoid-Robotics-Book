@@ -8,7 +8,7 @@ from pydantic import BaseModel
 import os
 import jwt
 from jwt import PyJWTError
-from database_models import User, engine, SessionLocal
+from .database_models import User, engine, SessionLocal
 from sqlalchemy.orm import Session
 from sqlalchemy.exc import IntegrityError
 from passlib.context import CryptContext

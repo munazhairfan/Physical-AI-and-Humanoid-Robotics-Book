@@ -11,7 +11,7 @@ from dotenv import load_dotenv
 
 # Load environment variables from .env file
 load_dotenv()
-from auth_service import (
+from .auth_service import (
     authenticate_user,
     register_user,
     get_current_user_from_token,
@@ -20,6 +20,8 @@ from auth_service import (
     create_access_token as auth_create_access_token,
     get_user_by_email
 )
+from .database_models import get_db
+from sqlalchemy.orm import Session
 from fastapi.security import OAuth2PasswordBearer
 from fastapi.responses import RedirectResponse
 
@@ -35,10 +37,11 @@ app = FastAPI(title="RAG Chatbot API - Optimized for Railway Deployment")
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
 # Add CORS middleware to allow requests from the frontend
+cors_origins = os.getenv("CORS_ORIGINS", "*").split(",")
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # Allow all origins for development
-    allow_credentials=False,  # Set to False to allow wildcard origins
+    allow_origins=cors_origins,
+    allow_credentials=True,  # Allow credentials to be sent with requests
     allow_methods=["*"],
     allow_headers=["*"],
 )
@@ -67,7 +70,7 @@ def get_embedding_service():
     global embedding_service
     if embedding_service is None:
         try:
-            from embedding_service import get_embedding_service as _get_embedding_service
+            from .embedding_service import get_embedding_service as _get_embedding_service
             embedding_service = _get_embedding_service()
         except ValueError as e:
             logger.error(f"Failed to initialize embedding service: {str(e)}")
@@ -89,7 +92,7 @@ def get_llm_service():
     global llm_service
     if llm_service is None:
         try:
-            from llm_service import get_llm_service as _get_llm_service
+            from .llm_service import get_llm_service as _get_llm_service
             llm_service = _get_llm_service()
         except ValueError as e:
             logger.error(f"Failed to initialize LLM service: {str(e)}")
@@ -106,8 +109,25 @@ def get_vectorstore_service():
     global vectorstore_service
     if vectorstore_service is None:
         try:
-            from vectorstore_service import get_vectorstore_service as _get_vectorstore_service
-            vectorstore_service = _get_vectorstore_service()
+            # Check for Railway-specific Qdrant configuration first (no external service detection)
+            import os
+            qdrant_host = os.getenv("QDRANT_HOST")
+            qdrant_port = os.getenv("QDRANT_PORT", "6333")
+            qdrant_api_key = os.getenv("QDRANT_API_KEY")
+
+            from .vectorstore_service import VectorStoreService
+
+            if qdrant_host:
+                # Use external Qdrant for Railway (persistence required)
+                qdrant_url = f"https://{qdrant_host}:{qdrant_port}"
+                vectorstore_service = VectorStoreService(
+                    url=qdrant_url,
+                    api_key=qdrant_api_key
+                )
+            else:
+                # Use default VectorStoreService which handles local configuration
+                vectorstore_service = VectorStoreService()
+
         except Exception as e:
             logger.error(f"Failed to initialize vectorstore service: {str(e)}")
             # Return a mock service that provides basic functionality
@@ -134,12 +154,12 @@ def get_openai_assistant_service():
     global openai_assistant_service
     if openai_assistant_service is None:
         try:
-            from openai_assistant_service import get_openai_assistant_service as _get_openai_assistant_service
+            from .openai_assistant_service import get_openai_assistant_service as _get_openai_assistant_service
             openai_assistant_service = _get_openai_assistant_service()
         except Exception as e:
             logger.error(f"Failed to initialize OpenAI assistant service: {str(e)}")
             # Return the mock service that's already implemented
-            from openai_assistant_service import MockGeminiAssistantService
+            from .openai_assistant_service import MockGeminiAssistantService
             openai_assistant_service = MockGeminiAssistantService()
     return openai_assistant_service
 
@@ -248,7 +268,7 @@ async def query_documents(request: QueryRequest):
         raise HTTPException(status_code=500, detail=f"Query failed: {str(e)}")
 
 # Import database service at the top level
-from database_service import get_database_service
+from .database_service import get_database_service
 
 @app.post("/chat", response_model=ChatResponse)
 async def chat(request: ChatRequest):
@@ -569,17 +589,17 @@ async def register_user_endpoint(request: RegisterRequest):
     """
     Register a new user.
     """
-    from database_models import get_db
+    from .database_models import get_db
     from sqlalchemy.orm import Session
 
     db: Session = next(get_db())
     try:
-        from auth_service import register_user
+        from .auth_service import register_user
         user = register_user(db=db, email=request.email, password=request.password, name=request.name)
 
         # Create access token
         from datetime import timedelta
-        from auth_service import create_access_token
+        from .auth_service import create_access_token
         access_token_expires = timedelta(minutes=30)  # 30 minutes expiry
         access_token = create_access_token(
             data={"sub": user.email}, expires_delta=access_token_expires
@@ -608,12 +628,12 @@ async def login_user_endpoint(request: LoginRequest):
     """
     Login a user and return an access token.
     """
-    from database_models import get_db
+    from .database_models import get_db
     from sqlalchemy.orm import Session
 
     db: Session = next(get_db())
     try:
-        from auth_service import authenticate_user
+        from .auth_service import authenticate_user
         user = authenticate_user(db=db, email=request.email, password=request.password)
 
         if not user:
@@ -625,7 +645,7 @@ async def login_user_endpoint(request: LoginRequest):
 
         # Create access token
         from datetime import timedelta
-        from auth_service import create_access_token
+        from .auth_service import create_access_token
         access_token_expires = timedelta(minutes=30)  # 30 minutes expiry
         access_token = create_access_token(
             data={"sub": user.email}, expires_delta=access_token_expires
@@ -660,7 +680,7 @@ async def get_current_user_endpoint(token: str = Depends(oauth2_scheme)):
     """
     Get the current user's information.
     """
-    from auth_service import get_current_user_from_token
+    from .auth_service import get_current_user_from_token
     user = get_current_user_from_token(token)
     if user is None:
         raise HTTPException(
@@ -676,7 +696,7 @@ async def login_with_google():
     """
     Redirect to Google OAuth login.
     """
-    from auth_service import generate_oauth_state
+    from .auth_service import generate_oauth_state
     state = generate_oauth_state()
     # In a real implementation, redirect to Google OAuth
     # This is a placeholder - you'd need to implement the full OAuth flow
@@ -687,7 +707,7 @@ async def login_with_google():
             detail="Google OAuth is not configured. Please set GOOGLE_CLIENT_ID environment variable."
         )
     # Use the correct redirect URI based on environment
-    base_url = os.getenv('OAUTH_REDIRECT_URI', 'http://localhost:8000')
+    base_url = os.getenv('OAUTH_REDIRECT_URI', 'https://physical-ai-and-humanoid-robotics-book-production.up.railway.app')
     redirect_uri = f"{base_url}/auth/google/callback"
     redirect_url = f"https://accounts.google.com/o/oauth2/auth?response_type=code&client_id={google_client_id}&redirect_uri={redirect_uri}&scope=openid email profile&state={state}"
     return RedirectResponse(url=redirect_url)
@@ -697,7 +717,7 @@ async def login_with_github():
     """
     Redirect to GitHub OAuth login.
     """
-    from auth_service import generate_oauth_state
+    from .auth_service import generate_oauth_state
     state = generate_oauth_state()
     # In a real implementation, redirect to GitHub OAuth
     # This is a placeholder - you'd need to implement the full OAuth flow
@@ -708,7 +728,7 @@ async def login_with_github():
             detail="GitHub OAuth is not configured. Please set GITHUB_CLIENT_ID environment variable."
         )
     # Use the correct redirect URI based on environment
-    base_url = os.getenv('OAUTH_REDIRECT_URI', 'http://localhost:8000')
+    base_url = os.getenv('OAUTH_REDIRECT_URI', 'https://physical-ai-and-humanoid-robotics-book-production.up.railway.app')
     redirect_uri = f"{base_url}/auth/github/callback"
     redirect_url = f"https://github.com/login/oauth/authorize?client_id={github_client_id}&redirect_uri={redirect_uri}&scope=user:email&state={state}"
     return RedirectResponse(url=redirect_url)
@@ -716,45 +736,197 @@ async def login_with_github():
 
 # OAuth callback routes to handle responses from providers
 @app.get("/auth/google/callback")
-async def google_callback(code: str = None, state: str = None):
+async def google_callback(code: str = None, state: str = None, db: Session = Depends(get_db)):
     """
     Handle Google OAuth callback.
     """
+    from auth_service import validate_oauth_state, register_user, get_user_by_email, create_access_token
+    from urllib.parse import urlencode
+    import requests
+
     if not code:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="Missing authorization code from Google"
         )
 
-    # In a real implementation, you would:
-    # 1. Exchange the authorization code for an access token
-    # 2. Get user info from Google
-    # 3. Create or update user in your database
-    # 4. Generate JWT token and redirect to frontend
+    if state and not validate_oauth_state(state):
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Invalid or expired OAuth state parameter"
+        )
 
-    # For now, return a simple response
-    return {"status": "Google OAuth callback received", "code": code, "state": state}
+    try:
+        # Exchange authorization code for access token
+        google_client_id = os.getenv('GOOGLE_CLIENT_ID')
+        google_client_secret = os.getenv('GOOGLE_CLIENT_SECRET')
+        base_url = os.getenv('OAUTH_REDIRECT_URI', 'https://physical-ai-and-humanoid-robotics-book-production.up.railway.app')
+        redirect_uri = f"{base_url}/auth/google/callback"
+
+        token_url = "https://oauth2.googleapis.com/token"
+        token_data = {
+            "code": code,
+            "client_id": google_client_id,
+            "client_secret": google_client_secret,
+            "redirect_uri": redirect_uri,
+            "grant_type": "authorization_code"
+        }
+
+        token_response = requests.post(token_url, data=token_data)
+        token_json = token_response.json()
+
+        if "access_token" not in token_json:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="Failed to obtain access token from Google"
+            )
+
+        access_token = token_json["access_token"]
+
+        # Get user info from Google
+        user_info_response = requests.get(
+            "https://www.googleapis.com/oauth2/v2/userinfo",
+            headers={"Authorization": f"Bearer {access_token}"}
+        )
+        user_info = user_info_response.json()
+
+        if "email" not in user_info:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="Failed to get user info from Google"
+            )
+
+        # Check if user exists, create if not
+        email = user_info["email"]
+        name = user_info.get("name", email.split("@")[0])  # Use email prefix as name if not provided
+
+        user = get_user_by_email(db, email)
+        if not user:
+            user = register_user(db, email, "oauth_temp_password", name)
+
+        # Create JWT token
+        token_data = {
+            "sub": user.email,
+            "user_id": user.id,
+            "name": user.name
+        }
+        access_token = auth_create_access_token(data=token_data)
+
+        # Redirect to frontend with token
+        frontend_url = os.getenv('FRONTEND_URL', 'https://physical-ai-and-humanoid-robotics-b-rosy.vercel.app')
+        redirect_params = urlencode({"token": access_token, "user": user.name})
+        redirect_url = f"{frontend_url}/?auth=success&{redirect_params}"
+
+        return RedirectResponse(url=redirect_url)
+
+    except Exception as e:
+        print(f"Google OAuth error: {str(e)}")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Google OAuth failed: {str(e)}"
+        )
 
 
 @app.get("/auth/github/callback")
-async def github_callback(code: str = None, state: str = None):
+async def github_callback(code: str = None, state: str = None, db: Session = Depends(get_db)):
     """
     Handle GitHub OAuth callback.
     """
+    from auth_service import validate_oauth_state, register_user, get_user_by_email, create_access_token
+    from urllib.parse import urlencode
+    import requests
+
     if not code:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="Missing authorization code from GitHub"
         )
 
-    # In a real implementation, you would:
-    # 1. Exchange the authorization code for an access token
-    # 2. Get user info from GitHub
-    # 3. Create or update user in your database
-    # 4. Generate JWT token and redirect to frontend
+    if state and not validate_oauth_state(state):
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Invalid or expired OAuth state parameter"
+        )
 
-    # For now, return a simple response
-    return {"status": "GitHub OAuth callback received", "code": code, "state": state}
+    try:
+        # Exchange authorization code for access token
+        github_client_id = os.getenv('GITHUB_CLIENT_ID')
+        github_client_secret = os.getenv('GITHUB_CLIENT_SECRET')
+        base_url = os.getenv('OAUTH_REDIRECT_URI', 'https://physical-ai-and-humanoid-robotics-book-production.up.railway.app')
+        redirect_uri = f"{base_url}/auth/github/callback"
+
+        token_url = "https://github.com/login/oauth/access_token"
+        token_data = {
+            "code": code,
+            "client_id": github_client_id,
+            "client_secret": github_client_secret,
+            "redirect_uri": redirect_uri
+        }
+
+        token_response = requests.post(
+            token_url,
+            data=token_data,
+            headers={"Accept": "application/json"}
+        )
+        token_json = token_response.json()
+
+        if "access_token" not in token_json:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="Failed to obtain access token from GitHub"
+            )
+
+        access_token = token_json["access_token"]
+
+        # Get user info from GitHub
+        user_info_response = requests.get(
+            "https://api.github.com/user",
+            headers={"Authorization": f"token {access_token}"}
+        )
+        user_info = user_info_response.json()
+
+        # Get user email from GitHub (separate API call needed)
+        emails_response = requests.get(
+            "https://api.github.com/user/emails",
+            headers={"Authorization": f"token {access_token}"}
+        )
+        emails = emails_response.json()
+        email = None
+        for email_obj in emails:
+            if email_obj.get("primary") and email_obj.get("verified"):
+                email = email_obj["email"]
+                break
+        if not email:
+            email = f"github_{user_info['id']}@example.com"  # Fallback email
+
+        # Check if user exists, create if not
+        name = user_info.get("name") or user_info.get("login", email.split("@")[0])
+
+        user = get_user_by_email(db, email)
+        if not user:
+            user = register_user(db, email, "oauth_temp_password", name)
+
+        # Create JWT token
+        token_data = {
+            "sub": user.email,
+            "user_id": user.id,
+            "name": user.name
+        }
+        access_token = auth_create_access_token(data=token_data)
+
+        # Redirect to frontend with token
+        frontend_url = os.getenv('FRONTEND_URL', 'https://physical-ai-and-humanoid-robotics-b-rosy.vercel.app')
+        redirect_params = urlencode({"token": access_token, "user": user.name})
+        redirect_url = f"{frontend_url}/?auth=success&{redirect_params}"
+
+        return RedirectResponse(url=redirect_url)
+
+    except Exception as e:
+        print(f"GitHub OAuth error: {str(e)}")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"GitHub OAuth failed: {str(e)}"
+        )
 
 
 if __name__ == "__main__":

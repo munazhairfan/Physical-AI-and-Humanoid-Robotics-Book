@@ -12,22 +12,28 @@
   // Check if we're on a docs page
   function isDocsPage() {
     const pathname = window.location.pathname;
-    // Check if path starts with /docs/ or /{locale}/docs/
+    // Check if path starts with /docs/ or /{locale}/docs/ or contains docs after locale
     return pathname.startsWith('/docs/') ||
+           pathname.includes('/docs/') ||
            /^\/[a-zA-Z]{2}\/docs\//.test(pathname) ||
            /^\/[a-zA-Z]{2}-[a-zA-Z]{2}\/docs\//.test(pathname);
   }
 
   // Get the current locale based on URL
   function getCurrentLocale() {
-    const pathParts = window.location.pathname.split('/');
-    // Check if the first part after domain is a locale code (e.g., 'en', 'es', 'fr', 'ur')
-    if (pathParts.length > 1 && pathParts[1] !== 'docs') {
-      // It might be a locale prefix like /en/docs/, /es/docs/, /ur/docs/, etc.
-      const potentialLocale = pathParts[1];
-      // Basic check for locale format (2-3 letters)
+    const pathname = window.location.pathname;
+    const pathParts = pathname.split('/').filter(part => part !== '');
+
+    // Check if the first part is a locale code (e.g., 'en', 'es', 'fr', 'ur')
+    if (pathParts.length > 0) {
+      const potentialLocale = pathParts[0];
+
+      // Check if this is a locale code pattern (2-3 letters)
       if (/^[a-zA-Z]{2,3}$/.test(potentialLocale)) {
-        return potentialLocale;
+        // Verify that the next part is 'docs' to confirm it's a locale-prefixed docs path
+        if (pathParts.length > 1 && pathParts[1] === 'docs') {
+          return potentialLocale;
+        }
       }
     }
     return null; // Default locale (no prefix)
@@ -38,25 +44,33 @@
     const currentPath = window.location.pathname;
     const currentLocale = getCurrentLocale();
 
+    let docsPath;
+
+    // Extract the docs part of the path regardless of locale prefix
     if (currentLocale) {
-      // Current path has locale prefix: /locale/docs/...
-      // Remove the current locale prefix and add the target locale
-      const pathWithoutLocale = currentPath.substring(currentLocale.length + 1); // +1 for the '/'
-      if (targetLocale) {
-        return '/' + targetLocale + pathWithoutLocale;
-      } else {
-        // Target is default locale (no prefix)
-        return pathWithoutLocale;
-      }
+      // Path has locale prefix like /ur/docs/intro, extract /docs/intro part
+      docsPath = currentPath.substring(currentLocale.length + 1); // +1 for the '/'
     } else {
-      // Current path has no locale prefix (default locale)
-      // Add the target locale prefix to the docs path
-      if (targetLocale) {
-        return '/' + targetLocale + currentPath;
+      // Path is in default format like /docs/intro or /intro
+      docsPath = currentPath;
+    }
+
+    // Ensure the path starts with /docs/ if it doesn't already
+    if (!docsPath.startsWith('/docs/')) {
+      // If it starts with /intro, /chapter1, etc., prepend /docs/
+      if (docsPath.startsWith('/')) {
+        docsPath = '/docs' + docsPath;
       } else {
-        // Already on default locale
-        return currentPath;
+        docsPath = '/docs/' + docsPath;
       }
+    }
+
+    // Add the target locale prefix if needed (not for default locale)
+    if (targetLocale && targetLocale !== 'en') { // Assuming 'en' is the default locale
+      return '/' + targetLocale + docsPath;
+    } else {
+      // Return docs path without locale prefix (for default locale)
+      return docsPath;
     }
   }
 
@@ -80,9 +94,7 @@
     let targetElement = event.target;
     while (targetElement && targetElement !== document) {
       const href = targetElement.getAttribute?.('href');
-      if (href && (href.startsWith('/en/') || href.startsWith('/es/') || href.startsWith('/fr/') ||
-                   href.startsWith('/de/') || href.startsWith('/ja/') || href.startsWith('/ko/') ||
-                   href.startsWith('/zh/') || href.startsWith('/ur/'))) {
+      if (href && /^[a-zA-Z]{2,3}(-[a-zA-Z]{2,3})?\//.test(href.split('/')[1])) {
 
         // Prevent the default behavior
         event.preventDefault();
@@ -112,7 +124,7 @@
     // Check if this navigation is happening on a docs page and involves locale change
     const newUrl = arguments[2];
     if (newUrl && typeof newUrl === 'string' && isDocsPage()) {
-      const localeMatch = newUrl.match(/^\/([a-zA-Z-]{2,5})\//);
+      const localeMatch = newUrl.match(/^\/([a-zA-Z]{2,3}(-[a-zA-Z]{2,3})?)\//);
       if (localeMatch) {
         const targetLocale = localeMatch[1];
         // If we're on a docs page and changing locale, ensure proper path
@@ -134,7 +146,7 @@
     // Similar check for replaceState
     const newUrl = arguments[2];
     if (newUrl && typeof newUrl === 'string' && isDocsPage()) {
-      const localeMatch = newUrl.match(/^\/([a-zA-Z-]{2,5})\//);
+      const localeMatch = newUrl.match(/^\/([a-zA-Z]{2,3}(-[a-zA-Z]{2,3})?)\//);
       if (localeMatch) {
         const targetLocale = localeMatch[1];
         setTimeout(() => {

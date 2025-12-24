@@ -39,10 +39,8 @@ const FloatingChat: React.FC<FloatingChatProps> = ({ backendUrl }) => {
     const envBackendUrl = (window as any).REACT_APP_BACKEND_URL ||
                          (window as any).env?.REACT_APP_BACKEND_URL;
 
-    // Check if we're in browser environment and use appropriate URL
-    return window.location.hostname === 'localhost'
-      ? 'http://localhost:8000'
-      : (envBackendUrl || 'https://physical-ai-and-humanoid-robotics-book-production.up.railway.app/');
+    // Use environment variable or fallback to Railway production URL
+    return envBackendUrl || 'https://physical-ai-and-humanoid-robotics-book-production.up.railway.app/';
   });
 
   // Use the provided backendUrl if available, otherwise use the resolved one
