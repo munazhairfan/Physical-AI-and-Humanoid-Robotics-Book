@@ -82,15 +82,19 @@ class LLMService:
             # Extract relevant information from the context
             context_snippets = []
             for item in context:
-                content = item.get('content', '')[:300]  # Take first 300 chars
-                source = item.get('metadata', {}).get('title', 'Unknown source')
+                content = item.get('content', '')
                 if content.strip():
-                    context_snippets.append(f"From {source}: {content}...")
+                    # Clean up the content by removing extra newlines and formatting
+                    clean_content = ' '.join(content.split())  # Replace multiple spaces/newlines with single spaces
+                    # Limit to meaningful content, avoid very short or repetitive snippets
+                    if len(clean_content) > 20:  # Only include meaningful content
+                        context_snippets.append(clean_content[:500])  # Limit to 500 chars
 
             if context_snippets:
-                context_preview = "\n\n".join(context_snippets[:2])  # Show first 2 snippets
+                # Combine the context snippets into a more readable format
+                combined_context = "\n\n".join([f"- {snippet}" for snippet in context_snippets[:3]])  # Show first 3 snippets
                 # Generate a more meaningful response based on context
-                return f"Based on the robotics textbook:\n\n{context_preview}\n\nHow can I help you understand this better?"
+                return f"Based on the robotics textbook:\n{combined_context}\n\nHow can I help you understand this better?"
 
         # Generate a more helpful response based on the query content
         lower_query = query.lower()
@@ -136,9 +140,14 @@ class LLMService:
         if context:
             prompt_parts.append("\nHere are relevant excerpts from the robotics textbook:")
             for i, ctx in enumerate(context):
-                content = ctx.get('content', '')[:1000]  # Limit context length
-                source = ctx.get('metadata', {}).get('title', 'Unknown source')
-                prompt_parts.append(f"\n{i+1}. From {source}:\n{content}")
+                content = ctx.get('content', '')
+                if content.strip():
+                    # Clean up the content by removing extra newlines and formatting
+                    clean_content = ' '.join(content.split())  # Replace multiple spaces/newlines with single spaces
+                    # Limit to meaningful content and avoid very short snippets
+                    if len(clean_content) > 20:
+                        source = ctx.get('metadata', {}).get('title', 'Unknown source')
+                        prompt_parts.append(f"\n{i+1}. {clean_content[:1000]}")  # Limit context length
 
         # Add conversation history if available
         if history:
