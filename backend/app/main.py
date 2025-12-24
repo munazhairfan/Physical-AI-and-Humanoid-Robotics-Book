@@ -27,6 +27,9 @@ def markdown_to_text(markdown_content: str) -> str:
     # Remove HTML tags if any
     text = html.unescape(markdown_content)
 
+    # Remove common document metadata lines (like 'id:', 'sidebar_position:', etc.)
+    text = re.sub(r'^\s*[a-zA-Z_][a-zA-Z0-9_]*\s*:\s*.*$', '', text, flags=re.MULTILINE)
+
     # Remove markdown headers (### Header -> Header)
     text = re.sub(r'^#{1,6}\s*', '', text, flags=re.MULTILINE)
 
@@ -42,8 +45,12 @@ def markdown_to_text(markdown_content: str) -> str:
     # Remove inline code (`code`)
     text = re.sub(r'`([^`]+)`', r'\1', text)
 
-    # Remove links [text](url) -> text
-    text = re.sub(r'\[([^\]]+)\]\([^)]+\)', r'\1', text)
+    # Remove links [text](url) -> text (including the problematic format)
+    text = re.sub(r'\[([^\]]+)\]\([^)]+\)', r'\1', text)  # [text](url) -> text
+    text = re.sub(r'\*\*\[([^\]]+)\]\([^)]+\)\*\*', r'\1', text)  # **[text](url)** -> text
+
+    # Remove the specific problematic format in your data
+    text = re.sub(r'\*\*\[([^\]]+)\]\([^)]+\)\s*=\s*id:\s*[^\s]+\s+sidebar_position:\s*\d+', '', text)
 
     # Remove images ![alt](url) -> alt
     text = re.sub(r'!\[([^\]]*)\]\([^)]+\)', r'\1', text)
@@ -58,6 +65,9 @@ def markdown_to_text(markdown_content: str) -> str:
     text = re.sub(r'\[([^\]]+)\]\[[^\]]+\]', r'\1', text)  # [text][1] -> text
     text = re.sub(r'\n\[.+\]:.+\n', '\n', text)  # Remove reference definitions
 
+    # Remove YAML frontmatter if present
+    text = re.sub(r'^---\n.*?\n---\n', '', text, flags=re.DOTALL)
+
     # Replace common markdown symbols
     text = re.sub(r'\\', '', text)  # Remove escape characters
 
@@ -69,6 +79,11 @@ def markdown_to_text(markdown_content: str) -> str:
     # Clean up any remaining markdown artifacts
     text = re.sub(r'\n\s*-', '\n- ', text)  # Ensure proper list formatting
     text = re.sub(r'\n\s#\s', '\n', text)   # Remove any remaining header markers
+
+    # Clean up any remaining document artifacts
+    text = re.sub(r'\.\s*\.\s*\.', '', text)  # Remove ellipsis artifacts
+    text = re.sub(r'\s*=\s*id:[^,\n]*,', '', text)  # Remove id assignments
+    text = re.sub(r'\s*sidebar_position:\s*\d+', '', text)  # Remove sidebar positions
 
     return text
 
