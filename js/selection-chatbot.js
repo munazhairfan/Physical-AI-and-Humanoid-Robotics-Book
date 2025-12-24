@@ -196,8 +196,8 @@
 
             // Store the position for later use when selection is cleared
             lastButtonPosition = {
-                top: (rect.top + window.scrollY - 60) + 'px',
-                left: (rect.left + window.scrollX + rect.width/2 - 25) + 'px'
+                top: (rect.top - 60) + 'px',  // rect.top is already relative to viewport for fixed positioning
+                left: (rect.left + rect.width/2 - 25) + 'px'  // rect.left is already relative to viewport for fixed positioning
             };
 
             // Position button near the selection
