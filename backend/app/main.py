@@ -8,6 +8,8 @@ from typing import List, Optional
 import logging
 import asyncio
 import os
+import secrets
+import string
 from datetime import timedelta
 from dotenv import load_dotenv
 
@@ -824,7 +826,7 @@ async def google_callback(code: str = None, state: str = None, db: Session = Dep
     """
     Handle Google OAuth callback.
     """
-    from .auth_service import validate_oauth_state, register_user, get_user_by_email, create_access_token
+    from .auth_service import validate_oauth_state, register_user, get_user_by_email, create_access_token as auth_create_access_token
     from urllib.parse import urlencode
     import requests
 
@@ -886,7 +888,9 @@ async def google_callback(code: str = None, state: str = None, db: Session = Dep
 
         user = get_user_by_email(db, email)
         if not user:
-            user = register_user(db, email, "temp", name)
+            # Generate a secure temporary password for OAuth users
+            temp_password = ''.join(secrets.choice(string.ascii_letters + string.digits) for _ in range(32))
+            user = register_user(db, email, temp_password, name)
 
         # Create JWT token
         token_data = {
@@ -916,7 +920,7 @@ async def github_callback(code: str = None, state: str = None, db: Session = Dep
     """
     Handle GitHub OAuth callback.
     """
-    from .auth_service import validate_oauth_state, register_user, get_user_by_email, create_access_token
+    from .auth_service import validate_oauth_state, register_user, get_user_by_email, create_access_token as auth_create_access_token
     from urllib.parse import urlencode
     import requests
 
@@ -988,7 +992,9 @@ async def github_callback(code: str = None, state: str = None, db: Session = Dep
 
         user = get_user_by_email(db, email)
         if not user:
-            user = register_user(db, email, "temp", name)
+            # Generate a secure temporary password for OAuth users
+            temp_password = ''.join(secrets.choice(string.ascii_letters + string.digits) for _ in range(32))
+            user = register_user(db, email, temp_password, name)
 
         # Create JWT token
         token_data = {
