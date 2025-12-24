@@ -39,7 +39,13 @@ const FloatingChat: React.FC<FloatingChatProps> = ({ backendUrl }) => {
     const envBackendUrl = (window as any).REACT_APP_BACKEND_URL ||
                          (window as any).env?.REACT_APP_BACKEND_URL;
 
-    // Use environment variable or fallback to Railway production URL
+    // Use environment variable, or fallback to localhost for development, then production URL
+    if (typeof window !== 'undefined') {
+      // Check if we're in development mode or localhost
+      if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+        return envBackendUrl || 'http://localhost:8000';
+      }
+    }
     return envBackendUrl || 'https://physical-ai-and-humanoid-robotics-book-production.up.railway.app/';
   });
 
