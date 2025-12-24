@@ -54,10 +54,21 @@ def markdown_to_text(markdown_content: str) -> str:
     # Remove horizontal rules
     text = re.sub(r'^\s*[-*_]{3,}\s*$', '', text, flags=re.MULTILINE)
 
+    # Remove reference-style links [text][1] and reference definitions [1]: url
+    text = re.sub(r'\[([^\]]+)\]\[[^\]]+\]', r'\1', text)  # [text][1] -> text
+    text = re.sub(r'\n\[.+\]:.+\n', '\n', text)  # Remove reference definitions
+
+    # Replace common markdown symbols
+    text = re.sub(r'\\', '', text)  # Remove escape characters
+
     # Remove extra whitespace and normalize
     text = re.sub(r'\n\s*\n', '\n\n', text)  # Replace multiple blank lines with single
     text = re.sub(r'[ \t]+', ' ', text)      # Multiple spaces to single space
     text = text.strip()
+
+    # Clean up any remaining markdown artifacts
+    text = re.sub(r'\n\s*-', '\n- ', text)  # Ensure proper list formatting
+    text = re.sub(r'\n\s#\s', '\n', text)   # Remove any remaining header markers
 
     return text
 

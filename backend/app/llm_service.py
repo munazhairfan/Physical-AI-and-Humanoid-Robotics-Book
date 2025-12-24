@@ -6,12 +6,78 @@ This service integrates with Google's Gemini API.
 from typing import List, Dict, Optional
 import logging
 import os
+import re
+import html
 from dotenv import load_dotenv
 
 # Load environment variables
 load_dotenv()
 
 logger = logging.getLogger(__name__)
+
+
+def markdown_to_text(markdown_content: str) -> str:
+    """
+    Convert markdown content to plain text by removing markdown formatting.
+    This function is similar to the one in main.py but included here for self-containment.
+
+    Args:
+        markdown_content: Raw markdown content
+
+    Returns:
+        Plain text content with markdown formatting removed
+    """
+    if not markdown_content:
+        return ""
+
+    # Remove HTML tags if any
+    text = html.unescape(markdown_content)
+
+    # Remove markdown headers (### Header -> Header)
+    text = re.sub(r'^#{1,6}\s*', '', text, flags=re.MULTILINE)
+
+    # Remove bold and italic formatting (**text**, *text*, __text__, _text_)
+    text = re.sub(r'\*{2}([^*]+)\*{2}', r'\1', text)  # **bold**
+    text = re.sub(r'\*([^*]+)\*', r'\1', text)       # *italic*
+    text = re.sub(r'_{2}([^_]+)_{2}', r'\1', text)   # __bold__
+    text = re.sub(r'_([^_]+)_', r'\1', text)         # _italic_
+
+    # Remove code blocks (```code```)
+    text = re.sub(r'```.*?```', '', text, flags=re.DOTALL)
+
+    # Remove inline code (`code`)
+    text = re.sub(r'`([^`]+)`', r'\1', text)
+
+    # Remove links [text](url) -> text
+    text = re.sub(r'\[([^\]]+)\]\([^)]+\)', r'\1', text)
+
+    # Remove images ![alt](url) -> alt
+    text = re.sub(r'!\[([^\]]*)\]\([^)]+\)', r'\1', text)
+
+    # Remove blockquotes
+    text = re.sub(r'^>\s*', '', text, flags=re.MULTILINE)
+
+    # Remove horizontal rules
+    text = re.sub(r'^\s*[-*_]{3,}\s*$', '', text, flags=re.MULTILINE)
+
+    # Remove reference-style links [text][1] and reference definitions [1]: url
+    text = re.sub(r'\[([^\]]+)\]\[[^\]]+\]', r'\1', text)  # [text][1] -> text
+    text = re.sub(r'\n\[.+\]:.+\n', '\n', text)  # Remove reference definitions
+
+    # Replace common markdown symbols
+    text = re.sub(r'\\', '', text)  # Remove escape characters
+
+    # Remove extra whitespace and normalize
+    text = re.sub(r'\n\s*\n', '\n\n', text)  # Replace multiple blank lines with single
+    text = re.sub(r'[ \t]+', ' ', text)      # Multiple spaces to single space
+    text = text.strip()
+
+    # Clean up any remaining markdown artifacts
+    text = re.sub(r'\n\s*-', '\n- ', text)  # Ensure proper list formatting
+    text = re.sub(r'\n\s#\s', '\n', text)   # Remove any remaining header markers
+
+    return text
+
 
 class LLMService:
     """
@@ -84,15 +150,24 @@ class LLMService:
             for item in context:
                 content = item.get('content', '')
                 if content.strip():
-                    # Clean up the content by removing extra newlines and formatting
-                    clean_content = ' '.join(content.split())  # Replace multiple spaces/newlines with single spaces
+                    # Convert markdown to plain text and clean up the content
+                    plain_content = markdown_to_text(content)
+                    clean_content = ' '.join(plain_content.split())  # Replace multiple spaces/newlines with single spaces
                     # Limit to meaningful content, avoid very short or repetitive snippets
                     if len(clean_content) > 20:  # Only include meaningful content
-                        context_snippets.append(clean_content[:500])  # Limit to 500 chars
+                        # Try to extract complete sentences if possible
+                        snippet = clean_content[:500]  # Limit to 500 chars
+                        # Try to find the last sentence ending to avoid cut-off sentences
+                        for end_marker in ['.', '!', '?', ' - ', ' ##']:
+                            last_pos = snippet.rfind(end_marker)
+                            if last_pos > len(snippet) * 0.7:  # Only if the marker is not too early
+                                snippet = snippet[:last_pos + len(end_marker)]
+                                break
+                        context_snippets.append(snippet)
 
             if context_snippets:
                 # Combine the context snippets into a more readable format
-                combined_context = "\n\n".join([f"- {snippet}" for snippet in context_snippets[:3]])  # Show first 3 snippets
+                combined_context = "\n\n".join([f"- {snippet.strip()}" for snippet in context_snippets[:3]])  # Show first 3 snippets
                 # Generate a more meaningful response based on context
                 return f"Based on the robotics textbook:\n{combined_context}\n\nHow can I help you understand this better?"
 
@@ -142,12 +217,20 @@ class LLMService:
             for i, ctx in enumerate(context):
                 content = ctx.get('content', '')
                 if content.strip():
-                    # Clean up the content by removing extra newlines and formatting
-                    clean_content = ' '.join(content.split())  # Replace multiple spaces/newlines with single spaces
+                    # Convert markdown to plain text and clean up the content
+                    plain_content = markdown_to_text(content)
+                    clean_content = ' '.join(plain_content.split())  # Replace multiple spaces/newlines with single spaces
                     # Limit to meaningful content and avoid very short snippets
                     if len(clean_content) > 20:
-                        source = ctx.get('metadata', {}).get('title', 'Unknown source')
-                        prompt_parts.append(f"\n{i+1}. {clean_content[:1000]}")  # Limit context length
+                        # Try to extract complete sentences if possible
+                        snippet = clean_content[:1000]  # Limit context length
+                        # Try to find the last sentence ending to avoid cut-off sentences
+                        for end_marker in ['.', '!', '?', ' - ', ' ##']:
+                            last_pos = snippet.rfind(end_marker)
+                            if last_pos > len(snippet) * 0.7:  # Only if the marker is not too early
+                                snippet = snippet[:last_pos + len(end_marker)]
+                                break
+                        prompt_parts.append(f"\n{i+1}. {snippet}")
 
         # Add conversation history if available
         if history:
