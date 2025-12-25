@@ -181,7 +181,7 @@ def register_user(db: Session, email: str, password: str, name: str) -> User:
     # Check if user already exists
     existing_user = get_user_by_email(db, email)
     if existing_user:
-        raise HTTPException(status_code=400, detail="Email already registered")
+        raise HTTPException(status_code=400, detail=f"Email {email} is already registered")
 
     hashed_pwd = hash_password(password)
 
@@ -198,7 +198,7 @@ def register_user(db: Session, email: str, password: str, name: str) -> User:
         return user
     except IntegrityError:
         db.rollback()
-        raise HTTPException(status_code=400, detail="Email already registered")
+        raise HTTPException(status_code=400, detail=f"Email {email} is already registered due to database constraint")
 
 def get_current_user_from_token(token: str) -> Optional[User]:
     """Get the current user from the token"""
