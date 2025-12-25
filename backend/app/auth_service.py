@@ -79,7 +79,14 @@ def hash_password(password: str) -> str:
                     # If bcrypt still fails, use a very conservative approach
                     print(f"Bcrypt still failed after truncation: {str(fallback_error)}")
                     # Use a very simple, short, ASCII-only password
-                    return pwd_context.hash("temp_password_12345_secure")  # Well under 72 bytes
+                    try:
+                        return pwd_context.hash("temp_password_12345_secure")  # Well under 72 bytes
+                    except Exception as ultimate_error:
+                        # If bcrypt is completely broken, log and potentially raise a custom error
+                        print(f"Bcrypt is completely unavailable: {str(ultimate_error)}")
+                        # For OAuth temporary passwords, we can use a different approach as a last resort
+                        # But this should ideally not happen - log this critical issue
+                        raise Exception(f"Bcrypt completely unavailable: {str(ultimate_error)}")
             else:
                 # If still too long, use character-level truncation to 60 chars (should be safe)
                 safe_password = password[:60]
@@ -89,7 +96,14 @@ def hash_password(password: str) -> str:
                     # If bcrypt still fails, use a very conservative approach
                     print(f"Bcrypt still failed after character truncation: {str(fallback_error)}")
                     # Use a very simple, short, ASCII-only password
-                    return pwd_context.hash("temp_password_12345_secure")  # Well under 72 bytes
+                    try:
+                        return pwd_context.hash("temp_password_12345_secure")  # Well under 72 bytes
+                    except Exception as ultimate_error:
+                        # If bcrypt is completely broken, log and potentially raise a custom error
+                        print(f"Bcrypt is completely unavailable: {str(ultimate_error)}")
+                        # For OAuth temporary passwords, we can use a different approach as a last resort
+                        # But this should ideally not happen - log this critical issue
+                        raise Exception(f"Bcrypt completely unavailable: {str(ultimate_error)}")
         else:
             raise  # Re-raise if it's a different ValueError
     except Exception as e:
@@ -107,7 +121,14 @@ def hash_password(password: str) -> str:
                 # If bcrypt still fails, use a very conservative approach
                 print(f"Bcrypt still failed after truncation: {str(fallback_error)}")
                 # Use a very simple, short, ASCII-only password
-                return pwd_context.hash("temp_password_12345_secure")  # Well under 72 bytes
+                try:
+                    return pwd_context.hash("temp_password_12345_secure")  # Well under 72 bytes
+                except Exception as ultimate_error:
+                    # If bcrypt is completely broken, log and potentially raise a custom error
+                    print(f"Bcrypt is completely unavailable: {str(ultimate_error)}")
+                    # For OAuth temporary passwords, we can use a different approach as a last resort
+                    # But this should ideally not happen - log this critical issue
+                    raise Exception(f"Bcrypt completely unavailable: {str(ultimate_error)}")
         else:
             # If still too long, use character-level truncation to 60 chars (should be safe)
             safe_password = password[:60]
@@ -117,7 +138,14 @@ def hash_password(password: str) -> str:
                 # If bcrypt still fails, use a very conservative approach
                 print(f"Bcrypt still failed after character truncation: {str(fallback_error)}")
                 # Use a very simple, short, ASCII-only password
-                return pwd_context.hash("temp_password_12345_secure")  # Well under 72 bytes
+                try:
+                    return pwd_context.hash("temp_password_12345_secure")  # Well under 72 bytes
+                except Exception as ultimate_error:
+                    # If bcrypt is completely broken, log and potentially raise a custom error
+                    print(f"Bcrypt is completely unavailable: {str(ultimate_error)}")
+                    # For OAuth temporary passwords, we can use a different approach as a last resort
+                    # But this should ideally not happen - log this critical issue
+                    raise Exception(f"Bcrypt completely unavailable: {str(ultimate_error)}")
 
 def verify_password(plain_password: str, hashed_password: str) -> bool:
     """Verify a plain password against a hashed password"""
