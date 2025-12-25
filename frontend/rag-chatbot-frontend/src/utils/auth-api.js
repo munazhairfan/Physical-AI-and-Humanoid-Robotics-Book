@@ -55,6 +55,23 @@ const removeUser = () => {
   }
 };
 
+// Robust fetch wrapper with retry logic
+async function robustFetch(url, options = {}, retries = 3, backoff = 1000) {
+  for (let i = 0; i < retries; i++) {
+    try {
+      const response = await fetch(url, options);
+      return response;
+    } catch (error) {
+      if (i === retries - 1) {
+        // Last attempt, throw the error
+        throw error;
+      }
+      // Wait before retrying (exponential backoff)
+      await new Promise(resolve => setTimeout(resolve, backoff * Math.pow(2, i)));
+    }
+  }
+}
+
 // Helper function to add auth headers to requests
 const getAuthHeaders = () => {
   const token = getAuthToken();
@@ -69,7 +86,7 @@ export const authAPI = {
   // Register a new user
   async register(userData) {
     try {
-      const response = await fetch(`${API_BASE_URL}/register`, {
+      const response = await robustFetch(`${API_BASE_URL}/register`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -77,11 +94,19 @@ export const authAPI = {
         body: JSON.stringify(userData),
       });
 
-      const data = await response.json();
-
       if (!response.ok) {
-        throw new Error(data.detail || 'Registration failed');
+        // Handle HTTP errors (4xx, 5xx)
+        let errorData;
+        try {
+          errorData = await response.json();
+        } catch (parseError) {
+          // If response is not JSON, use status text
+          throw new Error(`Registration failed: ${response.status} ${response.statusText}`);
+        }
+        throw new Error(errorData.detail || 'Registration failed');
       }
+
+      const data = await response.json();
 
       if (data.token) {
         setAuthToken(data.token);
@@ -91,6 +116,10 @@ export const authAPI = {
       return data;
     } catch (error) {
       console.error('Registration error:', error);
+      // Check if it's a network error vs other error
+      if (error instanceof TypeError && error.message.includes('fetch')) {
+        throw new Error('Network error: Unable to connect to the server. Please check if the backend is running and accessible.');
+      }
       throw error;
     }
   },
@@ -98,7 +127,7 @@ export const authAPI = {
   // Login user
   async login(credentials) {
     try {
-      const response = await fetch(`${API_BASE_URL}/login`, {
+      const response = await robustFetch(`${API_BASE_URL}/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -106,11 +135,19 @@ export const authAPI = {
         body: JSON.stringify(credentials),
       });
 
-      const data = await response.json();
-
       if (!response.ok) {
-        throw new Error(data.detail || 'Login failed');
+        // Handle HTTP errors (4xx, 5xx)
+        let errorData;
+        try {
+          errorData = await response.json();
+        } catch (parseError) {
+          // If response is not JSON, use status text
+          throw new Error(`Login failed: ${response.status} ${response.statusText}`);
+        }
+        throw new Error(errorData.detail || 'Login failed');
       }
+
+      const data = await response.json();
 
       if (data.token) {
         setAuthToken(data.token);
@@ -120,6 +157,10 @@ export const authAPI = {
       return data;
     } catch (error) {
       console.error('Login error:', error);
+      // Check if it's a network error vs other error
+      if (error instanceof TypeError && error.message.includes('fetch')) {
+        throw new Error('Network error: Unable to connect to the server. Please check if the backend is running and accessible.');
+      }
       throw error;
     }
   },
@@ -144,7 +185,7 @@ export const authAPI = {
         return null;
       }
 
-      const response = await fetch(`${API_BASE_URL}/me`, {
+      const response = await robustFetch(`${API_BASE_URL}/me`, {
         method: 'GET',
         headers: getAuthHeaders(),
       });
@@ -172,7 +213,7 @@ export const authAPI = {
     try {
       const token = getAuthToken();
       if (token) {
-        await fetch(`${API_BASE_URL}/logout`, {
+        await robustFetch(`${API_BASE_URL}/logout`, {
           method: 'POST',
           headers: getAuthHeaders(),
         });
