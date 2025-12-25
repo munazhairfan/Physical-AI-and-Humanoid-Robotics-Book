@@ -888,8 +888,11 @@ async def google_callback(code: str = None, state: str = None, db: Session = Dep
 
         user = get_user_by_email(db, email)
         if not user:
-            # Generate a secure temporary password for OAuth users
+            # Generate a secure temporary password for OAuth users (ensure it's under 72 bytes)
             temp_password = ''.join(secrets.choice(string.ascii_letters + string.digits) for _ in range(32))
+            # Ensure password doesn't exceed 72 bytes for bcrypt compatibility
+            if len(temp_password.encode('utf-8')) > 72:
+                temp_password = temp_password[:72]
             user = register_user(db, email, temp_password, name)
 
         # Create JWT token
@@ -909,9 +912,13 @@ async def google_callback(code: str = None, state: str = None, db: Session = Dep
 
     except Exception as e:
         print(f"Google OAuth error: {str(e)}")
+        error_msg = str(e)
+        # Check if this is a password length issue
+        if "password cannot be longer than 72 bytes" in error_msg:
+            error_msg = "password cannot be longer than 72 bytes, truncate manually if necessary (e.g. my_password[:72])"
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Google OAuth failed: {str(e)}"
+            detail=f"Google OAuth failed: {error_msg}"
         )
 
 
@@ -992,8 +999,11 @@ async def github_callback(code: str = None, state: str = None, db: Session = Dep
 
         user = get_user_by_email(db, email)
         if not user:
-            # Generate a secure temporary password for OAuth users
+            # Generate a secure temporary password for OAuth users (ensure it's under 72 bytes)
             temp_password = ''.join(secrets.choice(string.ascii_letters + string.digits) for _ in range(32))
+            # Ensure password doesn't exceed 72 bytes for bcrypt compatibility
+            if len(temp_password.encode('utf-8')) > 72:
+                temp_password = temp_password[:72]
             user = register_user(db, email, temp_password, name)
 
         # Create JWT token
@@ -1013,9 +1023,13 @@ async def github_callback(code: str = None, state: str = None, db: Session = Dep
 
     except Exception as e:
         print(f"GitHub OAuth error: {str(e)}")
+        error_msg = str(e)
+        # Check if this is a password length issue
+        if "password cannot be longer than 72 bytes" in error_msg:
+            error_msg = "password cannot be longer than 72 bytes, truncate manually if necessary (e.g. my_password[:72])"
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"GitHub OAuth failed: {str(e)}"
+            detail=f"GitHub OAuth failed: {error_msg}"
         )
 
 

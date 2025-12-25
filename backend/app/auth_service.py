@@ -44,9 +44,24 @@ def hash_password(password: str) -> str:
         password = password_bytes[:72].decode('utf-8', errors='ignore')
         # Double-check the byte length after decoding to ensure compliance
         if len(password.encode('utf-8')) > 72:
-            # If decoded string is still > 72 bytes, truncate by characters instead
-            # This is a fallback for edge cases
-            password = password[:72]  # Character-based truncation
+            # If decoded string is still > 72 bytes, use a more robust truncation
+            # that ensures the final byte length is definitely <= 72
+            # Start with a safe character count and reduce if needed
+            for i in range(min(len(password), 72), 0, -1):
+                candidate = password[:i]
+                if len(candidate.encode('utf-8')) <= 72:
+                    password = candidate
+                    break
+            else:
+                # Ultimate fallback: use a conservative length that's guaranteed safe
+                password = password[:60] if len(password) > 60 else password
+
+    # Final safety check to ensure byte length <= 72 before hashing
+    password_bytes = password.encode('utf-8')
+    if len(password_bytes) > 72:
+        # If somehow still over 72 bytes, do final byte-level truncation
+        password = password_bytes[:72].decode('utf-8', errors='ignore')
+
     return pwd_context.hash(password)
 
 def verify_password(plain_password: str, hashed_password: str) -> bool:
