@@ -34,14 +34,22 @@ const signIn = async (provider, options = {}) => {
             password: options.password,
             name: options.name
           });
-          return { ok: true, user: result.user };
+          // Redirect to home page after successful signup
+          if (typeof window !== 'undefined') {
+            window.location.href = '/';
+          }
+          return { ok: true, user: result.user, redirect: true };
         } else {
           // This is a login request
           const result = await authAPI.login({
             email: options.email,
             password: options.password
           });
-          return { ok: true, user: result.user };
+          // Redirect to home page after successful login
+          if (typeof window !== 'undefined') {
+            window.location.href = '/';
+          }
+          return { ok: true, user: result.user, redirect: true };
         }
       }
     } else if (provider === 'google') {
