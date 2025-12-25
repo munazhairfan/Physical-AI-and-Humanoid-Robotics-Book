@@ -62,7 +62,16 @@ def hash_password(password: str) -> str:
         # If somehow still over 72 bytes, do final byte-level truncation
         password = password_bytes[:72].decode('utf-8', errors='ignore')
 
-    return pwd_context.hash(password)
+    try:
+        return pwd_context.hash(password)
+    except Exception as e:
+        # If bcrypt fails for any reason (including version compatibility issues),
+        # log the error and use a fallback approach
+        print(f"bcrypt error: {str(e)}")
+        # Ensure password is within limits and use a fallback method
+        # This is a safety fallback in case bcrypt library has issues
+        safe_password = password.encode('utf-8')[:70].decode('utf-8', errors='ignore')
+        return pwd_context.hash(safe_password)
 
 def verify_password(plain_password: str, hashed_password: str) -> bool:
     """Verify a plain password against a hashed password"""
