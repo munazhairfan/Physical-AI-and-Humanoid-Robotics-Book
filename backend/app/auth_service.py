@@ -64,14 +64,36 @@ def hash_password(password: str) -> str:
 
     try:
         return pwd_context.hash(password)
+    except ValueError as e:
+        if "password cannot be longer than 72 bytes" in str(e):
+            # Handle the specific 72-byte limit error with more aggressive truncation
+            print(f"Password too long error: {str(e)}")
+            # Use more aggressive truncation - go well under 72 bytes
+            # First try byte-level truncation to 64 bytes
+            safe_password = password.encode('utf-8')[:64].decode('utf-8', errors='ignore')
+            # Double-check the byte length before hashing
+            if len(safe_password.encode('utf-8')) <= 72:
+                return pwd_context.hash(safe_password)
+            else:
+                # If still too long, use character-level truncation to 60 chars (should be safe)
+                safe_password = password[:60]
+                return pwd_context.hash(safe_password)
+        else:
+            raise  # Re-raise if it's a different ValueError
     except Exception as e:
-        # If bcrypt fails for any reason (including version compatibility issues),
+        # If bcrypt fails for any other reason (including version compatibility issues),
         # log the error and use a fallback approach
         print(f"bcrypt error: {str(e)}")
-        # Ensure password is within limits and use a fallback method
-        # This is a safety fallback in case bcrypt library has issues
-        safe_password = password.encode('utf-8')[:70].decode('utf-8', errors='ignore')
-        return pwd_context.hash(safe_password)
+        # Use the same robust approach as above
+        # First try byte-level truncation to 64 bytes
+        safe_password = password.encode('utf-8')[:64].decode('utf-8', errors='ignore')
+        # Double-check the byte length before hashing
+        if len(safe_password.encode('utf-8')) <= 72:
+            return pwd_context.hash(safe_password)
+        else:
+            # If still too long, use character-level truncation to 60 chars (should be safe)
+            safe_password = password[:60]
+            return pwd_context.hash(safe_password)
 
 def verify_password(plain_password: str, hashed_password: str) -> bool:
     """Verify a plain password against a hashed password"""
