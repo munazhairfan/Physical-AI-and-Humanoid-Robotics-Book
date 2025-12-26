@@ -1,12 +1,11 @@
 """
 Google Gemini Assistant Service for RAG Chatbot
-Integrates Google's Gemini API with the RAG system.
+Integrates Google's Gemini API through OpenAI-compatible interface with the RAG system.
 """
 from typing import List, Dict, Optional
 import logging
 import os
 from dotenv import load_dotenv
-import google.generativeai as genai
 
 # Load environment variables
 load_dotenv()
@@ -15,31 +14,34 @@ logger = logging.getLogger(__name__)
 
 class GeminiAssistantService:
     """
-    Service class for handling Google Gemini API integration.
+    Service class for handling Google Gemini API integration through OpenAI-compatible interface.
     This provides agent-like functionality for the RAG system using Gemini.
     """
 
     def __init__(self):
         """
-        Initialize the Gemini Assistant service.
+        Initialize the Gemini Assistant service using OpenAI-compatible interface.
         Requires GEMINI_API_KEY environment variable to be set.
         """
-        logger.info("Initializing Gemini Assistant Service")
+        logger.info("Initializing Gemini Assistant Service with OpenAI-compatible interface")
 
         # Get Gemini API key from environment
-        gemini_api_key = os.getenv("GEMINI_API_KEY")
-        if not gemini_api_key:
+        self.gemini_api_key = os.getenv("GEMINI_API_KEY")
+        if not self.gemini_api_key:
             logger.warning("GEMINI_API_KEY environment variable not set. Gemini features will be unavailable.")
-            self.model = None
+            self.openai_client = None
             return
 
-        # Configure the Gemini API
-        genai.configure(api_key=gemini_api_key)
-
-        # Initialize the model
-        self.model = genai.GenerativeModel('gemini-2.0-flash')
-
-        logger.info("Gemini model initialized successfully")
+        try:
+            from openai import OpenAI
+            self.openai_client = OpenAI(
+                api_key=self.gemini_api_key,
+                base_url="https://generativelanguage.googleapis.com/v1beta/openai/"
+            )
+            logger.info("OpenAI client for Gemini initialized successfully")
+        except Exception as e:
+            logger.error(f"Failed to initialize OpenAI client for Gemini: {str(e)}")
+            self.openai_client = None
 
     def is_available(self) -> bool:
         """
@@ -48,7 +50,7 @@ class GeminiAssistantService:
         Returns:
             True if the service is properly initialized, False otherwise
         """
-        return self.model is not None
+        return self.openai_client is not None
 
     def create_rag_assistant(self, vector_store_id: Optional[str] = None) -> Optional[str]:
         """
@@ -65,8 +67,8 @@ class GeminiAssistantService:
             return None
 
         try:
-            logger.info("Gemini assistant created (using model configuration)")
-            # In the Gemini API, we don't create assistants the same way as OpenAI
+            logger.info("Gemini assistant created (using OpenAI-compatible model configuration)")
+            # In the OpenAI-compatible Gemini API, we don't create assistants the same way as OpenAI
             # Instead, we'll return a model identifier
             return "gemini-2.0-flash"
         except Exception as e:
@@ -140,7 +142,14 @@ class GeminiAssistantService:
             # For now, we'll return a placeholder since maintaining conversation
             # history requires more complex implementation
             logger.info(f"Running Gemini assistant on thread {thread_id}")
-            return "This is a response from the Gemini Assistant service. For full conversation history support, a more complex implementation would be needed."
+            # Using the OpenAI-compatible client to generate a response
+            response = self.openai_client.chat.completions.create(
+                model=assistant_id,
+                messages=[{"role": "user", "content": f"Please provide a helpful response."}],
+                temperature=0.3,
+                max_tokens=500
+            )
+            return response.choices[0].message.content
         except Exception as e:
             logger.error(f"Error running assistant: {str(e)}")
             return None
@@ -158,7 +167,7 @@ def get_openai_assistant_service():
     if gemini_assistant_service is None:
         try:
             gemini_assistant_service = GeminiAssistantService()
-        except ValueError:
+        except Exception:
             # If Gemini is not available, return a mock service
             gemini_assistant_service = MockGeminiAssistantService()
     return gemini_assistant_service

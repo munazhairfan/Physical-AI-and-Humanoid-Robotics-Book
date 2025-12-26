@@ -1,6 +1,6 @@
 """
 Embedding Service for RAG Chatbot
-Handles text embedding operations using Google's Gemini API.
+Handles text embedding operations using Google's Gemini API through OpenAI-compatible interface.
 """
 from typing import List, Union
 import numpy as np
@@ -16,30 +16,32 @@ logger = logging.getLogger(__name__)
 class EmbeddingService:
     """
     Service class for handling text embedding operations.
-    Uses Google's Gemini API for generating vector representations of text.
+    Uses Google's Gemini API through OpenAI-compatible interface for generating vector representations of text.
     """
 
     def __init__(self):
         """
         Initialize the embedding service.
-        This initializes Google's embedding model.
+        This initializes OpenAI client with Google's Gemini endpoint.
         """
-        logger.info("Initializing Embedding Service with Google Gemini")
+        logger.info("Initializing Embedding Service with OpenAI-compatible Google Gemini")
 
         # Get Gemini API key from environment
         self.gemini_api_key = os.getenv("GEMINI_API_KEY")
         if not self.gemini_api_key:
             logger.warning("GEMINI_API_KEY environment variable not set - will use mock functionality")
-            self.genai = None
+            self.openai_client = None
         else:
             try:
-                import google.generativeai as genai
-                genai.configure(api_key=self.gemini_api_key)
-                self.genai = genai
-                logger.info("Embedding service initialized successfully with API key")
+                from openai import OpenAI
+                self.openai_client = OpenAI(
+                    api_key=self.gemini_api_key,
+                    base_url="https://generativelanguage.googleapis.com/v1beta/openai/"
+                )
+                logger.info("Embedding service initialized successfully with OpenAI-compatible Gemini")
             except Exception as e:
-                logger.error(f"Failed to configure Gemini API: {str(e)} - will use mock functionality")
-                self.genai = None
+                logger.error(f"Failed to initialize OpenAI client for Gemini: {str(e)} - will use mock functionality")
+                self.openai_client = None
 
     def embed_text(self, text: str, chunk_size: int = 512) -> List[List[float]]:
         """
@@ -60,17 +62,17 @@ class EmbeddingService:
         # Generate embeddings for all chunks
         embeddings = []
         for chunk in chunks:
-            if self.genai:
+            if self.openai_client:
                 try:
-                    result = self.genai.embed_content(
-                        model="models/embedding-001",
-                        content=chunk,
-                        task_type="retrieval_document"
+                    response = self.openai_client.embeddings.create(
+                        model="text-embedding-005",  # Using Google's embedding model through OpenAI interface
+                        input=chunk
                     )
-                    embeddings.append(result['embedding'])
+                    embedding = response.data[0].embedding
+                    embeddings.append(embedding)
                     continue
                 except Exception as e:
-                    logger.error(f"Error embedding chunk with Gemini: {str(e)}")
+                    logger.error(f"Error embedding chunk with OpenAI-compatible Gemini: {str(e)}")
             else:
                 logger.warning("Embedding service not initialized with API key, using fallback")
 
@@ -107,20 +109,19 @@ class EmbeddingService:
         """
         logger.info(f"Embedding query: {query[:50]}...")
 
-        if self.genai:
+        if self.openai_client:
             try:
-                # Generate embedding for the query using Google's embedding API
-                result = self.genai.embed_content(
-                    model="models/embedding-001",
-                    content=query,
-                    task_type="retrieval_query"
+                # Generate embedding for the query using OpenAI-compatible interface
+                response = self.openai_client.embeddings.create(
+                    model="text-embedding-005",  # Using Google's embedding model through OpenAI interface
+                    input=query
                 )
-                embedding = result['embedding']
+                embedding = response.data[0].embedding
 
-                logger.info("Query embedding generated successfully with Gemini")
+                logger.info("Query embedding generated successfully with OpenAI-compatible Gemini")
                 return embedding
             except Exception as e:
-                logger.error(f"Error embedding query with Gemini: {str(e)}")
+                logger.error(f"Error embedding query with OpenAI-compatible Gemini: {str(e)}")
         else:
             logger.warning("Embedding service not initialized with API key, using fallback for query")
 

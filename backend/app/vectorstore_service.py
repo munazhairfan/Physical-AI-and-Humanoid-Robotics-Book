@@ -5,6 +5,8 @@ Handles operations with the Qdrant vector database for document indexing and ret
 from typing import List, Dict, Optional
 import logging
 import uuid
+import re
+import html
 
 logger = logging.getLogger(__name__)
 
@@ -55,59 +57,109 @@ class VectorStoreService:
                 logger.info("Falling back to in-memory mode")
                 self.client = QdrantClient(":memory:")
                 self.collection_name = collection_name
-                self._ensure_collection_exists()
         else:
-            # Fallback to provided URL or in-memory for local development
+            # Use local Qdrant for development
             try:
                 from qdrant_client import QdrantClient
                 from qdrant_client.http import models
                 from qdrant_client.http.models import Distance, VectorParams, PointStruct
 
-                if url is None:
-                    # Use in-memory mode for development without requiring a running server
-                    self.client = QdrantClient(":memory:")
-                    logger.info("Using in-memory Qdrant for local development")
-                else:
-                    self.client = QdrantClient(
-                        url=url,
-                        api_key=api_key,
-                        prefer_grpc=False  # Use REST for free tier
-                    )
-                    logger.info(f"Using external Qdrant at {url}")
+                # Try to connect to local Qdrant instance
+                self.client = QdrantClient(host="localhost", port=6333)
+                logger.info("Connected to local Qdrant instance")
+            except Exception as e:
+                logger.error(f"Failed to connect to local Qdrant: {str(e)}")
+                logger.info("Falling back to in-memory mode")
+                self.client = QdrantClient(":memory:")
 
-                # Set collection name and initialize collection
-                self.collection_name = collection_name
-                self._ensure_collection_exists()
+            # Set collection name and initialize collection
+            self.collection_name = collection_name
+            self._ensure_collection_exists()
 
-            except ImportError:
-                logger.warning("Qdrant client not available - using mock vector store service")
-                self.client = None
-                self.collection_name = collection_name
-                logger.info("Mock vector store service initialized")
+    def _remove_markdown_formatting(self, markdown_content: str) -> str:
+        """
+        Convert markdown content to plain text by removing markdown formatting.
+
+        Args:
+            markdown_content: Raw markdown content
+
+        Returns:
+            Plain text content with markdown formatting removed
+        """
+        if not markdown_content:
+            return ""
+
+        # Remove HTML tags if any
+        text = html.unescape(markdown_content)
+
+        # Remove markdown headers (### Header -> Header)
+        text = re.sub(r'^#{1,6}\s*', '', text, flags=re.MULTILINE)
+
+        # Remove bold and italic formatting (**text**, *text*, __text__, _text_)
+        text = re.sub(r'\*{2}([^*]+)\*{2}', r'\1', text)  # **bold**
+        text = re.sub(r'\*([^*]+)\*', r'\1', text)       # *italic*
+        text = re.sub(r'_{2}([^_]+)_{2}', r'\1', text)   # __bold__
+        text = re.sub(r'_([^_]+)_', r'\1', text)         # _italic_
+
+        # Remove code blocks (```code```)
+        text = re.sub(r'```.*?```', '', text, flags=re.DOTALL)
+
+        # Remove inline code (`code`)
+        text = re.sub(r'`([^`]+)`', r'\1', text)
+
+        # Remove links [text](url) -> text
+        text = re.sub(r'\[([^\]]+)\]\([^)]+\)', r'\1', text)
+
+        # Remove images ![alt](url) -> alt
+        text = re.sub(r'!\[([^\]]*)\]\([^)]+\)', r'\1', text)
+
+        # Remove blockquotes
+        text = re.sub(r'^>\s*', '', text, flags=re.MULTILINE)
+
+        # Remove horizontal rules
+        text = re.sub(r'^\s*[-*_]{3,}\s*$', '', text, flags=re.MULTILINE)
+
+        # Remove reference-style links [text][1] and reference definitions [1]: url
+        text = re.sub(r'\[([^\]]+)\]\[[^\]]+\]', r'\1', text)  # [text][1] -> text
+        text = re.sub(r'\n\[.+\]:.+\n', '\n', text)  # Remove reference definitions
+
+        # Replace common markdown symbols
+        text = re.sub(r'\\', '', text)  # Remove escape characters
+
+        # Remove extra whitespace and normalize
+        text = re.sub(r'\n\s*\n', '\n\n', text)  # Replace multiple blank lines with single
+        text = re.sub(r'[ \t]+', ' ', text)      # Multiple spaces to single space
+        text = text.strip()
+
+        # Clean up any remaining markdown artifacts
+        text = re.sub(r'\n\s*-', '\n- ', text)  # Ensure proper list formatting
+        text = re.sub(r'\n\s#\s', '\n', text)   # Remove any remaining header markers
+
+        return text
 
     def _ensure_collection_exists(self):
         """
-        Ensure the collection exists with appropriate vector parameters.
+        Ensure that the collection exists in Qdrant.
+        Creates the collection if it doesn't exist.
         """
         try:
             # Check if collection exists
             collections = self.client.get_collections()
-            collection_exists = any(col.name == self.collection_name for col in collections.collections)
+            collection_names = [collection.name for collection in collections.collections]
 
-            if not collection_exists:
-                # Create collection with appropriate parameters
-                # Using 768 dimensions for Google Gemini embeddings
-                from qdrant_client.http.models import VectorParams, Distance
+            if self.collection_name not in collection_names:
+                # Create collection with appropriate vector size (768 for Sentence Transformers)
+                from qdrant_client.http import models
                 self.client.create_collection(
                     collection_name=self.collection_name,
-                    vectors_config=VectorParams(size=768, distance=Distance.COSINE)
+                    vectors_config=models.VectorParams(size=768, distance=models.Distance.COSINE),
                 )
                 logger.info(f"Created collection: {self.collection_name}")
             else:
-                logger.info(f"Collection {self.collection_name} already exists")
+                logger.info(f"Collection already exists: {self.collection_name}")
         except Exception as e:
             logger.error(f"Error ensuring collection exists: {str(e)}")
-            # Don't raise the exception to prevent application crashes
+            # In memory mode, collection creation is automatic
 
     def index_document(self, text: str, doc_id: Optional[str] = None, metadata: Optional[Dict] = None) -> str:
         """
@@ -167,39 +219,36 @@ class VectorStoreService:
                 points=points
             )
 
-            logger.info(f"Successfully indexed {len(points)} chunks for document {doc_id}")
-        except ImportError:
-            logger.warning("Qdrant client not available - skipping document index")
+            logger.info(f"Successfully indexed document {doc_id} with {len(points)} chunks")
+            return doc_id
         except Exception as e:
             logger.error(f"Error indexing document: {str(e)}")
-            # If there's an error with embedding, we can still try to index using a fallback
-            # For now, we'll log the error but continue with the return
-
-        return doc_id
+            # In case of error, return the doc_id anyway
+            return doc_id
 
     def index_documents(self, documents: List[Dict]) -> List[str]:
         """
         Index multiple documents in the vector store.
 
         Args:
-            documents: List of documents, each with 'text' and optional 'metadata' keys
+            documents: List of documents to index, each with 'text', 'doc_id', and 'metadata' keys
 
         Returns:
-            List of document IDs for the indexed documents
+            List of document IDs of the indexed documents
         """
         logger.info(f"Indexing {len(documents)} documents")
 
-        doc_ids = []
+        indexed_ids = []
         for doc in documents:
             text = doc.get('text', '')
+            doc_id = doc.get('doc_id')
             metadata = doc.get('metadata', {})
-            doc_id = doc.get('id')
 
             indexed_id = self.index_document(text, doc_id, metadata)
-            doc_ids.append(indexed_id)
+            indexed_ids.append(indexed_id)
 
-        logger.info(f"Successfully indexed {len(documents)} documents")
-        return doc_ids
+        logger.info(f"Successfully indexed {len(indexed_ids)} documents")
+        return indexed_ids
 
     def search(self, query_vector: List[float], top_k: int = 5) -> List[Dict]:
         """
@@ -243,9 +292,13 @@ class VectorStoreService:
             # Format results
             results = []
             for result in search_points:
+                content = result.payload.get("text", "") if result.payload else ""
+                # Process content to remove any remaining markdown formatting
+                content = self._remove_markdown_formatting(content)
+
                 formatted_result = {
                     "id": result.id,
-                    "content": result.payload.get("text", "") if result.payload else "",
+                    "content": content,
                     "score": result.score,
                     "metadata": result.payload.get("metadata", {}) if result.payload else {},
                     "original_doc_id": result.payload.get("original_doc_id", "") if result.payload else "",
@@ -257,97 +310,105 @@ class VectorStoreService:
             return results
         except Exception as e:
             logger.error(f"Error performing search: {str(e)}")
+            # Return empty results in case of error
             return []
 
-    def delete_document(self, doc_id: str):
+    def delete_document(self, doc_id: str) -> bool:
         """
-        Delete a document and all its chunks from the vector store.
+        Delete a document from the vector store.
 
         Args:
             doc_id: The ID of the document to delete
+
+        Returns:
+            True if the document was successfully deleted, False otherwise
         """
         logger.info(f"Deleting document: {doc_id}")
 
         if self.client is None:
+            # Mock implementation when Qdrant client is not available
             logger.warning("Mock vectorstore: Would delete document")
-            return
+            return True
 
         try:
+            # Find all points with this original_doc_id and delete them
             from qdrant_client.http import models
-            # Find all points with this document ID
-            filter_condition = models.Filter(
-                must=[
-                    models.FieldCondition(
-                        key="original_doc_id",
-                        match=models.MatchValue(value=doc_id)
-                    )
-                ]
-            )
-
-            # Delete points matching the filter
-            self.client.delete(
+            scroll_results = self.client.scroll(
                 collection_name=self.collection_name,
-                points_selector=models.FilterSelector(
-                    filter=filter_condition
-                )
+                scroll_filter=models.Filter(
+                    must=[
+                        models.FieldCondition(
+                            key="original_doc_id",
+                            match=models.MatchValue(value=doc_id)
+                        )
+                    ]
+                ),
+                limit=1000  # Assuming max 1000 chunks per document
             )
 
-            logger.info(f"Successfully deleted document: {doc_id}")
+            point_ids = [point.id for point in scroll_results[0]]
+
+            if point_ids:
+                self.client.delete(
+                    collection_name=self.collection_name,
+                    points_selector=models.PointIdsList(
+                        points=point_ids
+                    )
+                )
+                logger.info(f"Successfully deleted document {doc_id} with {len(point_ids)} chunks")
+                return True
+            else:
+                logger.warning(f"No points found for document {doc_id}")
+                return False
         except Exception as e:
             logger.error(f"Error deleting document: {str(e)}")
+            return False
 
     def get_document(self, doc_id: str) -> Optional[Dict]:
         """
-        Retrieve a document by its ID.
+        Retrieve a document from the vector store by its ID.
 
         Args:
             doc_id: The ID of the document to retrieve
 
         Returns:
-            Document content and metadata, or None if not found
+            The document content and metadata, or None if not found
         """
         logger.info(f"Retrieving document: {doc_id}")
 
         if self.client is None:
+            # Mock implementation when Qdrant client is not available
             logger.warning("Mock vectorstore: Would return document")
             return None
 
         try:
             from qdrant_client.http import models
-            # Find all points with this document ID
-            filter_condition = models.Filter(
-                must=[
-                    models.FieldCondition(
-                        key="original_doc_id",
-                        match=models.MatchValue(value=doc_id)
-                    )
-                ]
-            )
-
-            results = self.client.scroll(
+            scroll_results = self.client.scroll(
                 collection_name=self.collection_name,
-                scroll_filter=filter_condition,
-                limit=1000  # Assuming a document won't have more than 1000 chunks
+                scroll_filter=models.Filter(
+                    must=[
+                        models.FieldCondition(
+                            key="original_doc_id",
+                            match=models.MatchValue(value=doc_id)
+                        )
+                    ]
+                ),
+                limit=1000  # Assuming max 1000 chunks per document
             )
 
-            if results[0]:
-                # Combine all chunks of the document
-                chunks = []
-                for point in results[0]:
-                    chunks.append({
-                        "text": point.payload.get("text", ""),
-                        "chunk_index": point.payload.get("chunk_index", 0)
-                    })
+            points = scroll_results[0]
+            if points:
+                # Combine all chunks back into a single document
+                sorted_points = sorted(points, key=lambda x: x.payload.get("chunk_index", 0))
+                full_text = "".join([point.payload.get("text", "") for point in sorted_points])
 
-                # Sort chunks by index to reconstruct the document
-                chunks.sort(key=lambda x: x["chunk_index"])
-
-                full_text = "".join(chunk["text"] for chunk in chunks)
+                # Take metadata from the first chunk (they should all be the same)
+                metadata = sorted_points[0].payload.get("metadata", {})
 
                 return {
                     "id": doc_id,
-                    "text": full_text,
-                    "metadata": results[0][0].payload.get("metadata", {})
+                    "content": full_text,
+                    "metadata": metadata
                 }
 
             logger.info(f"Document {doc_id} not found")
@@ -356,24 +417,28 @@ class VectorStoreService:
             logger.error(f"Error retrieving document: {str(e)}")
             return None
 
-# Global instance of the vector store service
+
+# Global instance of the vectorstore service
 # In a real application, this might be managed by a dependency injection framework
 vectorstore_service = None
 
+
 def get_vectorstore_service():
     """
-    Get the global vector store service instance.
+    Get the global vectorstore service instance.
     Initializes the service if it doesn't exist.
     """
     global vectorstore_service
     if vectorstore_service is None:
         try:
-            # Force in-memory mode for development to avoid dependency on external services
-            url = None  # This will trigger in-memory mode in VectorStoreService.__init__
-            api_key = None
+            # Check for environment-specific configuration
+            import os
+            url = os.getenv("QDRANT_URL")
+            api_key = os.getenv("QDRANT_API_KEY")
+
             vectorstore_service = VectorStoreService(url=url, api_key=api_key)
         except Exception as e:
             logger.error(f"Failed to initialize vectorstore service: {str(e)}")
-            # Create a service even if initialization fails
-            vectorstore_service = VectorStoreService()
+            # Create a service instance even if initialization fails
+            vectorstore_service = VectorStoreService()  # This will handle the error internally
     return vectorstore_service

@@ -1,7 +1,7 @@
 """
 LLM Service for RAG Chatbot
 Handles language model operations for chat generation.
-This service integrates with Google's Gemini API.
+This service integrates with Google's Gemini API through OpenAI-compatible interface.
 """
 from typing import List, Dict, Optional
 import logging
@@ -97,31 +97,32 @@ def markdown_to_text(markdown_content: str) -> str:
 class LLMService:
     """
     Service class for handling language model operations.
-    Uses Google's Gemini API for generating responses based on context.
+    Uses Google's Gemini API through OpenAI-compatible interface for generating responses based on context.
     """
 
     def __init__(self):
         """
         Initialize the LLM service.
-        Initializes connection to Google's Gemini API.
+        Initializes connection to Google's Gemini API through OpenAI-compatible interface.
         """
-        logger.info("Initializing LLM Service with Google Gemini")
+        logger.info("Initializing LLM Service with OpenAI-compatible Google Gemini")
 
         # Get Gemini API key from environment
         self.gemini_api_key = os.getenv("GEMINI_API_KEY")
         if not self.gemini_api_key:
             logger.warning("GEMINI_API_KEY environment variable not set - will use mock functionality")
-            self.model = None
+            self.openai_client = None
         else:
             try:
-                import google.generativeai as genai
-                genai.configure(api_key=self.gemini_api_key)
-                # Initialize the model
-                self.model = genai.GenerativeModel('gemini-2.0-flash')
-                logger.info("Gemini model initialized successfully with API key")
+                from openai import OpenAI
+                self.openai_client = OpenAI(
+                    api_key=self.gemini_api_key,
+                    base_url="https://generativelanguage.googleapis.com/v1beta/openai/"
+                )
+                logger.info("OpenAI client for Gemini initialized successfully with API key")
             except Exception as e:
-                logger.error(f"Failed to initialize Gemini model: {str(e)} - will use mock functionality")
-                self.model = None
+                logger.error(f"Failed to initialize OpenAI client for Gemini: {str(e)} - will use mock functionality")
+                self.openai_client = None
 
     def generate_response(self, query: str, context: Optional[List[Dict]] = None, history: Optional[List[Dict]] = None) -> str:
         """
@@ -137,30 +138,32 @@ class LLMService:
         """
         logger.info(f"Generating response for query: {query[:50]}...")
 
-        if self.model:
+        if self.openai_client:
             # Build a prompt that includes the query, context, and history
             prompt = self._build_prompt(query, context, history)
 
             try:
-                # Generate response using Gemini
-                response = self.model.generate_content(
-                    prompt,
-                    generation_config={
-                        "temperature": 0.3,
-                    }
+                # Generate response using OpenAI-compatible Gemini
+                response = self.openai_client.chat.completions.create(
+                    model="gemini-2.0-flash",
+                    messages=[{"role": "user", "content": prompt}],
+                    temperature=0.3,
+                    max_tokens=1000  # Ensure we get complete responses
                 )
 
-                result = response.text
-                logger.info("Response generated successfully with Gemini")
+                result = response.choices[0].message.content
+                logger.info("Response generated successfully with OpenAI-compatible Gemini")
                 # Clean up the result to ensure proper formatting
                 clean_result = ' '.join(result.split())  # Normalize whitespace
                 # Remove any remaining markdown artifacts that might have slipped through
                 clean_result = markdown_to_text(clean_result)
                 return clean_result
             except Exception as e:
-                logger.error(f"Error generating response with Gemini: {str(e)}")
+                logger.error(f"Error generating response with OpenAI-compatible Gemini: {str(e)}")
+                # Even if there's an API error, we should still try to use Qdrant context with fallback
+                logger.info("Falling back to Qdrant context with enhanced processing")
         else:
-            logger.warning("LLM service not initialized with API key, using fallback response")
+            logger.warning("LLM service not initialized with API key, using enhanced fallback response based on Qdrant context")
 
         # If there's context available, return a response based on the context even if API fails
         if context and len(context) > 0:
@@ -171,56 +174,65 @@ class LLMService:
                 if content.strip():
                     # Convert markdown to plain text and clean up the content
                     plain_content = markdown_to_text(content)
-                    clean_content = ' '.join(plain_content.split())  # Replace multiple spaces/newlines with single spaces
+                    # Remove any remaining artifacts like "=====" or other document formatting
+                    clean_content = re.sub(r'=+', '', plain_content)  # Remove equals signs
+                    clean_content = re.sub(r'-+', '', clean_content)  # Remove dash sequences
+                    clean_content = re.sub(r'\*+', '', clean_content)  # Remove asterisk sequences
+                    clean_content = re.sub(r'#+', '', clean_content)  # Remove hash sequences
+                    clean_content = re.sub(r'\s+', ' ', clean_content)  # Normalize whitespace
+                    clean_content = clean_content.strip()
+
                     # Limit to meaningful content, avoid very short or repetitive snippets
                     if len(clean_content) > 20:  # Only include meaningful content
-                        # Try to extract complete sentences if possible
-                        snippet = clean_content[:500]  # Limit to 500 chars
+                        # Try to extract complete sentences if possible, but with better handling
+                        full_content = clean_content[:1000]  # Increase limit to allow more complete content
                         # Try to find the last sentence ending to avoid cut-off sentences
-                        for end_marker in ['.', '!', '?']:
-                            last_pos = snippet.rfind(end_marker)
+                        for end_marker in ['.', '!', '?', ';']:
+                            last_pos = full_content.rfind(end_marker)
                             if last_pos != -1:  # If we found an end marker
-                                snippet = snippet[:last_pos + 1]  # Include the end marker
+                                full_content = full_content[:last_pos + 1]  # Include the end marker
                                 break
-                        # If no sentence ending found, try to find word boundaries to avoid cutting words
-                        if end_marker not in snippet and len(snippet) == 500:
-                            # Find the last space to avoid cutting in the middle of a word
-                            last_space = snippet.rfind(' ')
-                            if last_space > len(snippet) * 0.8:  # Only if the space is not too early
-                                snippet = snippet[:last_space]
 
                         # Clean up any remaining artifacts like "rob - siderations" -> "considerations"
-                        snippet = snippet.replace(' - ', ' ')
-                        snippet = ' '.join(snippet.split())  # Normalize spaces again after cleaning
-                        context_snippets.append(snippet.strip())
+                        full_content = full_content.replace(' - ', ' ')
+                        full_content = ' '.join(full_content.split())  # Normalize spaces again after cleaning
+                        context_snippets.append(full_content.strip())
 
             if context_snippets:
                 # Combine the context snippets into a more natural, flowing response
                 combined_content = ". ".join([snippet for snippet in context_snippets if snippet])  # Join with proper sentence breaks
-                if combined_content and not combined_content.endswith('.'):
+                if combined_content and not combined_content.endswith(('.', '!', '?')):
                     combined_content += '.'
 
                 # Create a more natural response that addresses the user's query
                 query_lower = query.lower()
-                if 'control' in query_lower or 'balance' in query_lower or 'walking' in query_lower or 'gait' in query_lower:
-                    return f"Based on the robotics textbook: {combined_content} Humanoid robot control involves sophisticated techniques for maintaining balance and executing stable walking patterns. The control system must coordinate multiple joints and sensors to achieve stable locomotion. How can I help you understand this better?"
-                elif 'challenges' in query_lower or 'future' in query_lower or 'directions' in query_lower:
-                    return f"Based on the robotics textbook: {combined_content} The field of humanoid robotics faces several challenges including computational requirements, safety, and robustness. Future directions involve improved autonomy and better human-robot collaboration. How can I help you understand this better?"
+
+                # More comprehensive response patterns based on query content
+                if any(keyword in query_lower for keyword in ['control', 'balance', 'walking', 'gait', 'motion', 'movement']):
+                    return f"Based on the robotics textbook: {combined_content}\n\nHumanoid robot control involves sophisticated techniques for maintaining balance and executing stable walking patterns. The control system must coordinate multiple joints and sensors to achieve stable locomotion. How can I help you understand this better?"
+                elif any(keyword in query_lower for keyword in ['challenges', 'future', 'directions', 'development', 'advancement']):
+                    return f"Based on the robotics textbook: {combined_content}\n\nThe field of humanoid robotics faces several challenges including computational requirements, safety, and robustness. Future directions involve improved autonomy and better human-robot collaboration. How can I help you understand this better?"
+                elif any(keyword in query_lower for keyword in ['sensor', 'perception', 'vision', 'camera', 'lidar', 'imu']):
+                    return f"Based on the robotics textbook: {combined_content}\n\nSensors are crucial for humanoid robots to perceive their environment. They use various sensors like cameras, IMUs, and LiDAR for navigation and interaction. How can I help you understand this better?"
+                elif any(keyword in query_lower for keyword in ['ai', 'learning', 'machine learning', 'deep learning', 'neural']):
+                    return f"Based on the robotics textbook: {combined_content}\n\nAI and machine learning play important roles in enabling humanoid robots to learn and adapt to their environment. How can I help you understand this better?"
+                elif any(keyword in query_lower for keyword in ['hardware', 'mechanics', 'actuator', 'motor', 'joint']):
+                    return f"Based on the robotics textbook: {combined_content}\n\nThe mechanical design of humanoid robots involves sophisticated hardware including actuators, motors, and joints to achieve human-like movement. How can I help you understand this better?"
                 else:
                     # General response for other queries
-                    return f"Based on the robotics textbook: {combined_content} Humanoid robotics is a complex field that combines mechanics, electronics, control systems, and AI. How can I help you understand this better?"
+                    return f"Based on the robotics textbook: {combined_content}\n\nHumanoid robotics is a complex field that combines mechanics, electronics, control systems, and AI. How can I help you understand this better?"
 
-        # Generate a more helpful response based on the query content
+        # If no context is available, generate a helpful response based on the query content
         lower_query = query.lower()
         if 'hello' in lower_query or 'hi' in lower_query or 'hey' in lower_query:
-            return "Hello! I'm your Robotics Assistant. I'm currently running in demo mode without the full AI backend configured. How can I help you with robotics concepts today?"
-        elif 'robot' in lower_query or 'ai' in lower_query:
+            return "Hello! I'm your Robotics Assistant. I'm here to help you learn about robotics concepts. What would you like to know about robotics?"
+        elif any(keyword in lower_query for keyword in ['robot', 'ai', 'artificial intelligence']):
             return "Robots and AI are fascinating fields! Physical AI involves creating intelligent systems that interact with the physical world. Humanoid robots specifically mimic human form and behavior. What specific aspect would you like to know more about?"
-        elif 'learn' in lower_query or 'study' in lower_query or 'education' in lower_query:
+        elif any(keyword in lower_query for keyword in ['learn', 'study', 'education', 'book', 'textbook']):
             return "Learning about robotics involves understanding mechanics, electronics, programming, and artificial intelligence. Key areas include kinematics, control systems, sensors, actuators, and machine learning. Would you like to dive deeper into any specific area?"
-        elif 'humanoid' in lower_query or 'bipedal' in lower_query or 'walking' in lower_query:
+        elif any(keyword in lower_query for keyword in ['humanoid', 'bipedal', 'walking', 'balance']):
             return "Humanoid robots are designed to resemble and mimic human behavior. Key challenges include balance control, gait planning, and natural movement. They often use inverse kinematics and PID controllers for smooth motion. What would you like to know about humanoid robotics?"
-        elif 'control' in lower_query or 'motion' in lower_query or 'movement' in lower_query:
+        elif any(keyword in lower_query for keyword in ['control', 'motion', 'movement', 'actuator', 'motor']):
             return "Robot control involves various techniques like PID controllers, inverse kinematics, and trajectory planning. For humanoid robots, maintaining balance and creating natural movements require sophisticated control algorithms. Would you like to know about a specific control method?"
         else:
             responses = [
