@@ -193,21 +193,93 @@ export const LoginPage = () => {
   const [isLogin, setIsLogin] = React.useState(true);
   const { login, signup, error } = useAuth();
   const [formError, setFormError] = React.useState('');
+  const [successMessage, setSuccessMessage] = React.useState('');
+  const [isLoading, setIsLoading] = React.useState(false);
+
+  // Validation functions
+  const validateEmail = (email) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
+
+  const validatePassword = (password) => {
+    // Password should be at least 8 characters with at least one uppercase, one lowercase, and one number
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d@$!%*?&]{8,}$/;
+    return passwordRegex.test(password);
+  };
+
+  const validateName = (name) => {
+    // Name should be at least 2 characters and contain only letters, spaces, hyphens, and apostrophes
+    const nameRegex = /^[a-zA-Z\s\-']+$/;
+    return name.length >= 2 && nameRegex.test(name);
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setFormError('');
+    setSuccessMessage('');
+    setIsLoading(true);
 
-    if (isLogin) {
-      const result = await login({ email, password });
-      if (!result.success) {
-        setFormError(result.error);
+    // Validate inputs before submitting
+    if (!validateEmail(email)) {
+      setFormError('Please enter a valid email address.');
+      setIsLoading(false);
+      return;
+    }
+
+    if (!validatePassword(password)) {
+      setFormError('Password must be at least 8 characters with at least one uppercase letter, one lowercase letter, and one number.');
+      setIsLoading(false);
+      return;
+    }
+
+    if (!isLogin && !validateName(name)) {
+      setFormError('Name must be at least 2 characters and contain only letters, spaces, hyphens, and apostrophes.');
+      setIsLoading(false);
+      return;
+    }
+
+    try {
+      if (isLogin) {
+        const result = await login({ email, password });
+        if (!result.success) {
+          // Improve error message for login failures
+          let errorMessage = result.error;
+          if (errorMessage.includes('401') || errorMessage.includes('incorrect')) {
+            errorMessage = 'Incorrect email or password. Please try again.';
+          } else if (errorMessage.includes('failed to fetch')) {
+            errorMessage = 'Unable to connect to the server. Please check your internet connection and try again.';
+          }
+          setFormError(errorMessage);
+        } else {
+          setSuccessMessage('Login successful! Redirecting...');
+          // Clear form after successful login
+          setEmail('');
+          setPassword('');
+        }
+      } else {
+        const result = await signup({ email, password, name });
+        if (!result.success) {
+          // Improve error message for registration failures
+          let errorMessage = result.error;
+          if (errorMessage.includes('already registered')) {
+            errorMessage = 'This email address is already registered. Please try logging in instead.';
+          } else if (errorMessage.includes('failed to fetch')) {
+            errorMessage = 'Unable to connect to the server. Please check your internet connection and try again.';
+          }
+          setFormError(errorMessage);
+        } else {
+          setSuccessMessage('Account created successfully! Welcome to our platform.');
+          // Clear form after successful signup
+          setEmail('');
+          setPassword('');
+          setName('');
+        }
       }
-    } else {
-      const result = await signup({ email, password, name });
-      if (!result.success) {
-        setFormError(result.error);
-      }
+    } catch (err) {
+      setFormError('An unexpected error occurred. Please try again.');
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -221,15 +293,31 @@ export const LoginPage = () => {
     }}>
       <h2>{isLogin ? 'Login' : 'Sign Up'}</h2>
 
-      {error && (
-        <div style={{ color: 'red', marginBottom: '1rem' }}>
-          {error}
+      {/* Success message */}
+      {successMessage && (
+        <div style={{
+          color: 'green',
+          marginBottom: '1rem',
+          padding: '0.5rem',
+          backgroundColor: '#d4edda',
+          border: '1px solid #c3e6cb',
+          borderRadius: '4px'
+        }}>
+          {successMessage}
         </div>
       )}
 
-      {formError && (
-        <div style={{ color: 'red', marginBottom: '1rem' }}>
-          {formError}
+      {/* Error message - show only one error at a time to avoid duplicates */}
+      {(error || formError) && (
+        <div style={{
+          color: 'red',
+          marginBottom: '1rem',
+          padding: '0.5rem',
+          backgroundColor: '#f8d7da',
+          border: '1px solid #f5c6cb',
+          borderRadius: '4px'
+        }}>
+          {formError || error}
         </div>
       )}
 
@@ -285,17 +373,18 @@ export const LoginPage = () => {
 
         <button
           type="submit"
+          disabled={isLoading}
           style={{
             width: '100%',
             padding: '0.75rem',
-            backgroundColor: '#007cba',
+            backgroundColor: isLoading ? '#cccccc' : '#007cba',
             color: 'white',
             border: 'none',
             borderRadius: '4px',
-            cursor: 'pointer'
+            cursor: isLoading ? 'not-allowed' : 'pointer'
           }}
         >
-          {isLogin ? 'Login' : 'Sign Up'}
+          {isLoading ? (isLogin ? 'Logging in...' : 'Creating Account...') : (isLogin ? 'Login' : 'Sign Up')}
         </button>
       </form>
 

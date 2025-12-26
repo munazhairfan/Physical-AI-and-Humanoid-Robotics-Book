@@ -725,7 +725,7 @@ async def login_user_endpoint(request: LoginRequest):
         if not user:
             raise HTTPException(
                 status_code=status.HTTP_401_UNAUTHORIZED,
-                detail="Incorrect email or password",
+                detail="Incorrect email or password. Please try again.",
                 headers={"WWW-Authenticate": "Bearer"},
             )
 
