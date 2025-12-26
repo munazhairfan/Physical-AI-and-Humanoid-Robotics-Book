@@ -462,12 +462,12 @@ export const LoginPage = () => {
               borderRadius: '4px',
               cursor: 'pointer',
               background: 'white',
+              color: 'black',
               display: 'flex',
               alignItems: 'center',
               gap: '0.5rem'
             }}
           >
-            <span>🔍</span>
             <span>Google</span>
           </button>
           <button
@@ -484,12 +484,12 @@ export const LoginPage = () => {
               borderRadius: '4px',
               cursor: 'pointer',
               background: 'white',
+              color: 'black',
               display: 'flex',
               alignItems: 'center',
               gap: '0.5rem'
             }}
           >
-            <span>🐱</span>
             <span>GitHub</span>
           </button>
         </div>
