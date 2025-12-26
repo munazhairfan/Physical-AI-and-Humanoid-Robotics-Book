@@ -451,8 +451,10 @@ export const LoginPage = () => {
           <button
             type="button"
             onClick={() => {
-              console.log('Redirecting to Google for authentication...');
-              authSignIn('google');
+              if (typeof window !== 'undefined') {
+                console.log('Redirecting to Google for authentication...');
+                authSignIn('google');
+              }
             }}
             style={{
               padding: '0.5rem 1rem',
@@ -471,8 +473,10 @@ export const LoginPage = () => {
           <button
             type="button"
             onClick={() => {
-              console.log('Redirecting to GitHub for authentication...');
-              authSignIn('github');
+              if (typeof window !== 'undefined') {
+                console.log('Redirecting to GitHub for authentication...');
+                authSignIn('github');
+              }
             }}
             style={{
               padding: '0.5rem 1rem',
