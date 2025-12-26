@@ -199,7 +199,7 @@ export const LoginPage = () => {
   const [password, setPassword] = React.useState('');
   const [name, setName] = React.useState('');
   const [isLogin, setIsLogin] = React.useState(true);
-  const { login, signup, error } = useAuth();
+  const { login, signup, error, user } = useAuth();
   const [formError, setFormError] = React.useState('');
   const [successMessage, setSuccessMessage] = React.useState('');
   const [isLoading, setIsLoading] = React.useState(false);
@@ -302,7 +302,7 @@ export const LoginPage = () => {
       <h2>{isLogin ? 'Login' : 'Sign Up'}</h2>
 
       {/* Verification status indicator */}
-      {isLogin && state.user && state.user.is_verified !== undefined && !state.user.is_verified && (
+      {isLogin && user && user.is_verified !== undefined && !user.is_verified && (
         <div style={{
           color: '#856404',
           marginBottom: '1rem',
