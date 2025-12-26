@@ -694,7 +694,12 @@ async def register_user_endpoint(request: RegisterRequest):
         return Token(
             access_token=access_token,
             token_type="bearer",
-            user={"id": user.id, "email": user.email, "name": user.name}
+            user={
+                "id": user.id,
+                "email": user.email,
+                "name": user.name,
+                "is_verified": user.is_verified
+            }
         )
     except Exception as e:
         logger.error(f"Registration error: {str(e)}")
@@ -740,7 +745,12 @@ async def login_user_endpoint(request: LoginRequest):
         return Token(
             access_token=access_token,
             token_type="bearer",
-            user={"id": user.id, "email": user.email, "name": user.name}
+            user={
+                "id": user.id,
+                "email": user.email,
+                "name": user.name,
+                "is_verified": user.is_verified
+            }
         )
     except HTTPException:
         raise
@@ -1030,6 +1040,35 @@ async def github_callback(code: str = None, state: str = None, db: Session = Dep
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"GitHub OAuth failed: {error_msg}"
+        )
+
+
+@app.post("/verify-email")
+async def verify_email_endpoint(token: str):
+    """
+    Verify a user's email using the verification token.
+    """
+    from .database_models import get_db
+    from sqlalchemy.orm import Session
+    from .auth_service import verify_user_email
+
+    db: Session = next(get_db())
+    try:
+        user = verify_user_email(db=db, token=token)
+        return {
+            "message": "Email verified successfully",
+            "user": {
+                "id": user.id,
+                "email": user.email,
+                "name": user.name,
+                "is_verified": user.is_verified
+            }
+        }
+    except Exception as e:
+        logger.error(f"Email verification error: {str(e)}")
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=str(e)
         )
 
 

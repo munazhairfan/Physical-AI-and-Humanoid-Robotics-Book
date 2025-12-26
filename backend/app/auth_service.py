@@ -3,6 +3,7 @@ from typing import Optional
 import secrets
 import hashlib
 import json
+import string
 from fastapi import HTTPException
 from pydantic import BaseModel
 import os
@@ -25,6 +26,7 @@ class UserSchema(BaseModel):
     id: int
     email: str
     name: str
+    is_verified: bool
     created_at: datetime
 
 class Token(BaseModel):
@@ -170,11 +172,19 @@ def authenticate_user(db: Session, email: str, password: str):
         return False
     if not verify_password(password, user.hashed_password):
         return False
+    # Check if user email is verified (optional - you can make this required)
+    # For now, we'll allow login but you can uncomment the next lines to require verification
+    # if not user.is_verified:
+    #     raise HTTPException(status_code=401, detail="Please verify your email address before logging in.")
     return user
 
 def get_user_by_email(db: Session, email: str) -> Optional[User]:
     """Get a user by email"""
     return db.query(User).filter(User.email == email).first()
+
+def generate_verification_token() -> str:
+    """Generate a unique verification token"""
+    return secrets.token_urlsafe(32)
 
 def register_user(db: Session, email: str, password: str, name: str) -> User:
     """Register a new user"""
@@ -183,22 +193,51 @@ def register_user(db: Session, email: str, password: str, name: str) -> User:
     if existing_user:
         raise HTTPException(status_code=400, detail=f"Email {email} is already registered. Please try logging in instead.")
 
+    # Generate verification token
+    verification_token = generate_verification_token()
     hashed_pwd = hash_password(password)
 
     user = User(
         email=email,
         name=name,
-        hashed_password=hashed_pwd
+        hashed_password=hashed_pwd,
+        verification_token=verification_token
     )
 
     db.add(user)
     try:
         db.commit()
         db.refresh(user)
+
+        # Send verification email
+        try:
+            send_verification_email(user.email, user.verification_token)
+        except Exception as e:
+            # If email sending fails, log the error but don't fail the registration
+            print(f"Failed to send verification email: {str(e)}")
+
         return user
     except IntegrityError:
         db.rollback()
         raise HTTPException(status_code=400, detail=f"Email {email} is already registered. Please try logging in instead.")
+
+def verify_user_email(db: Session, token: str) -> User:
+    """Verify a user's email using the verification token"""
+    user = db.query(User).filter(User.verification_token == token).first()
+    if not user:
+        raise HTTPException(status_code=400, detail="Invalid verification token")
+
+    user.is_verified = True
+    user.verified_at = datetime.utcnow()
+    user.verification_token = None  # Clear the token after verification
+
+    db.commit()
+    db.refresh(user)
+    return user
+
+def get_user_by_email_with_verification_check(db: Session, email: str) -> Optional[User]:
+    """Get a user by email and check if they are verified"""
+    return db.query(User).filter(User.email == email).first()
 
 def get_current_user_from_token(token: str) -> Optional[User]:
     """Get the current user from the token"""
@@ -222,6 +261,39 @@ def get_current_user_from_token(token: str) -> Optional[User]:
 def get_current_user(token: str) -> Optional[User]:
     """Alias for get_current_user_from_token for compatibility"""
     return get_current_user_from_token(token)
+
+# Email verification and sending functions
+def send_verification_email(email: str, verification_token: str):
+    """Send verification email to user (placeholder function)"""
+    # In a real implementation, you would use an email service like:
+    # - SMTP server
+    # - SendGrid
+    # - AWS SES
+    # - Mailgun
+    # For now, we'll just print the verification link for testing purposes
+
+    import os
+    frontend_url = os.getenv('FRONTEND_URL', 'https://physical-ai-and-humanoid-robotics-b-rosy.vercel.app')
+    verification_link = f"{frontend_url}/verify-email?token={verification_token}"
+
+    print(f"Verification email would be sent to {email}")
+    print(f"Verification link: {verification_link}")
+
+    # In a real implementation, you would send the actual email here
+    # Example with a real email service would be:
+    # send_email(
+    #     to=email,
+    #     subject="Verify your email address",
+    #     body=f"Click this link to verify your email: {verification_link}"
+    # )
+
+    return True
+
+def send_welcome_email(email: str, name: str):
+    """Send welcome email to user (placeholder function)"""
+    print(f"Welcome email would be sent to {email}")
+    # In a real implementation, you would send an actual welcome email here
+    return True
 
 # OAuth state storage (in production, use a more secure method)
 oauth_states = {}

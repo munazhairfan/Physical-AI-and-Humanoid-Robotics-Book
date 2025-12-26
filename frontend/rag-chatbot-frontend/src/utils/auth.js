@@ -36,6 +36,14 @@ const authReducer = (state, action) => {
         ...state,
         user: action.payload
       };
+    case 'UPDATE_USER_VERIFICATION':
+      return {
+        ...state,
+        user: {
+          ...state.user,
+          is_verified: action.payload.is_verified
+        }
+      };
     default:
       return state;
   }
@@ -293,6 +301,20 @@ export const LoginPage = () => {
     }}>
       <h2>{isLogin ? 'Login' : 'Sign Up'}</h2>
 
+      {/* Verification status indicator */}
+      {isLogin && state.user && state.user.is_verified !== undefined && !state.user.is_verified && (
+        <div style={{
+          color: '#856404',
+          marginBottom: '1rem',
+          padding: '0.5rem',
+          backgroundColor: '#fff3cd',
+          border: '1px solid #ffeaa7',
+          borderRadius: '4px'
+        }}>
+          ⚠️ Your email is not verified. Please check your email for verification instructions.
+        </div>
+      )}
+
       {/* Success message */}
       {successMessage && (
         <div style={{
@@ -318,6 +340,21 @@ export const LoginPage = () => {
           borderRadius: '4px'
         }}>
           {formError || error}
+        </div>
+      )}
+
+      {/* Informational message for first-time users */}
+      {!isLogin && (
+        <div style={{
+          color: '#0c5460',
+          marginBottom: '1rem',
+          padding: '0.5rem',
+          backgroundColor: '#d1ecf1',
+          border: '1px solid #bee5eb',
+          borderRadius: '4px',
+          fontSize: '0.85rem'
+        }}>
+          After signing up, please check your email to verify your account.
         </div>
       )}
 
@@ -412,28 +449,44 @@ export const LoginPage = () => {
         <div style={{ textAlign: 'center', marginBottom: '0.5rem' }}>Or continue with</div>
         <div style={{ display: 'flex', gap: '0.5rem', justifyContent: 'center' }}>
           <button
-            onClick={() => authSignIn('google')}
+            type="button"
+            onClick={() => {
+              console.log('Redirecting to Google for authentication...');
+              authSignIn('google');
+            }}
             style={{
-              padding: '0.5rem',
+              padding: '0.5rem 1rem',
               border: '1px solid #ccc',
               borderRadius: '4px',
               cursor: 'pointer',
-              background: 'white'
+              background: 'white',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '0.5rem'
             }}
           >
-            Google
+            <span>🔍</span>
+            <span>Google</span>
           </button>
           <button
-            onClick={() => authSignIn('github')}
+            type="button"
+            onClick={() => {
+              console.log('Redirecting to GitHub for authentication...');
+              authSignIn('github');
+            }}
             style={{
-              padding: '0.5rem',
+              padding: '0.5rem 1rem',
               border: '1px solid #ccc',
               borderRadius: '4px',
               cursor: 'pointer',
-              background: 'white'
+              background: 'white',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '0.5rem'
             }}
           >
-            GitHub
+            <span>🐱</span>
+            <span>GitHub</span>
           </button>
         </div>
       </div>

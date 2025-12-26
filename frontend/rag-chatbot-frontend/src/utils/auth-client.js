@@ -54,10 +54,19 @@ const signIn = async (provider, options = {}) => {
       }
     } else if (provider === 'google') {
       // Handle Google OAuth - redirect to backend
+      // Show user a notification before redirecting
+      if (typeof window !== 'undefined') {
+        // You can add a notification here if using a notification library
+        console.log('Redirecting to Google for authentication...');
+      }
       authAPI.loginWithGoogle();
       return { ok: true, redirect: true };
     } else if (provider === 'github') {
       // Handle GitHub OAuth - redirect to backend
+      // Show user a notification before redirecting
+      if (typeof window !== 'undefined') {
+        console.log('Redirecting to GitHub for authentication...');
+      }
       authAPI.loginWithGitHub();
       return { ok: true, redirect: true };
     }
@@ -80,5 +89,29 @@ const signOut = async () => {
   }
 };
 
+// Function to verify email
+const verifyEmail = async (token) => {
+  try {
+    const response = await fetch(`${typeof window !== 'undefined' ? window.process?.env?.REACT_APP_API_URL || process?.env?.REACT_APP_API_URL || 'https://physical-ai-and-humanoid-robotics-book-production.up.railway.app' : 'https://physical-ai-and-humanoid-robotics-book-production.up.railway.app'}/verify-email`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ token }),
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.detail || 'Email verification failed');
+    }
+
+    const data = await response.json();
+    return { ok: true, user: data.user };
+  } catch (error) {
+    console.error('Email verification error:', error);
+    return { ok: false, error: error.message };
+  }
+};
+
 // Export auth functions
-export { signIn, signOut, useSession };
+export { signIn, signOut, useSession, verifyEmail };
