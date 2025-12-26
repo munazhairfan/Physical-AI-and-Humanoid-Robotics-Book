@@ -7,18 +7,52 @@
 
 import { authAPI } from './auth-api';
 
+import { useState, useEffect } from 'react';
+
 // useSession hook that connects to real auth API
 const useSession = () => {
-  // Check if user is authenticated by checking for token
-  const isAuthenticated = authAPI.isAuthenticated();
-  const user = authAPI.getUser();
-  const token = authAPI.getToken();
+  const [sessionData, setSessionData] = useState({
+    data: null,
+    status: 'unauthenticated',
+    isLoading: true,
+    error: null
+  });
 
-  return {
-    data: token && user ? { user, expires: null } : null,
-    status: isAuthenticated ? 'authenticated' : 'unauthenticated',
-    isLoading: false
-  };
+  useEffect(() => {
+    // Check if user is authenticated by checking for token
+    // Only run on client side
+    if (typeof window !== 'undefined') {
+      try {
+        const isAuthenticated = authAPI.isAuthenticated();
+        const user = authAPI.getUser();
+        const token = authAPI.getToken();
+
+        setSessionData({
+          data: token && user ? { user, expires: null } : null,
+          status: isAuthenticated ? 'authenticated' : 'unauthenticated',
+          isLoading: false,
+          error: null
+        });
+      } catch (error) {
+        setSessionData({
+          data: null,
+          status: 'unauthenticated',
+          isLoading: false,
+          error: error.message
+        });
+      }
+    } else {
+      // On server side, set default values
+      setSessionData({
+        data: null,
+        status: 'unauthenticated',
+        isLoading: false,
+        error: null
+      });
+    }
+  }, []);
+
+  return sessionData;
 };
 
 // signIn function that connects to real auth API
