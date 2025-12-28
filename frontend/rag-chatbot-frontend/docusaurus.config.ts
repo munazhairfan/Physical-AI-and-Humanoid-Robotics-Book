@@ -90,7 +90,8 @@ const config: Config = {
           label: 'Home',
         },
         {
-          to: '/docs/intro',
+          type: 'doc',
+          docId: 'intro',
           position: 'left',
           label: 'Contents',
         },
