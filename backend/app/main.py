@@ -174,7 +174,7 @@ def get_llm_service():
         try:
             from .llm_service import get_llm_service as _get_llm_service
             llm_service = _get_llm_service()
-        except ValueError as e:
+        except Exception as e:
             logger.error(f"Failed to initialize LLM service: {str(e)}")
             # Return a mock service that provides basic functionality
             class MockLLMService:
@@ -205,7 +205,7 @@ def get_vectorstore_service():
                     api_key=qdrant_api_key
                 )
             else:
-                # Use default VectorStoreService which handles local configuration
+                # Use VectorStoreService which now has improved functionality
                 vectorstore_service = VectorStoreService()
 
         except Exception as e:

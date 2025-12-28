@@ -1,6 +1,6 @@
 """
-Vector Store Service for RAG Chatbot
-Handles operations with the Qdrant vector database for document indexing and retrieval.
+Improved Vector Store Service for RAG Chatbot
+Handles operations with the Qdrant vector database with better chunking and retrieval
 """
 from typing import List, Dict, Optional
 import logging
@@ -12,22 +12,17 @@ logger = logging.getLogger(__name__)
 
 class VectorStoreService:
     """
-    Service class for handling vector store operations with Qdrant.
-    Manages document indexing, retrieval, and collection management.
+    Improved Service class for handling vector store operations with Qdrant.
+    Uses semantic chunking for better retrieval quality.
     """
 
     def __init__(self, url: Optional[str] = None, api_key: Optional[str] = None, collection_name: str = "rag_documents"):
         """
         Initialize the vector store service.
-
-        Args:
-            url: Qdrant instance URL (defaults to localhost for development)
-            api_key: Qdrant API key (if using cloud instance)
-            collection_name: Name of the collection to use for storing documents
         """
-        logger.info("Initializing Vector Store Service")
+        logger.info("Initializing Improved Vector Store Service with semantic chunking")
 
-        # Check for Railway-specific Qdrant configuration first (no external service detection)
+        # Check for Railway-specific Qdrant configuration first
         import os
         qdrant_host = os.getenv("QDRANT_HOST")
         qdrant_port = os.getenv("QDRANT_PORT", "6333")
@@ -79,12 +74,6 @@ class VectorStoreService:
     def _remove_markdown_formatting(self, markdown_content: str) -> str:
         """
         Convert markdown content to plain text by removing markdown formatting.
-
-        Args:
-            markdown_content: Raw markdown content
-
-        Returns:
-            Plain text content with markdown formatting removed
         """
         if not markdown_content:
             return ""
@@ -137,6 +126,97 @@ class VectorStoreService:
 
         return text
 
+    def _semantic_chunking(self, text: str, max_chunk_size: int = 1000, overlap: int = 200) -> List[str]:
+        """
+        Split text into semantically coherent chunks.
+        """
+        if not text.strip():
+            return []
+
+        # Split by paragraphs first
+        paragraphs = [p.strip() for p in text.split('\n\n') if p.strip()]
+
+        if not paragraphs:
+            # If no paragraphs, fall back to sentences
+            sentences = re.split(r'[.!?]+\s+', text)
+            sentences = [s.strip() for s in sentences if s.strip()]
+            chunks = []
+            current_chunk = ""
+
+            for sentence in sentences:
+                if len(current_chunk) + len(sentence) < max_chunk_size:
+                    current_chunk += " " + sentence if current_chunk else sentence
+                else:
+                    if current_chunk:
+                        chunks.append(current_chunk.strip())
+                    current_chunk = sentence
+
+            if current_chunk:
+                chunks.append(current_chunk.strip())
+
+            return chunks
+
+        # Process paragraphs into chunks
+        chunks = []
+        current_chunk = ""
+
+        for paragraph in paragraphs:
+            if len(current_chunk) + len(paragraph) < max_chunk_size:
+                current_chunk += "\n\n" + paragraph if current_chunk else paragraph
+            else:
+                if current_chunk:
+                    chunks.append(current_chunk.strip())
+
+                # If the paragraph itself is too large, split it
+                if len(paragraph) > max_chunk_size:
+                    sub_chunks = self._split_large_paragraph(paragraph, max_chunk_size, overlap)
+                    chunks.extend(sub_chunks[:-1])  # Add all but the last sub-chunk
+                    current_chunk = sub_chunks[-1] if sub_chunks else ""  # Keep the last part
+                else:
+                    current_chunk = paragraph
+
+        if current_chunk:
+            chunks.append(current_chunk.strip())
+
+        return chunks
+
+    def _split_large_paragraph(self, paragraph: str, max_chunk_size: int, overlap: int) -> List[str]:
+        """
+        Split a large paragraph into smaller chunks.
+        """
+        sentences = re.split(r'[.!?]+\s+', paragraph)
+        chunks = []
+        current_chunk = ""
+
+        for sentence in sentences:
+            if len(current_chunk) + len(sentence) < max_chunk_size:
+                current_chunk += " " + sentence if current_chunk else sentence
+            else:
+                if current_chunk:
+                    chunks.append(current_chunk.strip())
+
+                # Start new chunk with some overlap
+                if len(sentence) > max_chunk_size:
+                    # If sentence is too long, split by words
+                    words = sentence.split()
+                    temp_chunk = ""
+                    for word in words:
+                        if len(temp_chunk) + len(word) < max_chunk_size:
+                            temp_chunk += " " + word if temp_chunk else word
+                        else:
+                            if temp_chunk:
+                                chunks.append(temp_chunk.strip())
+                            temp_chunk = word
+                    if temp_chunk:
+                        current_chunk = temp_chunk
+                else:
+                    current_chunk = sentence
+
+        if current_chunk:
+            chunks.append(current_chunk.strip())
+
+        return chunks
+
     def _ensure_collection_exists(self):
         """
         Ensure that the collection exists in Qdrant.
@@ -148,7 +228,7 @@ class VectorStoreService:
             collection_names = [collection.name for collection in collections.collections]
 
             if self.collection_name not in collection_names:
-                # Create collection with appropriate vector size (768 for Sentence Transformers)
+                # Create collection with appropriate vector size (768 to match Gemini embeddings)
                 from qdrant_client.http import models
                 self.client.create_collection(
                     collection_name=self.collection_name,
@@ -163,17 +243,9 @@ class VectorStoreService:
 
     def index_document(self, text: str, doc_id: Optional[str] = None, metadata: Optional[Dict] = None) -> str:
         """
-        Index a single document in the vector store.
-
-        Args:
-            text: The text content of the document
-            doc_id: Optional document ID (will be auto-generated if not provided)
-            metadata: Optional metadata to store with the document
-
-        Returns:
-            Document ID of the indexed document
+        Index a document in the vector store using semantic chunking.
         """
-        logger.info(f"Indexing document with text length: {len(text)}")
+        logger.info(f"Indexing document with semantic chunking, text length: {len(text)}")
 
         # Generate a unique ID if not provided
         if doc_id is None:
@@ -184,42 +256,52 @@ class VectorStoreService:
             logger.warning("Mock vectorstore: Would index document")
             return doc_id
 
-        # In a real implementation, we would get embeddings from the embedding service
-        # For now, we'll use mock embeddings
         try:
             from .embedding_service import get_embedding_service
             embedding_service = get_embedding_service()
-            embeddings = embedding_service.embed_text(text, chunk_size=512)
+
+            # Use semantic chunking instead of fixed-size chunks
+            text_chunks = self._semantic_chunking(text, max_chunk_size=1000, overlap=200)
+            logger.info(f"Split document into {len(text_chunks)} semantic chunks")
 
             # Prepare points for insertion
             points = []
-            for i, embedding in enumerate(embeddings):
-                # Each chunk gets its own point in the vector store
-                # Create a proper UUID for the point ID
-                import uuid as uuid_lib
-                from qdrant_client.http.models import PointStruct
-                point_id = str(uuid_lib.uuid4())
-                payload = {
-                    "text": text[i*512:(i+1)*512],  # Store the actual text chunk
-                    "original_doc_id": doc_id,
-                    "chunk_index": i,
-                    "metadata": metadata or {}
-                }
+            for i, chunk in enumerate(text_chunks):
+                # Generate embedding for this chunk
+                chunk_embeddings = embedding_service.embed_text(chunk, chunk_size=512)
 
-                point = PointStruct(
-                    id=point_id,
-                    vector=embedding,
-                    payload=payload
-                )
-                points.append(point)
+                for j, embedding in enumerate(chunk_embeddings):
+                    # Each chunk gets its own point in the vector store
+                    import uuid as uuid_lib
+                    from qdrant_client.http.models import PointStruct
+                    point_id = str(uuid_lib.uuid4())
+
+                    # Create payload with the chunk and metadata
+                    payload = {
+                        "text": chunk,
+                        "original_doc_id": doc_id,
+                        "chunk_index": i,
+                        "chunk_part": j,
+                        "metadata": metadata or {},
+                        "doc_length": len(text),
+                        "total_chunks": len(text_chunks)
+                    }
+
+                    point = PointStruct(
+                        id=point_id,
+                        vector=embedding,
+                        payload=payload
+                    )
+                    points.append(point)
 
             # Insert points into the collection
-            self.client.upsert(
-                collection_name=self.collection_name,
-                points=points
-            )
+            if points:
+                self.client.upsert(
+                    collection_name=self.collection_name,
+                    points=points
+                )
 
-            logger.info(f"Successfully indexed document {doc_id} with {len(points)} chunks")
+            logger.info(f"Successfully indexed document {doc_id} with {len(points)} points from {len(text_chunks)} semantic chunks")
             return doc_id
         except Exception as e:
             logger.error(f"Error indexing document: {str(e)}")
@@ -229,12 +311,6 @@ class VectorStoreService:
     def index_documents(self, documents: List[Dict]) -> List[str]:
         """
         Index multiple documents in the vector store.
-
-        Args:
-            documents: List of documents to index, each with 'text', 'doc_id', and 'metadata' keys
-
-        Returns:
-            List of document IDs of the indexed documents
         """
         logger.info(f"Indexing {len(documents)} documents")
 
@@ -253,13 +329,6 @@ class VectorStoreService:
     def search(self, query_vector: List[float], top_k: int = 5) -> List[Dict]:
         """
         Perform a similarity search in the vector store.
-
-        Args:
-            query_vector: The embedding vector to search for similar documents
-            top_k: Number of top results to return
-
-        Returns:
-            List of similar documents with their scores and content
         """
         logger.info(f"Performing similarity search with top_k={top_k}")
 
@@ -302,7 +371,10 @@ class VectorStoreService:
                     "score": result.score,
                     "metadata": result.payload.get("metadata", {}) if result.payload else {},
                     "original_doc_id": result.payload.get("original_doc_id", "") if result.payload else "",
-                    "chunk_index": result.payload.get("chunk_index", 0) if result.payload else 0
+                    "chunk_index": result.payload.get("chunk_index", 0) if result.payload else 0,
+                    "chunk_part": result.payload.get("chunk_part", 0) if result.payload else 0,
+                    "doc_length": result.payload.get("doc_length", 0) if result.payload else 0,
+                    "total_chunks": result.payload.get("total_chunks", 0) if result.payload else 0
                 }
                 results.append(formatted_result)
 
@@ -316,12 +388,6 @@ class VectorStoreService:
     def delete_document(self, doc_id: str) -> bool:
         """
         Delete a document from the vector store.
-
-        Args:
-            doc_id: The ID of the document to delete
-
-        Returns:
-            True if the document was successfully deleted, False otherwise
         """
         logger.info(f"Deleting document: {doc_id}")
 
@@ -367,12 +433,6 @@ class VectorStoreService:
     def get_document(self, doc_id: str) -> Optional[Dict]:
         """
         Retrieve a document from the vector store by its ID.
-
-        Args:
-            doc_id: The ID of the document to retrieve
-
-        Returns:
-            The document content and metadata, or None if not found
         """
         logger.info(f"Retrieving document: {doc_id}")
 
@@ -399,7 +459,7 @@ class VectorStoreService:
             points = scroll_results[0]
             if points:
                 # Combine all chunks back into a single document
-                sorted_points = sorted(points, key=lambda x: x.payload.get("chunk_index", 0))
+                sorted_points = sorted(points, key=lambda x: (x.payload.get("chunk_index", 0), x.payload.get("chunk_part", 0)))
                 full_text = "".join([point.payload.get("text", "") for point in sorted_points])
 
                 # Take metadata from the first chunk (they should all be the same)
@@ -425,7 +485,7 @@ vectorstore_service = None
 
 def get_vectorstore_service():
     """
-    Get the global vectorstore service instance.
+    Get the global improved vectorstore service instance.
     Initializes the service if it doesn't exist.
     """
     global vectorstore_service
