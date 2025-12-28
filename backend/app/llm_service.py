@@ -239,7 +239,6 @@ class LLMService:
                     # Join with proper sentence breaks, avoiding repetition
                     combined_content = ". ".join([snippet for snippet in ros_relevant if len(snippet) > 20])
                     # Remove repetitive phrases
-                    import re
                     combined_content = re.sub(r'(Use the chatbot assistant to ask questions about Physical AI concepts[^.]*\.){2,}', '', combined_content)
                     if combined_content and not combined_content.endswith(('.', '!', '?')):
                         combined_content += '.'
@@ -248,7 +247,6 @@ class LLMService:
             # For other queries, join with proper sentence breaks
             combined_content = ". ".join([snippet for snippet in unique_content if len(snippet) > 20])
             # Remove repetitive phrases
-            import re
             combined_content = re.sub(r'(Use the chatbot assistant to ask questions about Physical AI concepts[^.]*\.){2,}', '', combined_content)
             if combined_content and not combined_content.endswith(('.', '!', '?')):
                 combined_content += '.'
