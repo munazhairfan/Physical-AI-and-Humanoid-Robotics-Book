@@ -58,6 +58,9 @@ def markdown_to_text(markdown_content: str) -> str:
     # Remove the specific problematic format in your data
     text = re.sub(r'\*\*\[([^\]]+)\]\([^)]+\)\s*=\s*id:\s*[^\s]+\s+sidebar_position:\s*\d+', '', text)
 
+    # Additional cleanup for any remaining markdown artifacts
+    text = re.sub(r'\[([^\]]+)\]\s*\(', r'\1 ', text)  # Fix broken links like [text] (
+
     # Remove images ![alt](url) -> alt
     text = re.sub(r'!\[([^\]]*)\]\([^)]+\)', r'\1', text)
 
@@ -208,12 +211,23 @@ class LLMService:
                 query_terms = query_lower.split()
                 term_matches = sum(1 for term in query_terms if term in content_lower and len(term) > 2)
 
-                if term_matches > 0 or any(keyword in content_lower for keyword in ['robot', 'ai', 'artificial intelligence', 'humanoid', 'control', 'learning', 'sensor', 'motion', 'movement']):
+                if term_matches > 0 or any(keyword in content_lower for keyword in ['robot', 'ai', 'artificial intelligence', 'humanoid', 'control', 'learning', 'sensor', 'motion', 'movement', 'ros', 'ros2', 'robot operating system']):
                     relevant_content.append(clean_content)
 
-        # Combine relevant content
+        # Combine relevant content with better filtering
         if relevant_content:
-            # Join with proper sentence breaks
+            # For ROS-specific queries, try to find the most relevant content
+            if 'ros' in query_lower or 'ros2' in query_lower or 'robot operating system' in query_lower:
+                # Prioritize content that specifically mentions ROS
+                ros_relevant = [content for content in relevant_content if any(ros_term in content.lower() for ros_term in ['ros', 'robot operating system', 'robot os'])]
+                if ros_relevant:
+                    # Join with proper sentence breaks
+                    combined_content = ". ".join([snippet for snippet in ros_relevant if len(snippet) > 20])
+                    if combined_content and not combined_content.endswith(('.', '!', '?')):
+                        combined_content += '.'
+                    return f"Based on the robotics textbook: {combined_content}\n\nROS (Robot Operating System) is a flexible framework for writing robot software. It's a collection of tools, libraries, and conventions that aim to simplify the task of creating complex and robust robot behavior across a wide variety of robot platforms. ROS 2 is the next generation of ROS with improved architecture for production environments, real-time systems, and multi-robot applications. Would you like to know more about ROS or ROS 2 concepts?"
+
+            # For other queries, join with proper sentence breaks
             combined_content = ". ".join([snippet for snippet in relevant_content if len(snippet) > 20])
             if combined_content and not combined_content.endswith(('.', '!', '?')):
                 combined_content += '.'
