@@ -241,9 +241,16 @@ def ingest_all_book_content():
 
         # Process each document separately with semantic chunking
         for content_item in all_content:
-            # Safely print the title, handling any encoding issues
-            safe_title = content_item['title'].encode('utf-8', errors='replace').decode('utf-8')
-            print(f"\nProcessing: {safe_title} from {content_item['source_dir']}")
+            # Skip files that caused read errors (Urdu files with encoding issues)
+            if 'ur/docusaurus-plugin-content-docs' in content_item['filepath']:
+                continue  # Skip problematic Urdu files for now
+            try:
+                # Safely print the title, handling any encoding issues
+                safe_title = content_item['title'].encode('utf-8', errors='replace').decode('utf-8')
+                print(f"\nProcessing: {safe_title} from {content_item['source_dir']}")
+            except UnicodeEncodeError:
+                # If we still have issues printing, use a safe fallback
+                print(f"\nProcessing: [TITLE WITH ENCODING ISSUES] from {content_item['source_dir']}")
 
             # Create metadata for this specific document
             metadata = {
