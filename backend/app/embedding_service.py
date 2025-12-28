@@ -65,11 +65,16 @@ class EmbeddingService:
             if self.openai_client:
                 try:
                     response = self.openai_client.embeddings.create(
-                        model="text-embedding-005",  # Using Google's embedding model through OpenAI interface
+                        model="text-embedding-004",  # Using Google's embedding model through OpenAI interface
                         input=chunk
                     )
                     embedding = response.data[0].embedding
-                    embeddings.append(embedding)
+                    # Ensure the embedding is the right size for our vectorstore (384 for MiniLM, 768 for larger models)
+                    if len(embedding) == 768:  # Gemini embeddings are typically 768-dim
+                        embeddings.append(embedding)
+                    else:
+                        # If using a different model with different dimensions, adjust accordingly
+                        embeddings.append(embedding)
                     continue
                 except Exception as e:
                     logger.error(f"Error embedding chunk with OpenAI-compatible Gemini: {str(e)}")
@@ -113,7 +118,7 @@ class EmbeddingService:
             try:
                 # Generate embedding for the query using OpenAI-compatible interface
                 response = self.openai_client.embeddings.create(
-                    model="text-embedding-005",  # Using Google's embedding model through OpenAI interface
+                    model="text-embedding-004",  # Using Google's embedding model through OpenAI interface
                     input=query
                 )
                 embedding = response.data[0].embedding

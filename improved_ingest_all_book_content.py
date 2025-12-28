@@ -59,8 +59,14 @@ def get_all_possible_content():
                 processed_files.add(rel_path)
 
                 try:
-                    with open(file_path, 'r', encoding='utf-8') as f:
-                        content = f.read()
+                    # Try UTF-8 first, then fall back to other encodings if needed
+                    try:
+                        with open(file_path, 'r', encoding='utf-8') as f:
+                            content = f.read()
+                    except UnicodeDecodeError:
+                        # If UTF-8 fails, try with 'utf-8' with error handling
+                        with open(file_path, 'r', encoding='utf-8', errors='ignore') as f:
+                            content = f.read()
 
                     # Extract title from the file (first heading)
                     lines = content.split('\n')
@@ -79,7 +85,9 @@ def get_all_possible_content():
                     }
                     all_content.append(file_info)
 
-                    print(f"  PROCESSED: {title} ({len(content)} chars) from {os.path.basename(docs_dir)}")
+                    # Safely print the title, handling any encoding issues
+                    safe_title = title.encode('utf-8', errors='replace').decode('utf-8')
+                    print(f"  PROCESSED: {safe_title} ({len(content)} chars) from {os.path.basename(docs_dir)}")
 
                 except Exception as e:
                     print(f"  ERROR: Error processing {file_path}: {str(e)}")
@@ -233,7 +241,9 @@ def ingest_all_book_content():
 
         # Process each document separately with semantic chunking
         for content_item in all_content:
-            print(f"\nProcessing: {content_item['title']} from {content_item['source_dir']}")
+            # Safely print the title, handling any encoding issues
+            safe_title = content_item['title'].encode('utf-8', errors='replace').decode('utf-8')
+            print(f"\nProcessing: {safe_title} from {content_item['source_dir']}")
 
             # Create metadata for this specific document
             metadata = {
