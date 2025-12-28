@@ -9,14 +9,17 @@
 (function() {
   'use strict';
 
+  // Define supported locales
+  const SUPPORTED_LOCALES = ['en', 'ur'];
+  const DEFAULT_LOCALE = 'en';
+
   // Check if we're on a docs page
   function isDocsPage() {
     const pathname = window.location.pathname;
-    // Check if path starts with /docs/ or /{locale}/docs/ or contains docs after locale
+    // Check if path starts with /docs/ or contains docs after locale
     return pathname.startsWith('/docs/') ||
            pathname.includes('/docs/') ||
-           /^\/[a-zA-Z]{2}\/docs\//.test(pathname) ||
-           /^\/[a-zA-Z]{2}-[a-zA-Z]{2}\/docs\//.test(pathname);
+           SUPPORTED_LOCALES.some(locale => pathname.startsWith(`/${locale}/docs/`));
   }
 
   // Get the current locale based on URL
@@ -24,40 +27,39 @@
     const pathname = window.location.pathname;
     const pathParts = pathname.split('/').filter(part => part !== '');
 
-    // Check if the first part is a locale code (e.g., 'en', 'es', 'fr', 'ur')
-    if (pathParts.length > 0) {
-      const potentialLocale = pathParts[0];
-
-      // Check if this is a locale code pattern (2-3 letters)
-      if (/^[a-zA-Z]{2,3}$/.test(potentialLocale)) {
-        // Verify that the next part is 'docs' to confirm it's a locale-prefixed docs path
-        if (pathParts.length > 1 && pathParts[1] === 'docs') {
-          return potentialLocale;
-        }
-      }
+    // Check if the first part is a supported locale code
+    if (pathParts.length > 0 && SUPPORTED_LOCALES.includes(pathParts[0])) {
+      return pathParts[0];
     }
-    return null; // Default locale (no prefix)
+    return DEFAULT_LOCALE; // Default locale (no prefix)
+  }
+
+  // Get the current docs path without locale prefix
+  function getCurrentDocsPath() {
+    const pathname = window.location.pathname;
+    const currentLocale = getCurrentLocale();
+
+    if (currentLocale !== DEFAULT_LOCALE) {
+      // Path has locale prefix like /ur/docs/intro, extract /docs/intro part
+      return pathname.substring(currentLocale.length + 1); // +1 for the '/'
+    } else {
+      // Path is in default format like /docs/intro or /intro
+      if (pathname.startsWith('/docs/')) {
+        return pathname;
+      } else if (pathname !== '/' && !pathname.startsWith('/docs/')) {
+        // If it's a specific page but not in docs, assume it's a doc page
+        return '/docs' + pathname;
+      }
+      return pathname;
+    }
   }
 
   // Generate the target locale-specific docs path
   function getTargetDocsPath(targetLocale) {
-    const currentPath = window.location.pathname;
-    const currentLocale = getCurrentLocale();
+    let docsPath = getCurrentDocsPath();
 
-    let docsPath;
-
-    // Extract the docs part of the path regardless of locale prefix
-    if (currentLocale) {
-      // Path has locale prefix like /ur/docs/intro, extract /docs/intro part
-      docsPath = currentPath.substring(currentLocale.length + 1); // +1 for the '/'
-    } else {
-      // Path is in default format like /docs/intro or /intro
-      docsPath = currentPath;
-    }
-
-    // Ensure the path starts with /docs/ if it doesn't already
+    // Ensure the path starts with /docs/
     if (!docsPath.startsWith('/docs/')) {
-      // If it starts with /intro, /chapter1, etc., prepend /docs/
       if (docsPath.startsWith('/')) {
         docsPath = '/docs' + docsPath;
       } else {
@@ -66,7 +68,7 @@
     }
 
     // Add the target locale prefix if needed (not for default locale)
-    if (targetLocale && targetLocale !== 'en') { // Assuming 'en' is the default locale
+    if (targetLocale && targetLocale !== DEFAULT_LOCALE) {
       return '/' + targetLocale + docsPath;
     } else {
       // Return docs path without locale prefix (for default locale)
@@ -80,32 +82,32 @@
     const targetDocsPath = getTargetDocsPath(targetLocale);
 
     // Redirect to the locale-specific docs path
-    window.location.href = targetDocsPath;
+    window.location.href = targetDocsPath + window.location.search + window.location.hash;
   }
 
   // Listen for clicks on locale switcher elements
   document.addEventListener('click', function(event) {
-    // Only handle if we're on a docs page
-    if (!isDocsPage()) {
-      return;
-    }
-
     // Check if the clicked element is a locale switcher
     let targetElement = event.target;
     while (targetElement && targetElement !== document) {
+      // Check if this is a locale dropdown item (typically has data-locale attribute or href with locale)
       const href = targetElement.getAttribute?.('href');
-      if (href && /^[a-zA-Z]{2,3}(-[a-zA-Z]{2,3})?\//.test(href.split('/')[1])) {
-
-        // Prevent the default behavior
-        event.preventDefault();
-
-        // Extract the target locale from the href
-        const localeMatch = href.match(/^\/([a-zA-Z-]{2,5})\//);
+      if (href) {
+        const localeMatch = href.match(/^\/([a-zA-Z-]{2,5})(\/.*)?$/);
         if (localeMatch) {
           const targetLocale = localeMatch[1];
-          handleDocsLocaleSwitch(targetLocale);
+
+          // Only handle if it's a supported locale
+          if (SUPPORTED_LOCALES.includes(targetLocale)) {
+            // Check if we're on a docs page
+            if (isDocsPage()) {
+              // Prevent the default behavior
+              event.preventDefault();
+              handleDocsLocaleSwitch(targetLocale);
+              return;
+            }
+          }
         }
-        break;
       }
 
       targetElement = targetElement.parentElement;
@@ -120,57 +122,22 @@
   // Override pushState to detect locale changes
   history.pushState = function() {
     originalPushState.apply(history, arguments);
-
-    // Check if this navigation is happening on a docs page and involves locale change
-    const newUrl = arguments[2];
-    if (newUrl && typeof newUrl === 'string' && isDocsPage()) {
-      const localeMatch = newUrl.match(/^\/([a-zA-Z]{2,3}(-[a-zA-Z]{2,3})?)\//);
-      if (localeMatch) {
-        const targetLocale = localeMatch[1];
-        // If we're on a docs page and changing locale, ensure proper path
-        setTimeout(() => {
-          if (isDocsPage()) {
-            const correctPath = getTargetDocsPath(targetLocale);
-            if (window.location.pathname !== correctPath) {
-              window.location.replace(correctPath);
-            }
-          }
-        }, 0);
-      }
-    }
   };
 
   history.replaceState = function() {
     originalReplaceState.apply(history, arguments);
-
-    // Similar check for replaceState
-    const newUrl = arguments[2];
-    if (newUrl && typeof newUrl === 'string' && isDocsPage()) {
-      const localeMatch = newUrl.match(/^\/([a-zA-Z]{2,3}(-[a-zA-Z]{2,3})?)\//);
-      if (localeMatch) {
-        const targetLocale = localeMatch[1];
-        setTimeout(() => {
-          if (isDocsPage()) {
-            const correctPath = getTargetDocsPath(targetLocale);
-            if (window.location.pathname !== correctPath) {
-              window.location.replace(correctPath);
-            }
-          }
-        }, 0);
-      }
-    }
   };
 
   // Listen for popstate events (browser back/forward buttons)
   window.addEventListener('popstate', function(event) {
+    // After navigation, check if we're on the right locale-specific path
     if (isDocsPage()) {
-      // After navigation, check if we're on the right locale-specific path
       const currentLocale = getCurrentLocale();
       if (currentLocale) {
         const expectedPath = getTargetDocsPath(currentLocale);
         if (window.location.pathname !== expectedPath && window.location.pathname.startsWith('/docs/')) {
           // Redirect to the proper locale-specific docs path
-          window.location.replace(expectedPath);
+          window.location.replace(expectedPath + window.location.search + window.location.hash);
         }
       }
     }
