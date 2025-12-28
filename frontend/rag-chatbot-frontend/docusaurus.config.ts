@@ -85,6 +85,11 @@ const config: Config = {
       },
       items: [
         {
+          to: '/',
+          position: 'left',
+          label: 'Home',
+        },
+        {
           to: '/docs/intro',
           position: 'left',
           label: 'Contents',
@@ -133,6 +138,10 @@ const config: Config = {
     },
     {
       src: '/js/locale-docs-guard.js',
+      defer: true,
+    },
+    {
+      src: '/js/auth-pages-locale-guard.js',
       defer: true,
     },
   ],
