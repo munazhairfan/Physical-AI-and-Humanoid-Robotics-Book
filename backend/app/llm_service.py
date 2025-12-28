@@ -216,19 +216,40 @@ class LLMService:
 
         # Combine relevant content with better filtering
         if relevant_content:
+            # Remove duplicate or very similar content snippets
+            unique_content = []
+            for content in relevant_content:
+                # Check if this content is too similar to already selected content
+                is_duplicate = False
+                for existing in unique_content:
+                    # Simple similarity check - if 80% of words overlap, consider it duplicate
+                    content_words = set(content.lower().split())
+                    existing_words = set(existing.lower().split())
+                    if len(content_words.intersection(existing_words)) / len(content_words.union(existing_words)) > 0.8:
+                        is_duplicate = True
+                        break
+                if not is_duplicate:
+                    unique_content.append(content)
+
             # For ROS-specific queries, try to find the most relevant content
             if 'ros' in query_lower or 'ros2' in query_lower or 'robot operating system' in query_lower:
                 # Prioritize content that specifically mentions ROS
-                ros_relevant = [content for content in relevant_content if any(ros_term in content.lower() for ros_term in ['ros', 'robot operating system', 'robot os'])]
+                ros_relevant = [content for content in unique_content if any(ros_term in content.lower() for ros_term in ['ros', 'robot operating system', 'robot os'])]
                 if ros_relevant:
-                    # Join with proper sentence breaks
+                    # Join with proper sentence breaks, avoiding repetition
                     combined_content = ". ".join([snippet for snippet in ros_relevant if len(snippet) > 20])
+                    # Remove repetitive phrases
+                    import re
+                    combined_content = re.sub(r'(Use the chatbot assistant to ask questions about Physical AI concepts[^.]*\.){2,}', '', combined_content)
                     if combined_content and not combined_content.endswith(('.', '!', '?')):
                         combined_content += '.'
                     return f"Based on the robotics textbook: {combined_content}\n\nROS (Robot Operating System) is a flexible framework for writing robot software. It's a collection of tools, libraries, and conventions that aim to simplify the task of creating complex and robust robot behavior across a wide variety of robot platforms. ROS 2 is the next generation of ROS with improved architecture for production environments, real-time systems, and multi-robot applications. Would you like to know more about ROS or ROS 2 concepts?"
 
             # For other queries, join with proper sentence breaks
-            combined_content = ". ".join([snippet for snippet in relevant_content if len(snippet) > 20])
+            combined_content = ". ".join([snippet for snippet in unique_content if len(snippet) > 20])
+            # Remove repetitive phrases
+            import re
+            combined_content = re.sub(r'(Use the chatbot assistant to ask questions about Physical AI concepts[^.]*\.){2,}', '', combined_content)
             if combined_content and not combined_content.endswith(('.', '!', '?')):
                 combined_content += '.'
 
