@@ -99,6 +99,13 @@ class VectorStoreService:
         # Remove links [text](url) -> text
         text = re.sub(r'\[([^\]]+)\]\([^)]+\)', r'\1', text)
 
+        # Remove the specific problematic format in your data
+        text = re.sub(r'\*\*\[([^\]]+)\]\([^)]+\)\s*=\s*id:\s*[^\s]+\s+sidebar_position:\s*\d+', '', text)
+
+        # Additional cleanup for any remaining markdown artifacts
+        text = re.sub(r'\[([^\]]+)\]\s*\(', r'\1 ', text)  # Fix broken links like [text] (
+        text = re.sub(r'\.\/[a-zA-Z0-9_\-\/.]+', '', text)  # Remove relative path artifacts like "./cha"
+
         # Remove images ![alt](url) -> alt
         text = re.sub(r'!\[([^\]]*)\]\([^)]+\)', r'\1', text)
 
